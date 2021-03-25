@@ -16,8 +16,8 @@ import org.apache.logging.log4j.Logger;
 public class VoidMagic {
 
     public static final String MODID = "voidmagic";
-    private static final Logger LOGGER = LogManager.getLogger(VoidMagic.MODID);
-    public static final ItemGroup GROUP = new ModItemGroup("itemGroup.voidmagic.group");
+    public static final ItemGroup GROUP = new ModItemGroup("voidmagic.group");
+    private static final Logger LOGGER = LogManager.getLogger("Void Magic");
 
     public VoidMagic() {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();

@@ -1,6 +1,8 @@
 buildscript {
     repositories {
-        maven { url = 'https://files.minecraftforge.net/maven' }
+        maven {
+            url = 'https://files.minecraftforge.net/maven'
+        }
         mavenCentral()
     }
     dependencies {
@@ -16,18 +18,18 @@ version = '1.0.0-SNAPSHOTS'
 group = 'io.llamarama.team.voidmagic'
 archivesBaseName = 'VoidMagic'
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(8) 
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-    
+
     // Channel:   Version:
     // snapshot   YYYYMMDD   Snapshot are built nightly.
     // stable     #          Stables are built at the discretion of the MCP team.
     // official   MCVersion  Official field/method names from Mojang mapping files
-   
+
     mappings channel: 'official', version: '1.16.5'
-     
+
     // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
@@ -64,8 +66,8 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             args '--mod', 'voidmagic', '--all',
-             '--output', file('src/generated/resources/'), 
-             '--existing', file('src/main/resources/')
+                    '--output', file('src/generated/resources/'),
+                    '--existing', file('src/main/resources/')
 
             mods {
                 examplemod {
@@ -76,8 +78,8 @@ minecraft {
     }
 }
 
-sourceSets.main.resources { 
-	srcDir 'src/generated/resources'
+sourceSets.main.resources {
+    srcDir 'src/generated/resources'
 }
 
 repositories {
@@ -85,7 +87,8 @@ repositories {
 }
 
 dependencies {
-    
+
+    implementation 'org.jetbrains:annotations:20.1.0'
     minecraft 'net.minecraftforge:forge:1.16.5-36.1.2'
 
     // You may put jars on which you depend on in ./libs or you may define them like so..
@@ -103,18 +106,18 @@ dependencies {
 jar {
     manifest {
         attributes([
-            "Specification-Title": "VoidMagic",
-            "Specification-Vendor": "Llamarama-Team",
-            "Specification-Version": "1",
-            "Implementation-Title": project.name,
-            "Implementation-Version": "${version}",
-            "Implementation-Vendor" :"Llamarama-Team",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+                "Specification-Title"     : "VoidMagic",
+                "Specification-Vendor"    : "Llamarama-Team",
+                "Specification-Version"   : "1",
+                "Implementation-Title"    : project.name,
+                "Implementation-Version"  : "${version}",
+                "Implementation-Vendor"   : "Llamarama-Team",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
 }
 
-jar.finalizedBy('reobfJar') 
+jar.finalizedBy('reobfJar')
 
 publishing {
     publications {
