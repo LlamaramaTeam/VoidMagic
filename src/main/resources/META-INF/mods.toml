@@ -1,0 +1,32 @@
+modLoader="javafml" #mandatory
+loaderVersion="[36,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+license="All rights reserved"
+issueTrackerURL="https://github.com/0xJoeMama/VoidMagic/issues" #optional
+
+[[mods]] #mandatory
+modId="voidmagic" #mandatory
+version="${file.jarVersion}"
+displayName="Void Magic" #mandatory
+#updateJSONURL="https://change.me.example.invalid/updates.json" #optional
+displayURL="https://github.com/0xJoeMama/VoidMagic" #optional
+logoFile="voidmagic_icon.png" #optional
+# A text field displayed in the mod UI
+authors="KaloyanKYS, DigitalPear, 0xJoeMama" #optional
+description='''
+A magic mod that allows you to delve deep into the darkest corners of your world.
+Be ready for you will encounter frightening magic, creatures and worlds.
+'''
+
+[[dependencies.voidmagic]] #optional
+    modId="forge" #mandatory
+    mandatory=true #mandatory
+    versionRange="[36,)" #mandatory
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.voidmagic]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.16.5,1.17)"
+    ordering="NONE"
+    side="BOTH"
