@@ -1,5 +1,6 @@
 package io.llamarama.team.voidmagic;
 
+import io.llamarama.team.voidmagic.common.register.ModRegistries;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -22,6 +23,7 @@ public class VoidMagic {
     public VoidMagic() {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        ModRegistries.initRegistries(modBus);
         modBus.addListener(this::setup);
         modBus.addListener(this::enqueueIMC);
         modBus.addListener(this::clientSetup);

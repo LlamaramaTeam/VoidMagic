@@ -2,7 +2,6 @@ package io.llamarama.team.voidmagic.datagen;
 
 import io.llamarama.team.voidmagic.VoidMagic;
 import io.llamarama.team.voidmagic.datagen.provider.language.EnglishLanguageProvider;
-import io.llamarama.team.voidmagic.datagen.provider.language.GreekLanguageProvider;
 import io.llamarama.team.voidmagic.datagen.provider.model.block.ModBlockProvider;
 import io.llamarama.team.voidmagic.datagen.provider.model.item.ModItemModelProvider;
 import net.minecraft.data.DataGenerator;
@@ -31,9 +30,7 @@ public final class ModDataGeneration {
         gen.addProvider(new EnglishLanguageProvider(gen, "en_ca"));
         gen.addProvider(new EnglishLanguageProvider(gen, "en_nz"));
         gen.addProvider(new EnglishLanguageProvider(gen, "en_za"));
-
-        // Greek Translation
-        gen.addProvider(new GreekLanguageProvider(gen, "el_gr"));
+        gen.addProvider(new EnglishLanguageProvider(gen, "el_gr"));
 
         // Item Models
         gen.addProvider(new ModItemModelProvider(gen, helper));
