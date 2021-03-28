@@ -1,25 +1,18 @@
 buildscript {
     repositories {
-        mavenCentral()
-
         maven {
             url = 'https://files.minecraftforge.net/maven'
         }
-
-        maven {
-            url "https://repo.spongepowered.org/repository/maven-public/"
-        }
+        mavenCentral()
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
-        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     }
 }
 
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
-apply plugin: 'org.spongepowered.mixin'
 
 version = '1.0.0-SNAPSHOTS'
 group = 'io.llamarama.team.voidmagic'
@@ -28,12 +21,6 @@ archivesBaseName = 'VoidMagic'
 java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
-
-
-mixin {
-    add sourceSets.main, "voidmagic.refmap.json"
-}
-
 minecraft {
 
     // Channel:   Version:
@@ -49,9 +36,8 @@ minecraft {
         client {
             workingDirectory project.file('run')
 
+            property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-            property 'mixin.env.disableRefMap', "true"
-            property "fml.earlyprogresswindow", "false"
 
             mods {
                 voidmagic {
@@ -72,7 +58,7 @@ minecraft {
                 }
             }
         }
-r
+
         data {
             workingDirectory project.file('run')
 
@@ -102,8 +88,6 @@ repositories {
 
 dependencies {
 
-    annotationProcessor 'org.spongepowered:mixin:0.8.2:processor'
-
     implementation 'org.jetbrains:annotations:20.1.0'
     minecraft 'net.minecraftforge:forge:1.16.5-36.1.2'
 
@@ -128,8 +112,7 @@ jar {
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : "${version}",
                 "Implementation-Vendor"   : "Llamarama-Team",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                "MixinConnector": "io.llamarama.team.voidmagic.ModMixinConnector"
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
 }

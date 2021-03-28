@@ -1,9 +1,11 @@
 package io.llamarama.team.voidmagic.datagen;
 
 import io.llamarama.team.voidmagic.VoidMagic;
-import io.llamarama.team.voidmagic.datagen.provider.language.EnglishLanguageProvider;
-import io.llamarama.team.voidmagic.datagen.provider.model.block.ModBlockProvider;
-import io.llamarama.team.voidmagic.datagen.provider.model.item.ModItemModelProvider;
+import io.llamarama.team.voidmagic.datagen.provider.assets.EnglishLanguageProvider;
+import io.llamarama.team.voidmagic.datagen.provider.assets.ModBlockProvider;
+import io.llamarama.team.voidmagic.datagen.provider.assets.ModItemModelProvider;
+import io.llamarama.team.voidmagic.datagen.provider.data.ModLootTableProvider;
+import io.llamarama.team.voidmagic.datagen.provider.data.ModRecipeProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -23,6 +25,8 @@ public final class ModDataGeneration {
         DataGenerator gen = event.getGenerator();
         ExistingFileHelper helper = event.getExistingFileHelper();
 
+        // Assets
+
         // Lang Providers
         gen.addProvider(new EnglishLanguageProvider(gen, "en_us"));
         gen.addProvider(new EnglishLanguageProvider(gen, "en_gb"));
@@ -37,6 +41,14 @@ public final class ModDataGeneration {
 
         // Block Models
         gen.addProvider(new ModBlockProvider(gen, helper));
+
+        // Data
+
+        // Loot Tables
+        gen.addProvider(new ModLootTableProvider(gen));
+
+        // Recipes
+        gen.addProvider(new ModRecipeProvider(gen));
 
         VoidMagic.getLogger().info("Successfully run data generation task.");
     }

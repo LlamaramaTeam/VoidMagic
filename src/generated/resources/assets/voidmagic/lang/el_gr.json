@@ -1,4 +1,7 @@
 {
-  "block.voidmagic.putiliam_wire": "Putiliam",
+  "block.voidmagic.withered_stone": "Withered Stone",
+  "block.voidmagic.withered_stone_bricks": "Withered Stone Bricks",
+  "item.voidmagic.guide_book": "Guide Book(WIP)",
+  "item.voidmagic.putiliam": "Putiliam",
   "itemGroup.voidmagic.group": "Void Magic"
 }

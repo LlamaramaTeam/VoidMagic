@@ -1,22 +1,44 @@
 package io.llamarama.team.voidmagic.common.register;
 
 import io.llamarama.team.voidmagic.VoidMagic;
+import io.llamarama.team.voidmagic.common.block.TofalBlock;
+import io.llamarama.team.voidmagic.common.block.WitheredStoneBlock;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.RedstoneWireBlock;
+import net.minecraft.block.OreBlock;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraftforge.common.ToolType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
 public final class ModBlocks {
 
-    public static final RegistryObject<RedstoneWireBlock> PUTILIAM = registerNoItem("putiliam_wire",
-            () -> new RedstoneWireBlock(AbstractBlock.Properties.copy(Blocks.REDSTONE_WIRE)));
+    public static final RegistryObject<WitheredStoneBlock> WITHERED_STONE = register("withered_stone",
+            () -> new WitheredStoneBlock(getWitheredStoneProperties()));
+    public static final RegistryObject<WitheredStoneBlock> WITHERED_STONE_BRICKS = register("withered_stone_bricks",
+            () -> new WitheredStoneBlock(copyProperties(ModBlocks.WITHERED_STONE.get())));
+    public static final RegistryObject<WitheredStoneBlock> CHISELED_WITHERED_STONE_BRICKS = register("chiseled_withered_stone_bricks",
+            () -> new WitheredStoneBlock(getWitheredStoneProperties()));
+    public static final RegistryObject<WitheredStoneBlock> CRACKED_WITHER_STONE_BRICKS = register("cracked_withered_stone_bricks",
+            () -> new WitheredStoneBlock(getWitheredStoneProperties()));
+    public static final RegistryObject<TofalBlock> TOFAL = register("tofal",
+            () -> new TofalBlock(getTofalProperties()));
+    public static final RegistryObject<TofalBlock> TOFAL_BRICKS = register("tofal_bricks",
+            () -> new TofalBlock(getTofalProperties()));
+    public static final RegistryObject<TofalBlock> TOFAL_TILES = register("tofal_tiles",
+            () -> new TofalBlock(getTofalProperties()));
+    public static final RegistryObject<Block> SHADOW_BRICKS = register("shadow_bricks",
+            () -> new Block(getTofalProperties().lightLevel((state) -> 0)));
+    public static final RegistryObject<OreBlock> PUTILIAM_ORE = register("putiliam_ore",
+            () -> new OreBlock(AbstractBlock.Properties.copy(Blocks.END_STONE)));
 
     private ModBlocks() {
     }
@@ -33,6 +55,19 @@ public final class ModBlocks {
 
     public static void init(IEventBus bus) {
         ModRegistries.BLOCKS.register(bus);
+    }
+
+    private static AbstractBlock.Properties getWitheredStoneProperties() {
+        return AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY).harvestLevel(3).harvestTool(ToolType.PICKAXE).strength(3.0f).requiresCorrectToolForDrops();
+    }
+
+    @NotNull
+    private static AbstractBlock.Properties getTofalProperties() {
+        return AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(3.0f).harvestTool(ToolType.PICKAXE).harvestLevel(2).lightLevel((state) -> 7).requiresCorrectToolForDrops();
+    }
+
+    private static AbstractBlock.Properties copyProperties(AbstractBlock block) {
+        return AbstractBlock.Properties.copy(block);
     }
 
 }
