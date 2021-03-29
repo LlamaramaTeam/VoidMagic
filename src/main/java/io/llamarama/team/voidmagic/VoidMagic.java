@@ -1,10 +1,11 @@
 package io.llamarama.team.voidmagic;
 
 import io.llamarama.team.voidmagic.client.VoidMagicClient;
+import io.llamarama.team.voidmagic.common.register.ModItems;
 import io.llamarama.team.voidmagic.common.register.ModRegistries;
+import io.llamarama.team.voidmagic.util.IdBuilder;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -18,7 +19,8 @@ import org.apache.logging.log4j.Logger;
 public class VoidMagic {
 
     public static final String MODID = "voidmagic";
-    public static final ItemGroup GROUP = new ModItemGroup("voidmagic.group");
+    public static final ItemGroup GROUP = new ModItemGroup("voidmagic.group")
+            .setBackgroundImage(IdBuilder.mod("textures/creative_tab.png"));
     private static final Logger LOGGER = LogManager.getLogger("Void Magic");
 
     public VoidMagic() {
@@ -44,7 +46,7 @@ public class VoidMagic {
 
         @Override
         public ItemStack makeIcon() {
-            return new ItemStack(Items.PILLAGER_SPAWN_EGG);
+            return new ItemStack(ModItems.PUTILIAM.get());
         }
 
         @Override

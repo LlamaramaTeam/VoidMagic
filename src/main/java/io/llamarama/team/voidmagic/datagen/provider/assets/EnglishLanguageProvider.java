@@ -18,6 +18,7 @@ public class EnglishLanguageProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
+        this.add("itemGroup.voidmagic.group", "Void Magic");
         ModRegistries.BLOCKS.getEntries().forEach(this::getCamelCaseBlockName);
 
         ModRegistries.ITEMS.getEntries().stream()
@@ -35,7 +36,7 @@ public class EnglishLanguageProvider extends LanguageProvider {
 
         for (String s : name) {
             char firstChar = s.charAt(0);
-            currentWord = s.replace(firstChar, Character.toUpperCase(firstChar));
+            currentWord = s.replaceFirst(String.valueOf(firstChar), String.valueOf(Character.toUpperCase(firstChar)));
             builder.append(currentWord).append(" ");
         }
 
@@ -50,7 +51,7 @@ public class EnglishLanguageProvider extends LanguageProvider {
 
         for (String s : name) {
             char firstChar = s.charAt(0);
-            currentWord = s.replace(firstChar, Character.toUpperCase(firstChar));
+            currentWord = s.replaceFirst(String.valueOf(firstChar), String.valueOf(Character.toUpperCase(firstChar)));
             builder.append(currentWord).append(" ");
         }
 

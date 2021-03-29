@@ -1,8 +1,8 @@
 {
   "block.voidmagic.chiseled_withered_stone_bricks": "Chiseled Withered Stone Bricks ",
-  "block.voidmagic.cracked_withered_stone_bricks": "CraCked Withered Stone Bricks ",
+  "block.voidmagic.cracked_withered_stone_bricks": "Cracked Withered Stone Bricks ",
   "block.voidmagic.end_putiliam_ore": "End Putiliam Ore ",
-  "block.voidmagic.overworld_putiliam_ore": "OverwOrld Putiliam Ore ",
+  "block.voidmagic.overworld_putiliam_ore": "Overworld Putiliam Ore ",
   "block.voidmagic.shadow_bricks": "Shadow Bricks ",
   "block.voidmagic.tofal": "Tofal ",
   "block.voidmagic.tofal_bricks": "Tofal Bricks ",
@@ -10,5 +10,6 @@
   "block.voidmagic.withered_stone": "Withered Stone ",
   "block.voidmagic.withered_stone_bricks": "Withered Stone Bricks ",
   "item.voidmagic.guide_book": "Guide Book ",
-  "item.voidmagic.putiliam": "Putiliam "
+  "item.voidmagic.putiliam": "Putiliam ",
+  "itemGroup.voidmagic.group": "Void Magic"
 }
