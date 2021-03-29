@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "voidmagic:putiliam_ore"
+          "name": "voidmagic:overworld_putiliam_ore"
         }
       ],
       "conditions": [

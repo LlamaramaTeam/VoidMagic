@@ -2,7 +2,6 @@ package io.llamarama.team.voidmagic.datagen.provider.assets;
 
 import com.google.common.collect.Sets;
 import io.llamarama.team.voidmagic.VoidMagic;
-import io.llamarama.team.voidmagic.common.register.ModBlocks;
 import io.llamarama.team.voidmagic.common.register.ModRegistries;
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
@@ -23,10 +22,7 @@ public class ModBlockProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        ModRegistries.BLOCKS.getEntries().stream()
-                .map(RegistryObject::get)
-                .filter((block) -> !this.blacklist.contains(block))
-                .forEach(this::simpleBlockAndItem);
+        ModRegistries.BLOCKS.getEntries().stream().map(RegistryObject::get).filter((block) -> !this.blacklist.contains(block)).forEach(this::simpleBlockAndItem);
 
         this.blacklist.forEach((block) -> {
 

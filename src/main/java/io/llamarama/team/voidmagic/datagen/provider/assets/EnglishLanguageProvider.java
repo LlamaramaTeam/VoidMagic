@@ -1,12 +1,16 @@
 package io.llamarama.team.voidmagic.datagen.provider.assets;
 
 import io.llamarama.team.voidmagic.VoidMagic;
-import io.llamarama.team.voidmagic.common.register.ModBlocks;
-import io.llamarama.team.voidmagic.common.register.ModItems;
+import io.llamarama.team.voidmagic.common.register.ModRegistries;
+import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraftforge.common.data.LanguageProvider;
+import net.minecraftforge.fml.RegistryObject;
 
 public class EnglishLanguageProvider extends LanguageProvider {
+
 
     public EnglishLanguageProvider(DataGenerator gen, String locale) {
         super(gen, VoidMagic.MODID, locale);
@@ -14,13 +18,43 @@ public class EnglishLanguageProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
-        this.add("itemGroup.voidmagic.group", "Void Magic");
-        this.addItem(ModItems.PUTILIAM, "Putiliam");
-        this.addBlock(ModBlocks.WITHERED_STONE, "Withered Stone");
-        this.addBlock(ModBlocks.WITHERED_STONE_BRICKS, "Withered Stone Bricks");
-        this.addItem(ModItems.GUIDE_BOOK, "Guide Book(WIP)");
+        ModRegistries.BLOCKS.getEntries().forEach(this::getCamelCaseBlockName);
+
+        ModRegistries.ITEMS.getEntries().stream()
+                .filter((registryObject) -> !(registryObject.get() instanceof BlockItem)).
+                forEach(this::getCamelCaseItemName);
 
         VoidMagic.getLogger().info("Added english translations.");
+    }
+
+    private void getCamelCaseItemName(RegistryObject<Item> item) {
+        String[] name = item.getId().getPath().split("_");
+
+        StringBuilder builder = new StringBuilder();
+        String currentWord;
+
+        for (String s : name) {
+            char firstChar = s.charAt(0);
+            currentWord = s.replace(firstChar, Character.toUpperCase(firstChar));
+            builder.append(currentWord).append(" ");
+        }
+
+        this.addItem(item, builder.toString());
+    }
+
+    private void getCamelCaseBlockName(RegistryObject<Block> block) {
+        String[] name = block.getId().getPath().split("_");
+
+        StringBuilder builder = new StringBuilder();
+        String currentWord;
+
+        for (String s : name) {
+            char firstChar = s.charAt(0);
+            currentWord = s.replace(firstChar, Character.toUpperCase(firstChar));
+            builder.append(currentWord).append(" ");
+        }
+
+        this.addBlock(block, builder.toString());
     }
 
 }

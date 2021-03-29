@@ -25,11 +25,13 @@ public class ModItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
+        VoidMagic.getLogger().info("Starting item providers");
+
         this.blacklist.add(ModItems.GUIDE_BOOK.get());
 
         ModRegistries.ITEMS.getEntries().stream()
-                .filter((registryObject) -> this.blacklist.contains(registryObject.get()))
-                .filter((registryObject) -> registryObject.get() instanceof BlockItem)
+                .filter((registryObject) -> !this.blacklist.contains(registryObject.get()))
+                .filter((registryObject) -> !(registryObject.get() instanceof BlockItem))
                 .forEach(this::registerNormalItem);
 
         this.blacklist.forEach((item) -> {
