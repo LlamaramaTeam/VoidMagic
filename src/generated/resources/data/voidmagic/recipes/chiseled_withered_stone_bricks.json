@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#",
+    "#"
+  ],
+  "key": {
+    "#": {
+      "item": "voidmagic:withered_stone_brick_slabs"
+    }
+  },
+  "result": {
+    "item": "voidmagic:chiseled_withered_stone_bricks"
+  }
+}

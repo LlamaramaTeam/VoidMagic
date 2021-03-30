@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "voidmagic:withered_stone",
+    "voidmagic:withered_stone_bricks",
+    "voidmagic:chiseled_withered_stone_bricks"
+  ]
+}

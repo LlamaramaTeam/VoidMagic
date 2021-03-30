@@ -3,10 +3,7 @@ package io.llamarama.team.voidmagic.common.register;
 import io.llamarama.team.voidmagic.VoidMagic;
 import io.llamarama.team.voidmagic.common.block.TofalBlock;
 import io.llamarama.team.voidmagic.common.block.WitheredStoneBlock;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.OreBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.BlockItem;
@@ -37,11 +34,15 @@ public final class ModBlocks {
     public static final RegistryObject<TofalBlock> TOFAL_TILES = register("tofal_tiles",
             () -> new TofalBlock(getTofalProperties()));
     public static final RegistryObject<Block> SHADOW_BRICKS = register("shadow_bricks",
-            () -> new Block(getTofalProperties().lightLevel((state) -> 0)));
+            () -> new Block(getTofalProperties().setLightLevel((state) -> 0)));
     public static final RegistryObject<OreBlock> END_PUTILIAM_ORE = register("end_putiliam_ore",
             () -> new OreBlock(copyProperties(Blocks.END_STONE)));
     public static final RegistryObject<OreBlock> OVERWORLD_PUTILIAM_ORE = register("overworld_putiliam_ore",
             () -> new OreBlock(copyProperties(Blocks.IRON_ORE)));
+    public static final RegistryObject<SlabBlock> WITHERED_STONE_SLAB = register("withered_stone_slab",
+            () -> new SlabBlock(copyProperties(WITHERED_STONE.get())));
+    public static final RegistryObject<SlabBlock> WITHERED_STONE_BRICK_SLAB = register("withered_stone_brick_slabs",
+            () -> new SlabBlock(copyProperties(WITHERED_STONE_BRICKS.get())));
 
     private ModBlocks() {
     }
@@ -49,7 +50,7 @@ public final class ModBlocks {
     @NotNull
     private static <B extends Block> RegistryObject<B> register(String id, Supplier<B> block) {
         RegistryObject<B> out = registerNoItem(id, block);
-        ModRegistries.ITEMS.register(out.getId().getPath(), () -> new BlockItem(out.get(), new Item.Properties().tab(ItemGroup.TAB_MISC).tab(VoidMagic.GROUP)));
+        ModRegistries.ITEMS.register(out.getId().getPath(), () -> new BlockItem(out.get(), new Item.Properties().group(ItemGroup.MISC).group(VoidMagic.GROUP)));
         return out;
     }
 
@@ -64,17 +65,17 @@ public final class ModBlocks {
 
     @NotNull
     private static AbstractBlock.Properties getWitheredStoneProperties() {
-        return AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY).harvestLevel(3).harvestTool(ToolType.PICKAXE).strength(3.0f).requiresCorrectToolForDrops();
+        return AbstractBlock.Properties.create(Material.ROCK, MaterialColor.GRAY).harvestLevel(3).harvestTool(ToolType.PICKAXE).hardnessAndResistance(3.0f).setRequiresTool();
     }
 
     @NotNull
     private static AbstractBlock.Properties getTofalProperties() {
-        return AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_ORANGE).strength(3.0f).harvestTool(ToolType.PICKAXE).harvestLevel(2).lightLevel((state) -> 7).requiresCorrectToolForDrops();
+        return AbstractBlock.Properties.create(Material.ROCK, MaterialColor.ADOBE).hardnessAndResistance(3.0f).harvestTool(ToolType.PICKAXE).harvestLevel(2).setLightLevel((state) -> 7).setRequiresTool();
     }
 
     @Nullable
     private static AbstractBlock.Properties copyProperties(AbstractBlock block) {
-        return block == null ? null : AbstractBlock.Properties.copy(block);
+        return block == null ? null : AbstractBlock.Properties.from(block);
     }
 
 }

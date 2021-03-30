@@ -14,14 +14,14 @@ public class GuideBookItem extends Item {
     }
 
     @Override
-    public ActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ItemStack itemInHand = user.getItemInHand(hand);
-        if (world.isClientSide) {
-            user.openMenu(null);
-            return ActionResult.success(itemInHand);
+    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity user, Hand hand) {
+        ItemStack itemInHand = user.getHeldItem(hand);
+        if (world.isRemote) {
+            user.openContainer(null);
+            return ActionResult.resultSuccess(itemInHand);
         }
 
-        return ActionResult.success(itemInHand);
+        return ActionResult.resultSuccess(itemInHand);
     }
 
 }

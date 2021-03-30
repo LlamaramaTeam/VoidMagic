@@ -24,7 +24,7 @@ public final class ModItems {
     }
 
     private static Item.Properties getDefaultProperties() {
-        return new Item.Properties().tab(VoidMagic.GROUP);
+        return new Item.Properties().group(VoidMagic.GROUP);
     }
 
 }

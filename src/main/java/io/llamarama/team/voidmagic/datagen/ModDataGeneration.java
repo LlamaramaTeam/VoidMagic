@@ -6,6 +6,8 @@ import io.llamarama.team.voidmagic.datagen.provider.assets.ModBlockProvider;
 import io.llamarama.team.voidmagic.datagen.provider.assets.ModItemModelProvider;
 import io.llamarama.team.voidmagic.datagen.provider.data.ModLootTableProvider;
 import io.llamarama.team.voidmagic.datagen.provider.data.ModRecipeProvider;
+import io.llamarama.team.voidmagic.datagen.provider.data.tags.ModBlockTagsProvider;
+import io.llamarama.team.voidmagic.datagen.provider.data.tags.ModItemTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -46,6 +48,11 @@ public final class ModDataGeneration {
 
         // Loot Tables
         gen.addProvider(new ModLootTableProvider(gen));
+
+        // Tags
+        ModBlockTagsProvider blockTagsProvider = new ModBlockTagsProvider(gen, helper);
+        gen.addProvider(blockTagsProvider);
+        gen.addProvider(new ModItemTagsProvider(gen, blockTagsProvider, helper));
 
         // Recipes
         gen.addProvider(new ModRecipeProvider(gen));

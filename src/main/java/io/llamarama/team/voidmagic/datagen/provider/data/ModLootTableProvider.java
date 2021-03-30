@@ -36,7 +36,7 @@ public class ModLootTableProvider extends LootTableProvider {
 
     @Override
     protected void validate(Map<ResourceLocation, LootTable> map, ValidationTracker validationtracker) {
-        map.forEach((resourceLocation, lootTable) -> LootTableManager.validate(validationtracker, resourceLocation, lootTable));
+        map.forEach((resourceLocation, lootTable) -> LootTableManager.validateLootTable(validationtracker, resourceLocation, lootTable));
     }
 
     private final class ModBlockLootTables extends BlockLootTables {
@@ -46,7 +46,7 @@ public class ModLootTableProvider extends LootTableProvider {
             ModRegistries.BLOCKS.getEntries().stream()
                     .map(RegistryObject::get)
                     .filter(ModLootTableProvider.this.blacklist::add)
-                    .forEach(this::dropSelf);
+                    .forEach(this::registerDropSelfLootTable);
 
             blacklist.forEach((block) -> {
 

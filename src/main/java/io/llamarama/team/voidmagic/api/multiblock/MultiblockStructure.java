@@ -42,7 +42,7 @@ public abstract class MultiblockStructure<T extends TileEntity> {
         this.keys = keys;
         this.coordinateMap = Maps.newHashMap();
 
-        this.origin = Pair.of(boundBlock.getBlockPos(), boundBlock);
+        this.origin = Pair.of(boundBlock.getPos(), boundBlock);
     }
 
     public void onTickBoundTile() {
@@ -73,14 +73,14 @@ public abstract class MultiblockStructure<T extends TileEntity> {
         int sizeZ = this.size.getZ();
 
         BlockPos originPos = new BlockPos(this.origin.first.getX(), this.origin.first.getY(), this.origin.first.getZ());
-        World world = this.origin.second.getLevel();
+        World world = this.origin.second.getWorld();
 
         for (int j = sizeY + sizeY / 2; j < sizeY - sizeY / 2; j--) {
             for (int i = sizeX + sizeX / 2; i < sizeX - sizeX / 2; i--) {
                 for (int k = sizeZ = sizeZ / 2; k < sizeZ - sizeZ / 2; k--) {
                     Vector3i currentOffset = new Vector3i(i, j, k);
 
-                    BlockPos.Mutable mutable = originPos.mutable().offset(i, j, k).mutable();
+                    BlockPos.Mutable mutable = originPos.toMutable().add(i, j, k).toMutable();
 
                     System.out.println("not quite poggers");
                 }
