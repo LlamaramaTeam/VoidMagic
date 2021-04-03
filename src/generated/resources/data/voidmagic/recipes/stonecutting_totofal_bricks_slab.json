@@ -3,6 +3,6 @@
   "ingredient": {
     "tag": "voidmagic:tofal_blocks"
   },
-  "result": "voidmagic:tofal_tiles",
-  "count": 1
+  "result": "voidmagic:tofal_bricks_slab",
+  "count": 2
 }

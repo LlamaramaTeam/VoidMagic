@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "bbb"
+  ],
+  "key": {
+    "b": {
+      "item": "voidmagic:tofal_bricks"
+    }
+  },
+  "result": {
+    "item": "voidmagic:tofal_bricks_slab",
+    "count": 6
+  }
+}

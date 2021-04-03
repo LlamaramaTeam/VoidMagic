@@ -1,6 +1,7 @@
 package io.llamarama.team.voidmagic.common.register;
 
 import io.llamarama.team.voidmagic.VoidMagic;
+import io.llamarama.team.voidmagic.common.block.PillarBlock;
 import io.llamarama.team.voidmagic.common.block.TofalBlock;
 import io.llamarama.team.voidmagic.common.block.WitheredStoneBlock;
 import net.minecraft.block.*;
@@ -27,22 +28,28 @@ public final class ModBlocks {
             () -> new WitheredStoneBlock(getWitheredStoneProperties()));
     public static final RegistryObject<WitheredStoneBlock> CRACKED_WITHER_STONE_BRICKS = register("cracked_withered_stone_bricks",
             () -> new WitheredStoneBlock(getWitheredStoneProperties()));
+    public static final RegistryObject<SlabBlock> WITHERED_STONE_SLAB = register("withered_stone_slab",
+            () -> new SlabBlock(copyProperties(WITHERED_STONE.get())));
+    public static final RegistryObject<SlabBlock> WITHERED_STONE_BRICK_SLAB = register("withered_stone_bricks_slab",
+            () -> new SlabBlock(copyProperties(WITHERED_STONE_BRICKS.get())));
     public static final RegistryObject<TofalBlock> TOFAL = register("tofal",
             () -> new TofalBlock(getTofalProperties()));
     public static final RegistryObject<TofalBlock> TOFAL_BRICKS = register("tofal_bricks",
             () -> new TofalBlock(getTofalProperties()));
     public static final RegistryObject<TofalBlock> TOFAL_TILES = register("tofal_tiles",
             () -> new TofalBlock(getTofalProperties()));
+    public static final RegistryObject<SlabBlock> TOFAL_BRICKS_SLAB = register("tofal_bricks_slab",
+            () -> new SlabBlock(getTofalProperties()));
+    public static final RegistryObject<SlabBlock> TOFAL_TILES_SLAB = register("tofal_tiles_slab",
+            () -> new SlabBlock(getTofalProperties()));
     public static final RegistryObject<Block> SHADOW_BRICKS = register("shadow_bricks",
             () -> new Block(getTofalProperties().setLightLevel((state) -> 0)));
     public static final RegistryObject<OreBlock> END_PUTILIAM_ORE = register("end_putiliam_ore",
             () -> new OreBlock(copyProperties(Blocks.END_STONE)));
     public static final RegistryObject<OreBlock> OVERWORLD_PUTILIAM_ORE = register("overworld_putiliam_ore",
             () -> new OreBlock(copyProperties(Blocks.IRON_ORE)));
-    public static final RegistryObject<SlabBlock> WITHERED_STONE_SLAB = register("withered_stone_slab",
-            () -> new SlabBlock(copyProperties(WITHERED_STONE.get())));
-    public static final RegistryObject<SlabBlock> WITHERED_STONE_BRICK_SLAB = register("withered_stone_brick_slabs",
-            () -> new SlabBlock(copyProperties(WITHERED_STONE_BRICKS.get())));
+    public static RegistryObject<PillarBlock> WITHERED_STONE_PILLAR = register("withered_stone_pillar",
+            () -> new PillarBlock(copyProperties(WITHERED_STONE.get())));
 
     private ModBlocks() {
     }

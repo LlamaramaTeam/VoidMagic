@@ -19,7 +19,8 @@ import org.apache.logging.log4j.Logger;
 public class VoidMagic {
 
     public static final String MODID = "voidmagic";
-    public static final ItemGroup GROUP = new ModItemGroup("voidmagic.group").setBackgroundImage(IdBuilder.mod("textures/creative_tab.png"));
+    public static final ItemGroup GROUP = new ModItemGroup("voidmagic.group")
+            .setBackgroundImage(IdBuilder.mod("textures/creative_tab.png"));
     private static final Logger LOGGER = LogManager.getLogger("Void Magic");
 
     public VoidMagic() {

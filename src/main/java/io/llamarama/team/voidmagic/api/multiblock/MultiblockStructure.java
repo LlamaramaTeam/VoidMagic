@@ -15,10 +15,12 @@ public abstract class MultiblockStructure<T extends TileEntity> {
 
     private final Vector3i size;
     private final T boundBlock;
-    private final String[][][] pattern;
     private final HashMap<BlockPos, BlockState> coordinateMap;
     private final HashMap<Character, BlockState> keys;
     private final Pair<BlockPos, TileEntity> origin;
+    private int currentX;
+    private int currentY;
+    private int currentZ;
 
     /**
      * A multiblock's size should always not be divisible by two.
@@ -30,7 +32,7 @@ public abstract class MultiblockStructure<T extends TileEntity> {
      * @param keys       The explanations to all the keys used in the pattern.
      */
     @NotNull
-    protected MultiblockStructure(Vector3i size, T boundBlock, String[][][] pattern, HashMap<Character, BlockState> keys) {
+    protected MultiblockStructure(Vector3i size, T boundBlock, String[][] pattern, HashMap<Character, BlockState> keys) {
 
         if (size.getX() % 2 == 0 || size.getY() % 2 == 0 || size.getZ() % 2 == 0) {
             throw new IllegalStateException("A multiblock can't have dimensions divisible by two.");
@@ -38,7 +40,6 @@ public abstract class MultiblockStructure<T extends TileEntity> {
 
         this.size = size;
         this.boundBlock = boundBlock;
-        this.pattern = pattern;
         this.keys = keys;
         this.coordinateMap = Maps.newHashMap();
 

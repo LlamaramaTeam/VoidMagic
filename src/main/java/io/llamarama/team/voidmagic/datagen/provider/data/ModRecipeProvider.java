@@ -38,6 +38,8 @@ public class ModRecipeProvider extends ForgeRecipeProvider {
         this.createBrickRecipe(ModBlocks.TOFAL.get(), ModBlocks.TOFAL_BRICKS.get());
         this.createSlabRecipe(ModBlocks.WITHERED_STONE_SLAB.get(), ModBlocks.WITHERED_STONE.get());
         this.createSlabRecipe(ModBlocks.WITHERED_STONE_BRICK_SLAB.get(), ModBlocks.WITHERED_STONE_BRICKS.get());
+        this.createSlabRecipe(ModBlocks.TOFAL_BRICKS_SLAB.get(), ModBlocks.TOFAL_BRICKS.get());
+        this.createSlabRecipe(ModBlocks.TOFAL_TILES_SLAB.get(), ModBlocks.TOFAL_TILES.get());
 
         // Smelting Recipes
         CookingRecipeBuilder.smeltingRecipe(
@@ -56,6 +58,8 @@ public class ModRecipeProvider extends ForgeRecipeProvider {
 
         this.createStoneCuttingRecipeFromTag(ModTags.Items.WITHERED_STONE_BLOCKS, ModBlocks.WITHERED_STONE_BRICK_SLAB.get());
         this.createStoneCuttingRecipeFromTag(ModTags.Items.WITHERED_STONE_BLOCKS, ModBlocks.WITHERED_STONE_SLAB.get());
+        this.createStoneCuttingRecipeFromTag(ModTags.Items.TOFAL_BLOCKS, ModBlocks.TOFAL_TILES_SLAB.get());
+        this.createStoneCuttingRecipeFromTag(ModTags.Items.TOFAL_BLOCKS, ModBlocks.TOFAL_BRICKS_SLAB.get());
     }
 
     private void createBrickRecipe(Block brickBlock, Block original) {

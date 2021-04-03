@@ -3,6 +3,6 @@
   "ingredient": {
     "tag": "voidmagic:withered_stone_blocks"
   },
-  "result": "voidmagic:withered_stone_bricks",
-  "count": 1
+  "result": "voidmagic:withered_stone_bricks_slab",
+  "count": 2
 }

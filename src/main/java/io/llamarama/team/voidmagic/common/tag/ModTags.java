@@ -17,7 +17,7 @@ public final class ModTags {
 
         @NotNull
         private static ITag.INamedTag<Block> getBlockINamedTag(String id) {
-            return BlockTags.makeWrapperTag(IdBuilder.mod("blocks/" + id).toString());
+            return BlockTags.makeWrapperTag(IdBuilder.mod(id).toString());
         }
 
     }
@@ -29,7 +29,7 @@ public final class ModTags {
 
         @NotNull
         private static ITag.INamedTag<Item> getItemINamedTag(String id) {
-            return ItemTags.makeWrapperTag(IdBuilder.mod("items/" + id).toString());
+            return ItemTags.makeWrapperTag(IdBuilder.mod(id).toString());
         }
 
     }

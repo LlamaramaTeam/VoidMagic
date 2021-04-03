@@ -1,7 +1,7 @@
 {
   "type": "minecraft:stonecutting",
   "ingredient": {
-    "tag": "voidmagic:items/withered_stone_blocks"
+    "tag": "voidmagic:withered_stone_blocks"
   },
   "result": "voidmagic:chiseled_withered_stone_bricks",
   "count": 1

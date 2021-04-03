@@ -1,0 +1,54 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "has_bottom": "true",
+        "has_top": "true"
+      },
+      "apply": {
+        "model": "voidmagic:block/pillar/withered_stone_pillar"
+      }
+    },
+    {
+      "when": {
+        "has_top": "false",
+        "has_bottom": "false"
+      },
+      "apply": {
+        "model": "voidmagic:block/pillar/connected/withered_stone_pillar"
+      }
+    },
+    {
+      "when": {
+        "has_top": "false"
+      },
+      "apply": {
+        "model": "voidmagic:block/pillar/connected/withered_stone_pillar"
+      }
+    },
+    {
+      "when": {
+        "has_bottom": "false"
+      },
+      "apply": {
+        "model": "voidmagic:block/pillar/connected/withered_stone_pillar"
+      }
+    },
+    {
+      "when": {
+        "has_top": "false"
+      },
+      "apply": {
+        "model": "voidmagic:block/pillar/withered_stone_pillar_top"
+      }
+    },
+    {
+      "when": {
+        "has_bottom": "false"
+      },
+      "apply": {
+        "model": "voidmagic:block/pillar/withered_stone_pillar_bottom"
+      }
+    }
+  ]
+}
