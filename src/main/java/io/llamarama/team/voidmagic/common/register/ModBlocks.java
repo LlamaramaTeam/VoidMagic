@@ -50,6 +50,8 @@ public final class ModBlocks {
             () -> new OreBlock(copyProperties(Blocks.IRON_ORE)));
     public static RegistryObject<PillarBlock> WITHERED_STONE_PILLAR = register("withered_stone_pillar",
             () -> new PillarBlock(copyProperties(WITHERED_STONE.get())));
+    public static final RegistryObject<WitheredStoneBlock> POLISHED_WITHER_STONE_BRICKS = register("polished_withered_stone",
+            () -> new WitheredStoneBlock(getWitheredStoneProperties()));
 
     private ModBlocks() {
     }
