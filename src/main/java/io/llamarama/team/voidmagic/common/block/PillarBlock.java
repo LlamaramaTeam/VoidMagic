@@ -14,6 +14,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 import org.jetbrains.annotations.Nullable;
 
 public class PillarBlock extends Block {
@@ -83,8 +84,45 @@ public class PillarBlock extends Block {
             if (up.getBlock() instanceof PillarBlock) {
                 world.setBlockState(pos.up(), up.with(HAS_BOTTOM, false));
             }
+            return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
         }
+
         return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos, isMoving);
+        updateForChange(worldIn, pos);
+    }
+
+    protected void updateForChange(World worldIn, BlockPos pos) {
+        if (!worldIn.isRemote) {
+            BlockState currentState = worldIn.getBlockState(pos);
+            if (currentState.getBlock() instanceof PillarBlock) {
+                BlockState down = worldIn.getBlockState(pos.down());
+                BlockState up = worldIn.getBlockState(pos.up());
+
+                int updateFlags = Constants.BlockFlags.BLOCK_UPDATE + Constants.BlockFlags.UPDATE_NEIGHBORS;
+
+                if (down.getBlock() instanceof PillarBlock && !currentState.get(HAS_BOTTOM)) {
+                    worldIn.setBlockState(pos, currentState.with(HAS_BOTTOM, true), updateFlags);
+
+                    if (!down.get(HAS_TOP)) {
+                        worldIn.setBlockState(pos.down(), down.with(HAS_TOP, true), updateFlags);
+                    }
+                }
+
+                if (up.getBlock() instanceof PillarBlock && !currentState.get(HAS_TOP)) {
+                    worldIn.setBlockState(pos, currentState.with(HAS_TOP, true), updateFlags);
+
+                    if (!up.get(HAS_BOTTOM)) {
+                        worldIn.setBlockState(pos.up(), up.with(HAS_BOTTOM, true));
+                    }
+                }
+            }
+        }
     }
 
 }
