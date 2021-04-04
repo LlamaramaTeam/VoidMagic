@@ -72,7 +72,8 @@ public class ModBlockProvider extends BlockStateProvider {
         this.createCube(
                 VectorHelper.getIntegerVector(1, 0, 1),
                 VectorHelper.getIntegerVector(15, 16, 15), base)
-                .texture("0", texture);
+                .texture("0", texture)
+                .texture("particle", texture);
 
 
         ResourceLocation pillarUV = IdBuilder.mod("block/pillar/" + IdHelper.getNonNullPath(block) + "_cap");

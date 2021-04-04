@@ -1,6 +1,7 @@
 {
   "textures": {
-    "0": "voidmagic:block/withered_stone_pillar_base"
+    "0": "voidmagic:block/withered_stone_pillar_base",
+    "particle": "voidmagic:block/withered_stone_pillar_base"
   },
   "elements": [
     {

@@ -112,6 +112,8 @@ public class PillarBlock extends Block {
                     if (!down.get(HAS_TOP)) {
                         worldIn.setBlockState(pos.down(), down.with(HAS_TOP, true), updateFlags);
                     }
+                } else if (!(down.getBlock() instanceof PillarBlock)) {
+                    worldIn.setBlockState(pos, currentState.with(HAS_BOTTOM, false), updateFlags);
                 }
 
                 if (up.getBlock() instanceof PillarBlock && !currentState.get(HAS_TOP)) {
@@ -120,6 +122,8 @@ public class PillarBlock extends Block {
                     if (!up.get(HAS_BOTTOM)) {
                         worldIn.setBlockState(pos.up(), up.with(HAS_BOTTOM, true));
                     }
+                } else if (!(up.getBlock() instanceof PillarBlock)) {
+                    worldIn.setBlockState(pos, currentState.with(HAS_TOP, false), updateFlags);
                 }
             }
         }
