@@ -14,10 +14,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3i;
-import net.minecraftforge.client.model.generators.BlockModelBuilder;
-import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
+import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.fml.RegistryObject;
 
@@ -42,7 +39,7 @@ public class ModBlockProvider extends BlockStateProvider {
 
         this.blacklist.forEach((block) -> {
             if (block instanceof PillarBlock) {
-                this.pillarBlock(block);
+                this.pillarBlockAndItem(block);
             }
         });
 
@@ -65,55 +62,43 @@ public class ModBlockProvider extends BlockStateProvider {
         }
     }
 
-    private void pillarBlock(Block block) {
+    private void pillarBlockAndItem(Block block) {
+        // Models
         String nonNullPath = IdHelper.getNonNullPath(block);
         BlockModelBuilder base = this.models()
                 .getBuilder("block/pillar/" + nonNullPath);
 
-        BlockModelBuilder connectedBase = this.models()
-                .getBuilder("block/pillar/connected/" + nonNullPath);
-
-        ResourceLocation texture = IdBuilder.mod("block/withered_stone_pillar_base");
+        ResourceLocation texture = IdBuilder.mod("block/" + IdHelper.getNonNullPath(block) + "_base");
         this.createCube(
                 VectorHelper.getIntegerVector(1, 0, 1),
                 VectorHelper.getIntegerVector(15, 16, 15), base)
                 .texture("0", texture);
 
-        this.createCube(
-                VectorHelper.getIntegerVector(1, 1, 1),
-                VectorHelper.getIntegerVector(15, 15, 15), connectedBase)
-                .texture("0", texture);
 
+        ResourceLocation pillarUV = IdBuilder.mod("block/pillar/" + IdHelper.getNonNullPath(block) + "_cap");
         BlockModelBuilder topCap = this.models()
                 .getBuilder("block/pillar/" + nonNullPath + "_top");
-        ResourceLocation pillarUV = IdBuilder.mod("block/pillar/withered_pillar_cap");
-
         this.createPillarTopCap(topCap)
                 .texture("0", pillarUV);
+
         BlockModelBuilder bottomCap = this.models()
                 .getBuilder("block/pillar/" + nonNullPath + "_bottom");
         this.createBottomCap(bottomCap)
                 .texture("0", pillarUV);
 
+        // Blockstates
         MultiPartBlockStateBuilder multipartBuilder = this.getMultipartBuilder(block);
-        multipartBuilder.part().modelFile(base).addModel()
-                .condition(PillarBlock.HAS_BOTTOM, true)
-                .condition(PillarBlock.HAS_TOP, true)
-                .end();
-        multipartBuilder.part().modelFile(connectedBase).addModel()
-                .condition(PillarBlock.HAS_TOP, false)
-                .condition(PillarBlock.HAS_BOTTOM, false)
-                .end();
-        multipartBuilder.part().modelFile(connectedBase).addModel()
-                .condition(PillarBlock.HAS_TOP, false)
-                .end();
-        multipartBuilder.part().modelFile(connectedBase).addModel()
-                .condition(PillarBlock.HAS_BOTTOM, false)
-                .end();
+        multipartBuilder.part().modelFile(base).addModel();
         multipartBuilder.part().modelFile(topCap).addModel()
                 .condition(PillarBlock.HAS_TOP, false).end();
         multipartBuilder.part().modelFile(bottomCap).addModel()
                 .condition(PillarBlock.HAS_BOTTOM, false).end();
+
+        // Item
+        ItemModelBuilder itemModel = this.itemModels().getBuilder("item/" + IdHelper.getNonNullPath(block));
+        itemModel.parent(new ModelFile.ExistingModelFile(
+                IdBuilder.mod("item/template/pillar_item_template"), this.itemModels().existingFileHelper))
+                .texture("0", texture).texture("1", pillarUV);
     }
 
     private BlockModelBuilder createPillarTopCap(BlockModelBuilder topCap) {
@@ -155,7 +140,14 @@ public class ModBlockProvider extends BlockStateProvider {
     private BlockModelBuilder createCube(Vector3i from, Vector3i to, BlockModelBuilder builder) {
         builder.element().from(from.getX(), from.getY(), from.getZ())
                 .to(to.getX(), to.getY(), to.getZ())
-                .allFaces((direction, faceBuilder) -> faceBuilder.texture("#0")).end();
+                .face(Direction.NORTH).texture("#0")
+                .uvs(0, 0, 14, 16).end()
+                .face(Direction.WEST).texture("#0")
+                .uvs(0, 0, 14, 16).end()
+                .face(Direction.SOUTH).texture("#0")
+                .uvs(0, 0, 14, 16).end()
+                .face(Direction.EAST).texture("#0")
+                .uvs(0, 0, 14, 16).end();
         return builder;
     }
 
