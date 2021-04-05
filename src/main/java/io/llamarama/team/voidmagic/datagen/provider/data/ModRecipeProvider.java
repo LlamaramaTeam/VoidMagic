@@ -40,6 +40,8 @@ public class ModRecipeProvider extends ForgeRecipeProvider {
         this.createSlabRecipe(ModBlocks.WITHERED_STONE_BRICK_SLAB.get(), ModBlocks.WITHERED_STONE_BRICKS.get());
         this.createSlabRecipe(ModBlocks.TOFAL_BRICKS_SLAB.get(), ModBlocks.TOFAL_BRICKS.get());
         this.createSlabRecipe(ModBlocks.TOFAL_TILES_SLAB.get(), ModBlocks.TOFAL_TILES.get());
+        this.createStairsRecipe(ModBlocks.WITHERED_STONE_BRICKS.get(), ModBlocks.WITHERED_STONE_BRICK_STAIRS.get());
+        this.createStairsRecipe(ModBlocks.TOFAL_BRICKS.get(), ModBlocks.TOFAL_BRICK_STAIRS.get());
 
         // Smelting Recipes
         CookingRecipeBuilder.smeltingRecipe(
@@ -49,17 +51,20 @@ public class ModRecipeProvider extends ForgeRecipeProvider {
                 .build(consumer);
 
         // Stonecutter
-        this.createStoneCuttingRecipeFromTag(ModTags.Items.WITHERED_STONE_BLOCKS, ModBlocks.WITHERED_STONE.get());
-        this.createStoneCuttingRecipeFromTag(ModTags.Items.WITHERED_STONE_BLOCKS, ModBlocks.WITHERED_STONE_BRICKS.get());
-        this.createStoneCuttingRecipeFromTag(ModTags.Items.WITHERED_STONE_BLOCKS, ModBlocks.CHISELED_WITHERED_STONE_BRICKS.get());
-        this.createStoneCuttingRecipeFromTag(ModTags.Items.TOFAL_BLOCKS, ModBlocks.TOFAL.get());
-        this.createStoneCuttingRecipeFromTag(ModTags.Items.TOFAL_BLOCKS, ModBlocks.TOFAL_BRICKS.get());
-        this.createStoneCuttingRecipeFromTag(ModTags.Items.TOFAL_BLOCKS, ModBlocks.TOFAL_TILES.get());
+        this.createCuttingRecipeFromTag(ModTags.Items.WITHERED_STONE_BLOCKS, ModBlocks.WITHERED_STONE.get());
+        this.createCuttingRecipeFromTag(ModTags.Items.WITHERED_STONE_BLOCKS, ModBlocks.WITHERED_STONE_BRICKS.get());
+        this.createCuttingRecipeFromTag(ModTags.Items.WITHERED_STONE_BLOCKS, ModBlocks.CHISELED_WITHERED_STONE_BRICKS.get());
+        this.createCuttingRecipeFromTag(ModTags.Items.TOFAL_BLOCKS, ModBlocks.TOFAL.get());
+        this.createCuttingRecipeFromTag(ModTags.Items.TOFAL_BLOCKS, ModBlocks.TOFAL_BRICKS.get());
+        this.createCuttingRecipeFromTag(ModTags.Items.TOFAL_BLOCKS, ModBlocks.TOFAL_TILES.get());
 
-        this.createStoneCuttingRecipeFromTag(ModTags.Items.WITHERED_STONE_BLOCKS, ModBlocks.WITHERED_STONE_BRICK_SLAB.get());
-        this.createStoneCuttingRecipeFromTag(ModTags.Items.WITHERED_STONE_BLOCKS, ModBlocks.WITHERED_STONE_SLAB.get());
-        this.createStoneCuttingRecipeFromTag(ModTags.Items.TOFAL_BLOCKS, ModBlocks.TOFAL_TILES_SLAB.get());
-        this.createStoneCuttingRecipeFromTag(ModTags.Items.TOFAL_BLOCKS, ModBlocks.TOFAL_BRICKS_SLAB.get());
+        this.createCuttingRecipeFromTag(ModTags.Items.WITHERED_STONE_BLOCKS, ModBlocks.WITHERED_STONE_BRICK_SLAB.get());
+        this.createCuttingRecipeFromTag(ModTags.Items.WITHERED_STONE_BLOCKS, ModBlocks.WITHERED_STONE_SLAB.get());
+        this.createCuttingRecipeFromTag(ModTags.Items.WITHERED_STONE_BLOCKS, ModBlocks.WITHERED_STONE_PILLAR.get());
+        this.createCuttingRecipeFromTag(ModTags.Items.WITHERED_STONE_BLOCKS, ModBlocks.WITHERED_STONE_BRICK_STAIRS.get());
+        this.createCuttingRecipeFromTag(ModTags.Items.TOFAL_BLOCKS, ModBlocks.TOFAL_TILES_SLAB.get());
+        this.createCuttingRecipeFromTag(ModTags.Items.TOFAL_BLOCKS, ModBlocks.TOFAL_BRICKS_SLAB.get());
+        this.createCuttingRecipeFromTag(ModTags.Items.TOFAL_BLOCKS, ModBlocks.TOFAL_BRICK_STAIRS.get());
     }
 
     private void createBrickRecipe(Block brickBlock, Block original) {
@@ -79,7 +84,8 @@ public class ModRecipeProvider extends ForgeRecipeProvider {
                 .build(this.consumer);
     }
 
-    public void createStoneCuttingRecipe(Block blockIn, Block blockOut) {
+    @SuppressWarnings("unused")
+    private void createStoneCuttingRecipe(Block blockIn, Block blockOut) {
         int countOut = 1;
 
         if (blockOut instanceof SlabBlock) {
@@ -96,7 +102,7 @@ public class ModRecipeProvider extends ForgeRecipeProvider {
                 .build(this.consumer, IdBuilder.mod(blockIn.getRegistryName().getPath() + "_to_" + blockOut.getRegistryName().getPath()));
     }
 
-    public void createStoneCuttingRecipeFromTag(ITag<Item> tag, Block block) {
+    private void createCuttingRecipeFromTag(ITag<Item> tag, Block block) {
         int countOut = 1;
 
         if (block instanceof SlabBlock) {
@@ -111,6 +117,16 @@ public class ModRecipeProvider extends ForgeRecipeProvider {
                 .stonecuttingRecipe(Ingredient.fromTag(tag), block, countOut)
                 .addCriterion(this.HAS_ITEM, RecipeProvider.hasItem(Items.STONECUTTER))
                 .build(this.consumer, IdBuilder.mod("stonecutting_to" + block.getRegistryName().getPath()));
+    }
+
+    private void createStairsRecipe(Block in, Block stairs) {
+        ShapedRecipeBuilder.shapedRecipe(stairs, 4)
+                .key('#', in)
+                .patternLine("  #")
+                .patternLine(" ##")
+                .patternLine("###")
+                .addCriterion(this.HAS_ITEM, RecipeProvider.hasItem(in))
+                .build(this.consumer);
     }
 
 }

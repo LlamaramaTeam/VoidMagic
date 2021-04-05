@@ -18,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
+@SuppressWarnings("unused")
 public final class ModBlocks {
 
     public static final RegistryObject<WitheredStoneBlock> WITHERED_STONE = register("withered_stone",
@@ -32,6 +33,8 @@ public final class ModBlocks {
             () -> new SlabBlock(copyProperties(WITHERED_STONE.get())));
     public static final RegistryObject<SlabBlock> WITHERED_STONE_BRICK_SLAB = register("withered_stone_bricks_slab",
             () -> new SlabBlock(copyProperties(WITHERED_STONE_BRICKS.get())));
+    public static final RegistryObject<StairsBlock> WITHERED_STONE_BRICK_STAIRS = register("withered_stone_brick_stairs",
+            () -> new StairsBlock(() -> WITHERED_STONE_BRICKS.get().getDefaultState(), copyProperties(WITHERED_STONE_BRICKS.get())));
     public static final RegistryObject<TofalBlock> TOFAL = register("tofal",
             () -> new TofalBlock(getTofalProperties()));
     public static final RegistryObject<TofalBlock> TOFAL_BRICKS = register("tofal_bricks",
@@ -42,8 +45,10 @@ public final class ModBlocks {
             () -> new SlabBlock(getTofalProperties()));
     public static final RegistryObject<SlabBlock> TOFAL_TILES_SLAB = register("tofal_tiles_slab",
             () -> new SlabBlock(getTofalProperties()));
+    public static final RegistryObject<StairsBlock> TOFAL_BRICK_STAIRS = register("tofal_brick_stairs",
+            () -> new StairsBlock(() -> TOFAL_BRICKS.get().getDefaultState(), copyProperties(TOFAL_BRICKS.get())));
     public static final RegistryObject<Block> SHADOW_BRICKS = register("shadow_bricks",
-            () -> new Block(getTofalProperties().setLightLevel((state) -> 0)));
+            () -> new Block(getTofalProperties().setLightLevel((state) -> 4)));
     public static final RegistryObject<OreBlock> END_PUTILIAM_ORE = register("end_putiliam_ore",
             () -> new OreBlock(copyProperties(Blocks.END_STONE)));
     public static final RegistryObject<OreBlock> OVERWORLD_PUTILIAM_ORE = register("overworld_putiliam_ore",
@@ -51,7 +56,7 @@ public final class ModBlocks {
     public static RegistryObject<PillarBlock> WITHERED_STONE_PILLAR = register("withered_stone_pillar",
             () -> new PillarBlock(copyProperties(WITHERED_STONE.get())));
     public static final RegistryObject<WitheredStoneBlock> POLISHED_WITHER_STONE_BRICKS = register("polished_withered_stone",
-            () -> new WitheredStoneBlock(getWitheredStoneProperties()));
+            () -> new WitheredStoneBlock(copyProperties(WITHERED_STONE.get())));
 
     private ModBlocks() {
     }

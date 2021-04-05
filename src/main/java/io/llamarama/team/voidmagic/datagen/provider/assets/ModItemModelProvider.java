@@ -2,7 +2,6 @@ package io.llamarama.team.voidmagic.datagen.provider.assets;
 
 import com.google.common.collect.Sets;
 import io.llamarama.team.voidmagic.VoidMagic;
-import io.llamarama.team.voidmagic.common.register.ModItems;
 import io.llamarama.team.voidmagic.common.register.ModRegistries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.item.BlockItem;
@@ -26,8 +25,6 @@ public class ModItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         VoidMagic.getLogger().info("Starting item providers");
-
-        this.blacklist.add(ModItems.GUIDE_BOOK.get());
 
         ModRegistries.ITEMS.getEntries().stream()
                 .filter((registryObject) -> !this.blacklist.contains(registryObject.get()))

@@ -10,6 +10,7 @@ import io.llamarama.team.voidmagic.util.IdHelper;
 import io.llamarama.team.voidmagic.util.VectorHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.SlabBlock;
+import net.minecraft.block.StairsBlock;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
@@ -56,6 +57,16 @@ public class ModBlockProvider extends BlockStateProvider {
             ResourceLocation finalSlab = IdBuilder.mod("block/" + block.getId().getPath());
             this.itemModels().getBuilder(itemLoc.getPath())
                     .parent(new ModelFile.ExistingModelFile(finalSlab, this.itemModels().existingFileHelper));
+        } else if (actualBlock instanceof StairsBlock) {
+            String nonNullPath = IdHelper.getNonNullPath(actualBlock);
+            this.stairsBlock((StairsBlock) actualBlock,
+                    IdBuilder.mod("block/" +
+                            nonNullPath.replaceAll("_stairs", "s")));
+            String itemPath = "item/" + nonNullPath;
+            this.itemModels().getBuilder(itemPath)
+                    .parent(new ModelFile.ExistingModelFile(
+                            IdBuilder.mod("block/" + nonNullPath),
+                            this.itemModels().existingFileHelper));
         } else {
             this.simpleBlock(actualBlock);
             this.simpleBlockItem(actualBlock, this.cubeAll(actualBlock));

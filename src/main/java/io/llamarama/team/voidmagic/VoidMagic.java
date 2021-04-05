@@ -26,7 +26,7 @@ public class VoidMagic {
     public VoidMagic() {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> VoidMagicClient::new);
+        DistExecutor.safeCallWhenOn(Dist.CLIENT, () -> VoidMagicClient::new);
 
         ModRegistries.initRegistries(modBus);
 
@@ -40,7 +40,7 @@ public class VoidMagic {
 
     private static final class ModItemGroup extends ItemGroup {
 
-        public ModItemGroup(String label) {
+        ModItemGroup(String label) {
             super(label);
         }
 

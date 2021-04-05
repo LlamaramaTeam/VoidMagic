@@ -23,7 +23,8 @@ public final class ModBlockTagsProvider extends BlockTagsProvider {
         this.getOrCreateBuilder(ModTags.Blocks.WITHERED_STONE_BLOCKS)
                 .add(ModBlocks.WITHERED_STONE.get())
                 .add(ModBlocks.WITHERED_STONE_BRICKS.get())
-                .add(ModBlocks.CHISELED_WITHERED_STONE_BRICKS.get());
+                .add(ModBlocks.CHISELED_WITHERED_STONE_BRICKS.get())
+                .add(ModBlocks.POLISHED_WITHER_STONE_BRICKS.get());
     }
 
 

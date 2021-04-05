@@ -10,7 +10,6 @@ public class VoidMagicClient {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         VoidMagic.getLogger().info("Loaded client side of VoidMagic");
-
     }
 
 }
