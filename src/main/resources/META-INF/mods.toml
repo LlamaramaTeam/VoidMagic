@@ -5,8 +5,8 @@ issueTrackerURL="https://github.com/0xJoeMama/VoidMagic/issues" #optional
 
 [[mods]] #mandatory
 modId="voidmagic" #mandatory
-version="${file.jarVersion}"
-displayName="Void Magic" #mandatory
+version = "1.0.0"
+displayName = "Void Magic" #mandatory
 #updateJSONURL="https://change.me.example.invalid/updates.json" #optional
 displayURL="https://github.com/0xJoeMama/VoidMagic" #optional
 logoFile="voidmagic_icon.png" #optional
@@ -21,12 +21,28 @@ Be ready for you will encounter frightening magic, creatures and worlds.
     modId="forge" #mandatory
     mandatory=true #mandatory
     versionRange="[36,)" #mandatory
-    ordering="NONE"
-    side="BOTH"
+ordering = "NONE"
+side = "BOTH"
 
 [[dependencies.voidmagic]]
-    modId="minecraft"
-    mandatory=true
-    versionRange="[1.16.5,1.17)"
-    ordering="NONE"
-    side="BOTH"
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.16.5,1.17)"
+ordering = "NONE"
+side = "BOTH"
+
+# Adding curios as a mandatory dependency.
+[[dependencies.voidmagic]]
+modId = "curios"
+mandatory = true
+versionRange = "[1.16.5-4.0.5.0,)"
+ordering = "NONE"
+side = "BOTH"
+
+# Add JEI as a possible dependency.
+[[dependencies.voidmagic]]
+modId = "jei"
+mandatory = false
+versionRange = "[7.6.1.75,)"
+ordering = "NONE"
+side = "CLIENT"
