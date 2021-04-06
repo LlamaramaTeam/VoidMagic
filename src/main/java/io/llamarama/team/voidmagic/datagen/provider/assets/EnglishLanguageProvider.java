@@ -13,7 +13,7 @@ public class EnglishLanguageProvider extends LanguageProvider {
 
 
     public EnglishLanguageProvider(DataGenerator gen, String locale) {
-        super(gen, VoidMagic.MODID, locale);
+        super(gen, VoidMagic.MOD_ID, locale);
     }
 
     @Override

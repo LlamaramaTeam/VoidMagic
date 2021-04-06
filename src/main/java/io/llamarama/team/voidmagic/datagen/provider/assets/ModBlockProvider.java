@@ -26,7 +26,7 @@ public class ModBlockProvider extends BlockStateProvider {
     private final Set<Block> blacklist;
 
     public ModBlockProvider(DataGenerator gen, ExistingFileHelper exFileHelper) {
-        super(gen, VoidMagic.MODID, exFileHelper);
+        super(gen, VoidMagic.MOD_ID, exFileHelper);
         this.blacklist = Sets.newHashSet();
     }
 

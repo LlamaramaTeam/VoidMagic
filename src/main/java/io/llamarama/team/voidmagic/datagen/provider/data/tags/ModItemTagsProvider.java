@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 public class ModItemTagsProvider extends ItemTagsProvider {
 
     public ModItemTagsProvider(DataGenerator dataGenerator, BlockTagsProvider blockTagProvider, @Nullable ExistingFileHelper existingFileHelper) {
-        super(dataGenerator, blockTagProvider, VoidMagic.MODID, existingFileHelper);
+        super(dataGenerator, blockTagProvider, VoidMagic.MOD_ID, existingFileHelper);
     }
 
     @Override

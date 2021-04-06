@@ -18,7 +18,7 @@ public class ModItemModelProvider extends ItemModelProvider {
     private final Set<Item> blacklist;
 
     public ModItemModelProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-        super(generator, VoidMagic.MODID, existingFileHelper);
+        super(generator, VoidMagic.MOD_ID, existingFileHelper);
         this.blacklist = Sets.newHashSet();
     }
 

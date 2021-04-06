@@ -7,13 +7,16 @@ import net.minecraft.util.ResourceLocation;
 
 public final class IdHelper {
 
+    private IdHelper() {
+    }
+
     public static String getNonNullPath(Block block) {
         ResourceLocation loc = block.getRegistryName();
         if (loc != null) {
             return loc.getPath();
         }
 
-        return StringConstants.EMPTY;
+        return StringConstants.EMPTY.get();
     }
 
     public static String getNonNullPath(Item item) {
@@ -22,10 +25,7 @@ public final class IdHelper {
             return loc.getPath();
         }
 
-        return StringConstants.EMPTY;
-    }
-
-    private IdHelper() {
+        return StringConstants.EMPTY.get();
     }
 
 }

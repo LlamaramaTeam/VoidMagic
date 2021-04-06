@@ -1,11 +1,42 @@
 package io.llamarama.team.voidmagic.util.constants;
 
-public final class StringConstants {
+import io.llamarama.team.voidmagic.util.IdBuilder;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.Lazy;
 
-    public static final String EMPTY = "";
-    public static final String CURIOS_ID = "curios";
+import java.util.function.Supplier;
 
-    private StringConstants() {
+public enum StringConstants {
+
+    EMPTY(() -> ""),
+    MOD_ID(() -> "voidmagic"),
+    MOD_VERSION(() -> "1.0.0"),
+    CURIOS_ID(() -> "curios"),
+    NETWORK_PROTOCOL_VERSION(MOD_VERSION::get);
+
+    private final Lazy<String> value;
+    public static final String MOD_ID_STR = "voidmagic";
+
+    StringConstants(Supplier<String> value) {
+        this.value = Lazy.of(value);
+    }
+
+    public String get() {
+        return this.value.get();
+    }
+
+    public enum Network {
+        CHANNEL_ID("voidmagic_net");
+
+        private final ResourceLocation id;
+
+        Network(String id) {
+            this.id = IdBuilder.mod(id);
+        }
+
+        public ResourceLocation getId() {
+            return this.id;
+        }
     }
 
 }

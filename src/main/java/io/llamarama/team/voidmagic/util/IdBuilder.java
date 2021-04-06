@@ -6,7 +6,7 @@ import net.minecraft.util.ResourceLocation;
 public final class IdBuilder {
 
     public static ResourceLocation mod(String path) {
-        return new ResourceLocation(VoidMagic.MODID, path);
+        return new ResourceLocation(VoidMagic.MOD_ID, path);
     }
 
     public static ResourceLocation mc(String path) {

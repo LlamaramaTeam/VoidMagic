@@ -12,7 +12,7 @@ public final class EventHandler {
     private static EventHandler instance;
 
     public void enqueueIMC(final InterModEnqueueEvent event) {
-        if (ModList.get().isLoaded(StringConstants.CURIOS_ID)) {
+        if (ModList.get().isLoaded(StringConstants.CURIOS_ID.get())) {
             CuriosIntegration.getInstance().enableSupport(event);
         }
     }

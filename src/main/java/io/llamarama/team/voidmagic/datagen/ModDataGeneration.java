@@ -8,6 +8,7 @@ import io.llamarama.team.voidmagic.datagen.provider.data.ModLootTableProvider;
 import io.llamarama.team.voidmagic.datagen.provider.data.ModRecipeProvider;
 import io.llamarama.team.voidmagic.datagen.provider.data.tags.ModBlockTagsProvider;
 import io.llamarama.team.voidmagic.datagen.provider.data.tags.ModItemTagsProvider;
+import io.llamarama.team.voidmagic.util.constants.StringConstants;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -19,7 +20,7 @@ import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
  *
  * @author 0xJoeMama
  */
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, modid = VoidMagic.MODID)
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, modid = StringConstants.MOD_ID_STR)
 public final class ModDataGeneration {
 
     @SubscribeEvent
