@@ -11,6 +11,16 @@ public final class EventHandler {
 
     private static EventHandler instance;
 
+    private EventHandler() {
+    }
+
+    public static EventHandler getInstance() {
+        if (instance == null) {
+            instance = new EventHandler();
+        }
+        return instance;
+    }
+
     public void enqueueIMC(final InterModEnqueueEvent event) {
         if (ModList.get().isLoaded(StringConstants.CURIOS_ID.get())) {
             CuriosIntegration.getInstance().enableSupport(event);
@@ -21,19 +31,9 @@ public final class EventHandler {
 
     }
 
-    public static EventHandler getInstance() {
-        if (instance == null) {
-            instance = new EventHandler();
-        }
-        return instance;
-    }
-
     public void startListeners(IEventBus forgeBus) {
         forgeBus.addListener(this::enqueueIMC);
         forgeBus.addListener(this::processIMC);
-    }
-
-    private EventHandler() {
     }
 
 }

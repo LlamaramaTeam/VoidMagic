@@ -94,7 +94,7 @@ public class PillarBlock extends Block {
     @Override
     public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos, isMoving);
-        updateForChange(worldIn, pos);
+        this.updateForChange(worldIn, pos);
     }
 
     protected void updateForChange(World worldIn, BlockPos pos) {

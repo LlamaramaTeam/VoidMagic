@@ -1,10 +1,11 @@
 package io.llamarama.team.voidmagic.api.multiblock;
 
 import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.tileentity.TileEntity;
 
-public interface IMultiblockContainer extends ITickableTileEntity {
+public interface IMultiblockContainer<T extends TileEntity> extends ITickableTileEntity {
 
-    MultiblockStructure getMultiblock();
+    MultiblockStructure<T> getMultiblock();
 
     @Override
     default void tick() {
