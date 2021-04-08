@@ -49,7 +49,7 @@ public final class ModBlocks {
     public static final RegistryObject<StairsBlock> TOFAL_BRICK_STAIRS = register("tofal_brick_stairs",
             () -> new StairsBlock(() -> TOFAL_BRICKS.get().getDefaultState(), copyProperties(TOFAL_BRICKS.get())));
     public static final RegistryObject<Block> SHADOW_BRICKS = register("shadow_bricks",
-            () -> new Block(getTofalProperties().setLightLevel((state) -> 4)));
+            () -> new Block(AbstractBlock.Properties.from(Blocks.STONE_BRICKS).setLightLevel((state) -> 2)));
     public static final RegistryObject<OreBlock> END_PUTILIAM_ORE = register("end_putiliam_ore",
             () -> new OreBlock(copyProperties(Blocks.END_STONE)));
     public static final RegistryObject<OreBlock> OVERWORLD_PUTILIAM_ORE = register("overworld_putiliam_ore",
@@ -59,7 +59,7 @@ public final class ModBlocks {
     public static final RegistryObject<WitheredStoneBlock> POLISHED_WITHER_STONE_BRICKS = register("polished_withered_stone",
             () -> new WitheredStoneBlock(copyProperties(WITHERED_STONE.get())));
     public static final RegistryObject<PlateBlock> WITHERED_STONE_PLATE = register("withered_stone_plate",
-            () -> new PlateBlock(WITHERED_STONE.get(), getWitheredStoneProperties()));
+            () -> new PlateBlock(POLISHED_WITHER_STONE_BRICKS.get(), getWitheredStoneProperties()));
     public static final RegistryObject<PlateBlock> TOFAL_PLATE  = register("tofal_plate",
             () -> new PlateBlock(TOFAL.get(), getTofalProperties()));
 

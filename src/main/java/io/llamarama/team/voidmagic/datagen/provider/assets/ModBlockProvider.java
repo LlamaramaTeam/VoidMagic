@@ -20,6 +20,7 @@ import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.fml.RegistryObject;
 
+import java.util.Arrays;
 import java.util.Set;
 
 public class ModBlockProvider extends BlockStateProvider {
@@ -54,6 +55,7 @@ public class ModBlockProvider extends BlockStateProvider {
 
     private void plateBlockModel(Block block) {
         Block target = ((PlateBlock) block).getTarget();
+        ResourceLocation texture = IdBuilder.mod("block/" + IdHelper.getNonNullPath(target));
         BlockModelBuilder builder =
                 this.models().getBuilder("block/" + IdHelper.getNonNullPath(block))
                         .element().from(0, 0, 0).to(16, 4, 16)
@@ -69,9 +71,43 @@ public class ModBlockProvider extends BlockStateProvider {
                         .uvs(0, 7, 16, 11).texture("#0").end()
                         .face(Direction.SOUTH)
                         .uvs(0, 7, 16, 11).texture("#0").end()
-                        .end().texture("0", IdBuilder.mod("block/" + IdHelper.getNonNullPath(target)));
+                        .end()
+                        .texture("0", texture)
+                        .texture("particle", texture);
 
         this.getVariantBuilder(block).partialState().addModels(new ConfiguredModel(builder));
+
+        ModelBuilder<ItemModelBuilder>.TransformsBuilder itemBuilder =
+                this.itemModels().getBuilder("item/" + IdHelper.getNonNullPath(block))
+                        .parent(builder).transforms();
+
+        Arrays.stream(ModelBuilder.Perspective.values()).forEach((perspective) -> {
+            if (perspective == ModelBuilder.Perspective.FIRSTPERSON_LEFT || perspective == ModelBuilder.Perspective.FIRSTPERSON_RIGHT) {
+                itemBuilder.transform(perspective)
+                        .rotation(0, 45, 0)
+                        .scale(0.4f, 0.4f, 0.4f)
+                        .end();
+            } else if (perspective == ModelBuilder.Perspective.THIRDPERSON_LEFT || perspective == ModelBuilder.Perspective.THIRDPERSON_RIGHT) {
+                itemBuilder.transform(perspective)
+                        .rotation(75f, 45f, 0f)
+                        .translation(0, 2.5f, 1.25f)
+                        .scale(0.375f, 0.375f, 0.375f)
+                        .end();
+            } else if (perspective == ModelBuilder.Perspective.GROUND) {
+                itemBuilder.transform(perspective)
+                        .translation(0f, 3f, 0f)
+                        .scale(0.25f, 0.25f, 0.25f)
+                        .end();
+            } else if (perspective == ModelBuilder.Perspective.GUI) {
+                itemBuilder.transform(perspective)
+                        .rotation(30f, 225f, 0f)
+                        .scale(0.625f, 0.625f, 0.625f)
+                        .end();
+            } else {
+                itemBuilder.transform(ModelBuilder.Perspective.FIXED)
+                        .scale(0.5f, 0.5f, 0.5f);
+            }
+        });
     }
 
     private <B extends Block> void simpleBlockAndItem(RegistryObject<B> block) {
