@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  #",
+    " ##",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "voidmagic:tofal_bricks"
+    }
+  },
+  "result": {
+    "item": "voidmagic:tofal_brick_stairs",
+    "count": 4
+  }
+}

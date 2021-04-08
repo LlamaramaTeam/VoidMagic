@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 public enum StringConstants {
 
     EMPTY(() -> ""),
-    MOD_ID(() -> "voidmagic"),
+    MOD_ID(() -> StringConstants.MOD_ID_STR),
     MOD_VERSION(() -> "1.0.0"),
     CURIOS_ID(() -> "curios"),
     NETWORK_PROTOCOL_VERSION(MOD_VERSION::get);

@@ -2,6 +2,7 @@ package io.llamarama.team.voidmagic.common.register;
 
 import io.llamarama.team.voidmagic.VoidMagic;
 import io.llamarama.team.voidmagic.common.block.PillarBlock;
+import io.llamarama.team.voidmagic.common.block.PlateBlock;
 import io.llamarama.team.voidmagic.common.block.TofalBlock;
 import io.llamarama.team.voidmagic.common.block.WitheredStoneBlock;
 import net.minecraft.block.*;
@@ -34,7 +35,7 @@ public final class ModBlocks {
     public static final RegistryObject<SlabBlock> WITHERED_STONE_BRICK_SLAB = register("withered_stone_bricks_slab",
             () -> new SlabBlock(copyProperties(WITHERED_STONE_BRICKS.get())));
     public static final RegistryObject<StairsBlock> WITHERED_STONE_BRICK_STAIRS = register("withered_stone_brick_stairs",
-            () -> new StairsBlock(() -> WITHERED_STONE_BRICKS.get().getDefaultState(), copyProperties(WITHERED_STONE_BRICKS.get())));
+            () -> new StairsBlock(WITHERED_STONE_BRICKS.get()::getDefaultState, copyProperties(WITHERED_STONE_BRICKS.get())));
     public static final RegistryObject<TofalBlock> TOFAL = register("tofal",
             () -> new TofalBlock(getTofalProperties()));
     public static final RegistryObject<TofalBlock> TOFAL_BRICKS = register("tofal_bricks",
@@ -57,6 +58,10 @@ public final class ModBlocks {
             () -> new PillarBlock(copyProperties(WITHERED_STONE.get())));
     public static final RegistryObject<WitheredStoneBlock> POLISHED_WITHER_STONE_BRICKS = register("polished_withered_stone",
             () -> new WitheredStoneBlock(copyProperties(WITHERED_STONE.get())));
+    public static final RegistryObject<PlateBlock> WITHERED_STONE_PLATE = register("withered_stone_plate",
+            () -> new PlateBlock(WITHERED_STONE.get(), getWitheredStoneProperties()));
+    public static final RegistryObject<PlateBlock> TOFAL_PLATE  = register("tofal_plate",
+            () -> new PlateBlock(TOFAL.get(), getTofalProperties()));
 
     private ModBlocks() {
     }
@@ -79,12 +84,20 @@ public final class ModBlocks {
 
     @NotNull
     private static AbstractBlock.Properties getWitheredStoneProperties() {
-        return AbstractBlock.Properties.create(Material.ROCK, MaterialColor.GRAY).harvestLevel(3).harvestTool(ToolType.PICKAXE).hardnessAndResistance(3.0f).setRequiresTool();
+        return AbstractBlock.Properties.create(Material.ROCK, MaterialColor.GRAY)
+                .harvestLevel(3)
+                .harvestTool(ToolType.PICKAXE)
+                .hardnessAndResistance(3.0f)
+                .setRequiresTool();
     }
 
     @NotNull
     private static AbstractBlock.Properties getTofalProperties() {
-        return AbstractBlock.Properties.create(Material.ROCK, MaterialColor.ADOBE).hardnessAndResistance(3.0f).harvestTool(ToolType.PICKAXE).harvestLevel(2).setLightLevel((state) -> 7).setRequiresTool();
+        return AbstractBlock.Properties.create(Material.ROCK, MaterialColor.ADOBE)
+                .hardnessAndResistance(3.0f)
+                .harvestTool(ToolType.PICKAXE)
+                .harvestLevel(2).setLightLevel((state) -> 7)
+                .setRequiresTool();
     }
 
     @Nullable

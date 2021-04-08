@@ -3,6 +3,7 @@ package io.llamarama.team.voidmagic.datagen.provider.assets;
 import com.google.common.collect.Sets;
 import io.llamarama.team.voidmagic.VoidMagic;
 import io.llamarama.team.voidmagic.common.register.ModRegistries;
+import io.llamarama.team.voidmagic.util.IdBuilder;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -41,7 +42,7 @@ public class ModItemModelProvider extends ItemModelProvider {
     private <I extends Item> void registerNormalItem(RegistryObject<I> item) {
         String path = item.getId().getPath();
         ModelFile model = new ModelFile.ExistingModelFile(mcLoc("item/generated"), this.existingFileHelper);
-        this.getBuilder(path).parent(model).texture("layer0", modLoc("item/" + path));
+        this.getBuilder(path).parent(model).texture("layer0", IdBuilder.mod("item/" + path));
     }
 
 }

@@ -2,9 +2,12 @@ package io.llamarama.team.voidmagic.client;
 
 import io.llamarama.team.voidmagic.VoidMagic;
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
+@OnlyIn(Dist.CLIENT)
 public class VoidMagicClient {
 
     private static final Minecraft game = Minecraft.getInstance();

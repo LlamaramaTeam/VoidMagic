@@ -16,6 +16,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 @Mod(StringConstants.MOD_ID_STR)
 public class VoidMagic {
@@ -47,9 +48,10 @@ public class VoidMagic {
             super(label);
         }
 
+        @NotNull
         @Override
         public ItemStack createIcon() {
-            return new ItemStack(ModItems.PUTILIAM.get());
+            return new ItemStack(ModItems.GUIDE_BOOK.get());
         }
 
         @Override

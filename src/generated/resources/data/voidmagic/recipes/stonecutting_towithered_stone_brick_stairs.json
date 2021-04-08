@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "tag": "voidmagic:withered_stone_blocks"
+  },
+  "result": "voidmagic:withered_stone_brick_stairs",
+  "count": 1
+}

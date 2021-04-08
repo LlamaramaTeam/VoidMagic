@@ -3,6 +3,7 @@ package io.llamarama.team.voidmagic.datagen.provider.assets;
 import com.google.common.collect.Sets;
 import io.llamarama.team.voidmagic.VoidMagic;
 import io.llamarama.team.voidmagic.common.block.PillarBlock;
+import io.llamarama.team.voidmagic.common.block.PlateBlock;
 import io.llamarama.team.voidmagic.common.register.ModBlocks;
 import io.llamarama.team.voidmagic.common.register.ModRegistries;
 import io.llamarama.team.voidmagic.util.IdBuilder;
@@ -33,6 +34,8 @@ public class ModBlockProvider extends BlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
         this.blacklist.add(ModBlocks.WITHERED_STONE_PILLAR.get());
+        this.blacklist.add(ModBlocks.WITHERED_STONE_PLATE.get());
+        this.blacklist.add(ModBlocks.TOFAL_PLATE.get());
 
         ModRegistries.BLOCKS.getEntries().stream()
                 .filter((block) -> !this.blacklist.contains(block.get()))
@@ -41,10 +44,34 @@ public class ModBlockProvider extends BlockStateProvider {
         this.blacklist.forEach((block) -> {
             if (block instanceof PillarBlock) {
                 this.pillarBlockAndItem(block);
+            } else if (block instanceof PlateBlock) {
+                this.plateBlockModel(block);
             }
         });
 
         VoidMagic.getLogger().info("Added all default block models.");
+    }
+
+    private void plateBlockModel(Block block) {
+        Block target = ((PlateBlock) block).getTarget();
+        BlockModelBuilder builder =
+                this.models().getBuilder("block/" + IdHelper.getNonNullPath(block))
+                        .element().from(0, 0, 0).to(16, 4, 16)
+                        .face(Direction.UP)
+                        .texture("#0").uvs(0, 0, 16, 16).end()
+                        .face(Direction.DOWN)
+                        .texture("#0").uvs(0, 0, 16, 16).end()
+                        .face(Direction.EAST)
+                        .uvs(0, 7, 16, 11).texture("#0").end()
+                        .face(Direction.WEST)
+                        .uvs(0, 7, 16, 11).texture("#0").end()
+                        .face(Direction.NORTH)
+                        .uvs(0, 7, 16, 11).texture("#0").end()
+                        .face(Direction.SOUTH)
+                        .uvs(0, 7, 16, 11).texture("#0").end()
+                        .end().texture("0", IdBuilder.mod("block/" + IdHelper.getNonNullPath(target)));
+
+        this.getVariantBuilder(block).partialState().addModels(new ConfiguredModel(builder));
     }
 
     private <B extends Block> void simpleBlockAndItem(RegistryObject<B> block) {

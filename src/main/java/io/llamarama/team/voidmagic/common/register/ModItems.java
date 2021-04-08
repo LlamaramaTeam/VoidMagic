@@ -13,7 +13,7 @@ public final class ModItems {
     public static final RegistryObject<Item> PUTILIAM = register("putiliam",
             () -> new Item(getDefaultProperties()));
     public static final RegistryObject<GuideBookItem> GUIDE_BOOK = register("guide_book",
-            () -> new GuideBookItem(getDefaultProperties()));
+            () -> new GuideBookItem(getUnstackableProperties()));
 
     private static <I extends Item> RegistryObject<I> register(String id, Supplier<I> item) {
         return ModRegistries.ITEMS.register(id, item);
@@ -25,6 +25,10 @@ public final class ModItems {
 
     private static Item.Properties getDefaultProperties() {
         return new Item.Properties().group(VoidMagic.GROUP);
+    }
+
+    private static Item.Properties getUnstackableProperties() {
+        return getDefaultProperties().maxStackSize(1);
     }
 
 }
