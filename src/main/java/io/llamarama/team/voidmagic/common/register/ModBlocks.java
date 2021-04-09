@@ -60,7 +60,7 @@ public final class ModBlocks {
             () -> new WitheredStoneBlock(copyProperties(WITHERED_STONE.get())));
     public static final RegistryObject<PlateBlock> WITHERED_STONE_PLATE = register("withered_stone_plate",
             () -> new PlateBlock(POLISHED_WITHER_STONE_BRICKS.get(), getWitheredStoneProperties()));
-    public static final RegistryObject<PlateBlock> TOFAL_PLATE  = register("tofal_plate",
+    public static final RegistryObject<PlateBlock> TOFAL_PLATE = register("tofal_plate",
             () -> new PlateBlock(TOFAL.get(), getTofalProperties()));
 
     private ModBlocks() {

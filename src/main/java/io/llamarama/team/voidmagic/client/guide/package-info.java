@@ -1,4 +1,3 @@
-
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 package io.llamarama.team.voidmagic.client.guide;

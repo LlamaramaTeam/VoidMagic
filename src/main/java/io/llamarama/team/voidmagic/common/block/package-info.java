@@ -11,4 +11,5 @@
 package io.llamarama.team.voidmagic.common.block;
 
 import mcp.MethodsReturnNonnullByDefault;
+
 import javax.annotation.ParametersAreNonnullByDefault;
