@@ -1,46 +1,64 @@
 package io.llamarama.team.voidmagic.common.network;
 
+import io.llamarama.team.voidmagic.common.network.packet.GenericPacket;
 import io.llamarama.team.voidmagic.common.network.packet.IPacket;
-import io.llamarama.team.voidmagic.common.network.packet.OpenScreenPacket;
+import io.llamarama.team.voidmagic.common.network.packet.SendChatMessagePacket;
 import io.llamarama.team.voidmagic.util.constants.StringConstants;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 
+import java.util.function.Function;
+
 public class ModNetworking {
 
-    public static SimpleChannel CHANNEL;
     // Do not touch.
     private static int id = 0;
+    private static ModNetworking instance;
+    private SimpleChannel CHANNEL;
 
-    public static void initialize() {
+    private ModNetworking() {
+
+    }
+
+    public static ModNetworking get() {
+        if (instance == null) {
+            instance = new ModNetworking();
+        }
+
+        return instance;
+    }
+
+    public void sendToClient(IPacket packet, ServerPlayerEntity playerEntity) {
+        CHANNEL.sendTo(packet, playerEntity.connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+    }
+
+    public void sendToAll(IPacket packet, ServerWorld world) {
+        world.getPlayers().forEach((serverPlayerEntity) -> this.sendToClient(packet, serverPlayerEntity));
+    }
+
+    public void sendToServer(IPacket packet) {
+        CHANNEL.sendToServer(packet);
+    }
+
+    private <PCT extends IPacket> void registerPacket(Class<PCT> packetClass, Function<PacketBuffer, PCT> decoder) {
+        CHANNEL.messageBuilder(packetClass, id++)
+                .encoder(IPacket::encode)
+                .decoder(decoder)
+                .consumer(IPacket::handle)
+                .add();
+    }
+
+    public void initialize() {
         CHANNEL = NetworkRegistry.newSimpleChannel(StringConstants.Network.CHANNEL_ID.getId(),
                 StringConstants.NETWORK_PROTOCOL_VERSION::get,
                 StringConstants.NETWORK_PROTOCOL_VERSION.get()::equals,
                 StringConstants.NETWORK_PROTOCOL_VERSION.get()::equals);
 
-        registerPacket(new OpenScreenPacket());
-    }
-
-    public static void sendToClient(IPacket packet, ServerPlayerEntity playerEntity) {
-        CHANNEL.sendTo(packet, playerEntity.connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
-    }
-
-    public static void sendToAll(IPacket packet, ServerWorld world) {
-        world.getPlayers().forEach((serverPlayerEntity) -> sendToClient(packet, serverPlayerEntity));
-    }
-
-    public static void sendToServer(IPacket packet) {
-        CHANNEL.sendToServer(packet);
-    }
-
-    private static void registerPacket(IPacket packet) {
-        CHANNEL.messageBuilder(packet.getClass(), id++)
-                .encoder(packet::encode)
-                .decoder(packet::decode)
-                .consumer(IPacket::handle);
+        this.registerPacket(SendChatMessagePacket.class, SendChatMessagePacket::decode);
     }
 
 }

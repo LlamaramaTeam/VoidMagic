@@ -1,7 +1,6 @@
 package io.llamarama.team.voidmagic;
 
 import io.llamarama.team.voidmagic.client.VoidMagicClient;
-import io.llamarama.team.voidmagic.common.event.EventHandler;
 import io.llamarama.team.voidmagic.common.register.ModItems;
 import io.llamarama.team.voidmagic.common.register.ModRegistries;
 import io.llamarama.team.voidmagic.util.IdBuilder;
@@ -32,7 +31,6 @@ public class VoidMagic {
         ModRegistries.initRegistries(modBus);
 
         IEventBus forgeBus = MinecraftForge.EVENT_BUS;
-        EventHandler.getInstance().startListeners(forgeBus);
 
         forgeBus.register(this);
     }

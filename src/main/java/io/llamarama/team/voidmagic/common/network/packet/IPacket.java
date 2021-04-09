@@ -7,9 +7,7 @@ import java.util.function.Supplier;
 
 public interface IPacket {
 
-    void encode(IPacket packet, PacketBuffer buffer);
-
-    <PCT extends IPacket> PCT decode(PacketBuffer buffer);
+    void encode(PacketBuffer buffer);
 
     boolean handle(Supplier<NetworkEvent.Context> contextSupplier);
 
