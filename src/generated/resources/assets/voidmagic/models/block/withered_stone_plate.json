@@ -1,6 +1,7 @@
 {
   "textures": {
-    "0": "voidmagic:block/polished_withered_stone"
+    "0": "voidmagic:block/polished_withered_stone",
+    "particle": "voidmagic:block/polished_withered_stone"
   },
   "elements": [
     {

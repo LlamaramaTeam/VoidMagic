@@ -37,6 +37,7 @@ public class ModBlockProvider extends BlockStateProvider {
         this.blacklist.add(ModBlocks.WITHERED_STONE_PILLAR.get());
         this.blacklist.add(ModBlocks.WITHERED_STONE_PLATE.get());
         this.blacklist.add(ModBlocks.TOFAL_PLATE.get());
+        this.blacklist.add(ModBlocks.OFFERING_PLATE.get());
 
         ModRegistries.BLOCKS.getEntries().stream()
                 .filter((block) -> !this.blacklist.contains(block.get()))
@@ -45,10 +46,12 @@ public class ModBlockProvider extends BlockStateProvider {
         this.blacklist.forEach((block) -> {
             if (block instanceof PillarBlock) {
                 this.pillarBlockAndItem(block);
-            } else if (block instanceof PlateBlock) {
+            } else if (block instanceof PlateBlock && block != ModBlocks.OFFERING_PLATE.get()) {
                 this.plateBlockModel(block);
             }
         });
+
+        this.plateBlockModel(ModBlocks.OFFERING_PLATE.get());
 
         VoidMagic.getLogger().info("Added all default block models.");
     }

@@ -1,6 +1,5 @@
 package io.llamarama.team.voidmagic.common.network;
 
-import io.llamarama.team.voidmagic.common.network.packet.GenericPacket;
 import io.llamarama.team.voidmagic.common.network.packet.IPacket;
 import io.llamarama.team.voidmagic.common.network.packet.SendChatMessagePacket;
 import io.llamarama.team.voidmagic.util.constants.StringConstants;

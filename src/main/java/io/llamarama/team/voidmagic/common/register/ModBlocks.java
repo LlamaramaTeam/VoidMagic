@@ -1,10 +1,7 @@
 package io.llamarama.team.voidmagic.common.register;
 
 import io.llamarama.team.voidmagic.VoidMagic;
-import io.llamarama.team.voidmagic.common.block.PillarBlock;
-import io.llamarama.team.voidmagic.common.block.PlateBlock;
-import io.llamarama.team.voidmagic.common.block.TofalBlock;
-import io.llamarama.team.voidmagic.common.block.WitheredStoneBlock;
+import io.llamarama.team.voidmagic.common.block.*;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
@@ -54,14 +51,16 @@ public final class ModBlocks {
             () -> new OreBlock(copyProperties(Blocks.END_STONE)));
     public static final RegistryObject<OreBlock> OVERWORLD_PUTILIAM_ORE = register("overworld_putiliam_ore",
             () -> new OreBlock(copyProperties(Blocks.IRON_ORE)));
-    public static RegistryObject<PillarBlock> WITHERED_STONE_PILLAR = register("withered_stone_pillar",
-            () -> new PillarBlock(copyProperties(WITHERED_STONE.get())));
     public static final RegistryObject<WitheredStoneBlock> POLISHED_WITHER_STONE_BRICKS = register("polished_withered_stone",
             () -> new WitheredStoneBlock(copyProperties(WITHERED_STONE.get())));
     public static final RegistryObject<PlateBlock> WITHERED_STONE_PLATE = register("withered_stone_plate",
             () -> new PlateBlock(POLISHED_WITHER_STONE_BRICKS.get(), getWitheredStoneProperties()));
     public static final RegistryObject<PlateBlock> TOFAL_PLATE = register("tofal_plate",
             () -> new PlateBlock(TOFAL.get(), getTofalProperties()));
+    public static final RegistryObject<OfferingPlateBlock> OFFERING_PLATE = register("offering_plate",
+            () -> new OfferingPlateBlock(copyProperties(WITHERED_STONE_PLATE.get())));
+    public static RegistryObject<PillarBlock> WITHERED_STONE_PILLAR = register("withered_stone_pillar",
+            () -> new PillarBlock(copyProperties(WITHERED_STONE.get())));
 
     private ModBlocks() {
     }

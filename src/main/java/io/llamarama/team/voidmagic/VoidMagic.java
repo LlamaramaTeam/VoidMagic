@@ -1,6 +1,7 @@
 package io.llamarama.team.voidmagic;
 
 import io.llamarama.team.voidmagic.client.VoidMagicClient;
+import io.llamarama.team.voidmagic.common.event.CommonInitEventHandler;
 import io.llamarama.team.voidmagic.common.register.ModItems;
 import io.llamarama.team.voidmagic.common.register.ModRegistries;
 import io.llamarama.team.voidmagic.util.IdBuilder;
@@ -27,9 +28,13 @@ public class VoidMagic {
 
     public VoidMagic() {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
-        DistExecutor.safeCallWhenOn(Dist.CLIENT, () -> VoidMagicClient::new);
+        CommonInitEventHandler.getInstance().registerHandlers(modBus);
         ModRegistries.initRegistries(modBus);
 
+        // Initialize the client side of the mod.
+        DistExecutor.safeCallWhenOn(Dist.CLIENT, () -> VoidMagicClient::new);
+
+        // Register the mod to the forge event bus.
         IEventBus forgeBus = MinecraftForge.EVENT_BUS;
 
         forgeBus.register(this);

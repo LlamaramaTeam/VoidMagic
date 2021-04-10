@@ -1,7 +1,7 @@
 {
   "textures": {
-    "0": "voidmagic:block/tofal",
-    "particle": "voidmagic:block/tofal"
+    "0": "voidmagic:block/withered_stone",
+    "particle": "voidmagic:block/withered_stone"
   },
   "elements": [
     {
