@@ -4,6 +4,7 @@ import io.llamarama.team.voidmagic.VoidMagic;
 import io.llamarama.team.voidmagic.common.register.ModTileEntityTypes;
 import io.llamarama.team.voidmagic.util.constants.NBTConstants;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -14,6 +15,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -54,10 +56,18 @@ public class OfferingPlateTileEntity extends TileEntity {
     }
 
     public void interact(ServerPlayerEntity player) {
-        ItemStack heldItem = player.getHeldItem(player.getActiveHand());
-        ItemStack copy = heldItem.copy();
-        copy.setCount(1);
-        this.items.insertItem(0, copy, false);
+        ItemStack heldItem = player.getHeldItem(player.getActiveHand()).copy();
+        ItemStack stackInSlot = this.items.extractItem(0, 1, false);
+        if (stackInSlot.isEmpty()) {
+            heldItem.setCount(1);
+            player.getHeldItem(player.getActiveHand()).shrink(1);
+            this.items.insertItem(0, heldItem, false);
+        } else {
+            if (!player.addItemStackToInventory(stackInSlot)) {
+                Vector3d pos = Vector3d.copyCentered(this.getPos()).add(0.5f, 0.5f, 0.5f);
+                player.world.addEntity(new ItemEntity(player.world, pos.x, pos.y, pos.z, stackInSlot));
+            }
+        }
     }
 
     @NotNull
@@ -91,7 +101,7 @@ public class OfferingPlateTileEntity extends TileEntity {
     @Nullable
     @Override
     public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(this.getPos(), 1, new CompoundNBT());
+        return new SUpdateTileEntityPacket(this.getPos(), -1, this.getUpdateTag());
     }
 
     @Override
@@ -104,11 +114,11 @@ public class OfferingPlateTileEntity extends TileEntity {
     @Override
     public void handleUpdateTag(BlockState state, CompoundNBT tag) {
         this.read(state, tag);
+        VoidMagic.getLogger().info("Update tag was handled.");
     }
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        super.onDataPacket(net, pkt);
         BlockPos pos = pkt.getPos();
         CompoundNBT nbt = pkt.getNbtCompound();
 

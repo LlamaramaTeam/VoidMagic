@@ -44,14 +44,16 @@ public class OfferingPlateBlock extends PlateBlock {
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
 
-        if (!(tileEntity instanceof OfferingPlateTileEntity) || worldIn.isRemote) {
-            return ActionResultType.SUCCESS;
+        if (!(tileEntity instanceof OfferingPlateTileEntity)) {
+            return ActionResultType.FAIL;
         }
 
-        ((OfferingPlateTileEntity) tileEntity).interact((ServerPlayerEntity) player);
-        worldIn.notifyBlockUpdate(pos, state, state, Constants.BlockFlags.DEFAULT_AND_RERENDER);
+        if (!worldIn.isRemote) {
+            ((OfferingPlateTileEntity) tileEntity).interact((ServerPlayerEntity) player);
+            worldIn.notifyBlockUpdate(pos, state, state, Constants.BlockFlags.DEFAULT_AND_RERENDER);
+        }
 
-        return ActionResultType.CONSUME;
+        return ActionResultType.SUCCESS;
     }
 
     @Override
