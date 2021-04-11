@@ -2,8 +2,18 @@ package io.llamarama.team.voidmagic.common.tile;
 
 import io.llamarama.team.voidmagic.VoidMagic;
 import io.llamarama.team.voidmagic.common.register.ModTileEntityTypes;
+import io.llamarama.team.voidmagic.util.constants.NBTConstants;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -14,12 +24,40 @@ import org.jetbrains.annotations.Nullable;
 
 public class OfferingPlateTileEntity extends TileEntity {
 
-    private final IItemHandler items = new ItemStackHandler(1);
-    public LazyOptional<IItemHandler> itemOptional = LazyOptional.of(() -> items);
+    private final ItemStackHandler items = new ItemStackHandler(NonNullList.withSize(1, ItemStack.EMPTY)) {
+        @Override
+        protected void onContentsChanged(int slot) {
+            OfferingPlateTileEntity.this.markDirty();
+            super.onContentsChanged(slot);
+        }
+
+        @NotNull
+        @Override
+        public ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
+            if (this.getStackInSlot(0).getCount() == 1) {
+                return ItemStack.EMPTY;
+            }
+            return super.insertItem(slot, stack, simulate);
+        }
+
+        @Override
+        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+            return super.isItemValid(slot, stack) && this.getStackInSlot(0).getCount() != 1;
+        }
+    };
+    private final LazyOptional<IItemHandler> itemOptional = LazyOptional.of(() -> items);
+    public int rotationTick;
 
     public OfferingPlateTileEntity() {
         super(ModTileEntityTypes.OFFERING_PLATE.get());
         VoidMagic.getLogger().info("Created a new tile entity at " + this.getPos());
+    }
+
+    public void interact(ServerPlayerEntity player) {
+        ItemStack heldItem = player.getHeldItem(player.getActiveHand());
+        ItemStack copy = heldItem.copy();
+        copy.setCount(1);
+        this.items.insertItem(0, copy, false);
     }
 
     @NotNull
@@ -33,9 +71,57 @@ public class OfferingPlateTileEntity extends TileEntity {
     }
 
     @Override
+    public void read(BlockState state, CompoundNBT nbt) {
+        super.read(state, nbt);
+        this.items.deserializeNBT(nbt.getCompound(NBTConstants.INVENTORY));
+    }
+
+    @Override
+    public CompoundNBT write(CompoundNBT compound) {
+        compound.put(NBTConstants.INVENTORY, this.items.serializeNBT());
+        return super.write(compound);
+    }
+
+    @Override
     public void remove() {
         super.remove();
         itemOptional.invalidate();
+    }
+
+    @Nullable
+    @Override
+    public SUpdateTileEntityPacket getUpdatePacket() {
+        return new SUpdateTileEntityPacket(this.getPos(), 1, new CompoundNBT());
+    }
+
+    @Override
+    public CompoundNBT getUpdateTag() {
+        CompoundNBT updateTag = super.getUpdateTag();
+        updateTag.put(NBTConstants.INVENTORY, this.items.serializeNBT());
+        return updateTag;
+    }
+
+    @Override
+    public void handleUpdateTag(BlockState state, CompoundNBT tag) {
+        this.read(state, tag);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+        super.onDataPacket(net, pkt);
+        BlockPos pos = pkt.getPos();
+        CompoundNBT nbt = pkt.getNbtCompound();
+
+        if (this.world != null) {
+            this.handleUpdateTag(this.world.getBlockState(pos), nbt);
+        }
+
+        VoidMagic.getLogger().info("Data packet was sent.");
+    }
+
+    @Override
+    public AxisAlignedBB getRenderBoundingBox() {
+        return new AxisAlignedBB(this.getPos().add(-1, 0, -1), this.getPos().add(1, 2, 1));
     }
 
 }

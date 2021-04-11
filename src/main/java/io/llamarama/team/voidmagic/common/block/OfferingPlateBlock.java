@@ -5,7 +5,8 @@ import io.llamarama.team.voidmagic.common.tile.OfferingPlateTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
@@ -14,10 +15,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.concurrent.atomic.AtomicReference;
 
 public class OfferingPlateBlock extends PlateBlock {
 
@@ -42,37 +44,34 @@ public class OfferingPlateBlock extends PlateBlock {
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
 
-        if (!(tileEntity instanceof OfferingPlateTileEntity)) {
-            return ActionResultType.PASS;
+        if (!(tileEntity instanceof OfferingPlateTileEntity) || worldIn.isRemote) {
+            return ActionResultType.SUCCESS;
         }
 
-        final AtomicReference<ActionResultType> returnVal = new AtomicReference<>();
+        ((OfferingPlateTileEntity) tileEntity).interact((ServerPlayerEntity) player);
+        worldIn.notifyBlockUpdate(pos, state, state, Constants.BlockFlags.DEFAULT_AND_RERENDER);
 
-        tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent((itemHandler) -> {
-            if (worldIn.isRemote) {
-                return;
-            }
+        return ActionResultType.CONSUME;
+    }
 
-            ItemStack heldStack = player.getHeldItem(handIn);
-            Item heldItem = heldStack.getItem();
-            ItemStack inventoryStack = itemHandler.getStackInSlot(0);
+    @Override
+    public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid) {
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if (tileEntity == null) {
+            return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
+        }
 
-            if (inventoryStack.isEmpty()) {
-                itemHandler.insertItem(0, new ItemStack(heldItem), false);
-                heldStack.shrink(1);
+        LazyOptional<IItemHandler> capability = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
 
-                returnVal.set(ActionResultType.SUCCESS);
-            } else if (!inventoryStack.isEmpty()) {
-                itemHandler.extractItem(0, 1, false);
+        capability.ifPresent((itemHandler) -> {
+            int slots = itemHandler.getSlots();
+            for (int i = 0; i < slots; i++) {
+                ItemStack stackInSlot = itemHandler.getStackInSlot(i);
 
-                if (!player.inventory.addItemStackToInventory(inventoryStack)) {
-                    worldIn.addEntity(new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), inventoryStack));
-                }
-                returnVal.set(ActionResultType.SUCCESS);
+                world.addEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), stackInSlot));
             }
         });
-
-        return returnVal.get();
+        return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
     }
 
 }
