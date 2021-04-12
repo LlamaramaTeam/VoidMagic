@@ -35,9 +35,6 @@ public class VoidMagic {
 
         // Initialize the client side of the mod.
         DistExecutor.safeCallWhenOn(Dist.CLIENT, () -> VoidMagicClient::new);
-
-        // Register the mod to the forge event bus.
-        forgeBus.register(this);
     }
 
     public static Logger getLogger() {

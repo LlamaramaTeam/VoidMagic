@@ -2,11 +2,10 @@ package io.llamarama.team.voidmagic.client.guide;
 
 import com.google.common.collect.Lists;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.util.List;
 
-public abstract class Chapter implements IForgeRegistryEntry<Chapter> {
+public abstract class Chapter implements List<Page> {
 
     private final List<Screen> pages;
 
