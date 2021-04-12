@@ -57,7 +57,7 @@ public class ModNetworking {
                 StringConstants.NETWORK_PROTOCOL_VERSION.get()::equals,
                 StringConstants.NETWORK_PROTOCOL_VERSION.get()::equals);
 
-        this.registerPacket(SendChatMessagePacket.class, SendChatMessagePacket::decode);
+        this.registerPacket(SendChatMessagePacket.class, SendChatMessagePacket::new);
     }
 
 }

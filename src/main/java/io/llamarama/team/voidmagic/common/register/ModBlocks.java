@@ -1,7 +1,7 @@
 package io.llamarama.team.voidmagic.common.register;
 
-import io.llamarama.team.voidmagic.VoidMagic;
 import io.llamarama.team.voidmagic.common.block.*;
+import io.llamarama.team.voidmagic.util.ModItemGroup;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
@@ -68,7 +68,7 @@ public final class ModBlocks {
     @NotNull
     private static <B extends Block> RegistryObject<B> register(String id, Supplier<B> block) {
         RegistryObject<B> out = registerNoItem(id, block);
-        ModRegistries.ITEMS.register(out.getId().getPath(), () -> new BlockItem(out.get(), new Item.Properties().group(ItemGroup.MISC).group(VoidMagic.GROUP)));
+        ModRegistries.ITEMS.register(out.getId().getPath(), () -> new BlockItem(out.get(), new Item.Properties().group(ItemGroup.MISC).group(ModItemGroup.get())));
         return out;
     }
 

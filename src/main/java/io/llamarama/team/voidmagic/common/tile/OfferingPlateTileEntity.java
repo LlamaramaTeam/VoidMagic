@@ -1,6 +1,5 @@
 package io.llamarama.team.voidmagic.common.tile;
 
-import io.llamarama.team.voidmagic.VoidMagic;
 import io.llamarama.team.voidmagic.common.register.ModTileEntityTypes;
 import io.llamarama.team.voidmagic.util.constants.NBTConstants;
 import net.minecraft.block.BlockState;
@@ -52,7 +51,6 @@ public class OfferingPlateTileEntity extends TileEntity {
 
     public OfferingPlateTileEntity() {
         super(ModTileEntityTypes.OFFERING_PLATE.get());
-        VoidMagic.getLogger().info("Created a new tile entity at " + this.getPos());
     }
 
     public void interact(ServerPlayerEntity player) {
@@ -114,7 +112,6 @@ public class OfferingPlateTileEntity extends TileEntity {
     @Override
     public void handleUpdateTag(BlockState state, CompoundNBT tag) {
         this.read(state, tag);
-        VoidMagic.getLogger().info("Update tag was handled.");
     }
 
     @Override
@@ -125,8 +122,6 @@ public class OfferingPlateTileEntity extends TileEntity {
         if (this.world != null) {
             this.handleUpdateTag(this.world.getBlockState(pos), nbt);
         }
-
-        VoidMagic.getLogger().info("Data packet was sent.");
     }
 
     @Override

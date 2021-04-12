@@ -28,7 +28,9 @@ public final class ModDataGeneration {
         DataGenerator gen = event.getGenerator();
         ExistingFileHelper helper = event.getExistingFileHelper();
 
-        // Assets
+        /*
+            Assets
+         */
 
         // Lang Providers
         gen.addProvider(new EnglishLanguageProvider(gen, "en_us"));
@@ -45,7 +47,9 @@ public final class ModDataGeneration {
         // Block Models
         gen.addProvider(new ModBlockProvider(gen, helper));
 
-        // Data
+        /*
+            Data
+         */
 
         // Loot Tables
         gen.addProvider(new ModLootTableProvider(gen));

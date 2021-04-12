@@ -18,7 +18,7 @@ public class EnglishLanguageProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
-        this.add("itemGroup.voidmagic.group", "Void Magic");
+        this.add("itemGroup.ModItemGroup.get()", "Void Magic");
         ModRegistries.BLOCKS.getEntries().forEach(this::getCamelCaseBlockName);
 
         ModRegistries.ITEMS.getEntries().stream()

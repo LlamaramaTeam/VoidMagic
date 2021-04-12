@@ -1,7 +1,7 @@
 package io.llamarama.team.voidmagic.common.register;
 
-import io.llamarama.team.voidmagic.VoidMagic;
 import io.llamarama.team.voidmagic.common.item.GuideBookItem;
+import io.llamarama.team.voidmagic.util.ModItemGroup;
 import net.minecraft.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
@@ -24,7 +24,7 @@ public final class ModItems {
     }
 
     private static Item.Properties getDefaultProperties() {
-        return new Item.Properties().group(VoidMagic.GROUP);
+        return new Item.Properties().group(ModItemGroup.get());
     }
 
     private static Item.Properties getUnstackableProperties() {

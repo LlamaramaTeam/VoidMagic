@@ -22,5 +22,5 @@
   "block.voidmagic.withered_stone_slab": "Withered Stone Slab ",
   "item.voidmagic.guide_book": "Guide Book ",
   "item.voidmagic.putiliam": "Putiliam ",
-  "itemGroup.voidmagic.group": "Void Magic"
+  "itemGroup.ModItemGroup.get()": "Void Magic"
 }

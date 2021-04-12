@@ -7,15 +7,17 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class SendChatMessagePacket implements IPacket {
+public class SendChatMessagePacket extends GenericPacket {
 
     private final String message;
 
     public SendChatMessagePacket(String message) {
+        super();
         this.message = message;
     }
 
-    public static SendChatMessagePacket decode(PacketBuffer buffer) {
+    public SendChatMessagePacket(PacketBuffer buffer) {
+        super(buffer);
         int length = buffer.readInt();
         StringBuilder builder = new StringBuilder();
 
@@ -23,7 +25,7 @@ public class SendChatMessagePacket implements IPacket {
             builder.append(buffer.readChar());
         }
 
-        return new SendChatMessagePacket(builder.toString());
+        this.message = builder.toString();
     }
 
     @Override
@@ -40,7 +42,7 @@ public class SendChatMessagePacket implements IPacket {
                 player.sendChatMessage(this.message);
             }
         });
-
+        contextSupplier.get().setPacketHandled(true);
         return true;
     }
 
