@@ -3,6 +3,7 @@ package io.llamarama.team.voidmagic.client.render.renderer.tile;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import io.llamarama.team.voidmagic.client.VoidMagicClient;
 import io.llamarama.team.voidmagic.common.tile.OfferingPlateTileEntity;
+import io.llamarama.team.voidmagic.util.config.ClientConfig;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
@@ -28,31 +29,34 @@ public class OfferingPlateTileRenderer extends TileEntityRenderer<OfferingPlateT
     @SuppressWarnings("deprecation")
     @Override
     public void render(OfferingPlateTileEntity tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
-        matrixStackIn.push();
+        if (ClientConfig.ENABLE_ITEM_RENDERING.get()) {
+            matrixStackIn.push();
 
-        matrixStackIn.translate(0.5f, 0.5f, 0.5f);
-        matrixStackIn.rotate(Vector3f.YP.rotationDegrees(tileEntityIn.rotationTick--));
+            final AtomicReference<ItemStack> stack = new AtomicReference<>();
+            tileEntityIn.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(
+                    (itemHandler) -> stack.set(itemHandler.getStackInSlot(0)));
+            if (!stack.get().isEmpty()) {
+                matrixStackIn.translate(0.5f, 0.5f, 0.5f);
+                matrixStackIn.rotate(Vector3f.YP.rotationDegrees(
+                        tileEntityIn.rotationTick -= 360f / ClientConfig.TICKS_PER_ROTATION.get()));
 
-        final AtomicReference<ItemStack> stack = new AtomicReference<>();
-        tileEntityIn.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(
-                (itemHandler) -> stack.set(itemHandler.getStackInSlot(0)));
-        if (!stack.get().isEmpty()) {
-            if (stack.get().getItem() == Items.DRAGON_EGG) {
-                matrixStackIn.translate(-0.5f, 0, -0.5f);
-                VoidMagicClient.getGame().getBlockRendererDispatcher()
-                        .renderBlock(
-                                Blocks.DRAGON_EGG.getDefaultState(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
-            } else {
-                Item item = stack.get().getItem();
-                VoidMagicClient.getGame().getItemRenderer().renderItem(item.getDefaultInstance(),
-                        ItemCameraTransforms.TransformType.GROUND, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn);
+                if (stack.get().getItem() == Items.DRAGON_EGG && ClientConfig.SPECIAL_BLOCK_RENDERING.get()) {
+                    matrixStackIn.translate(-0.5f, 0, -0.5f);
+                    VoidMagicClient.getGame().getBlockRendererDispatcher().renderBlock(
+                            Blocks.DRAGON_EGG.getDefaultState(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+                } else {
+                    Item item = stack.get().getItem();
+                    VoidMagicClient.getGame().getItemRenderer().renderItem(item.getDefaultInstance(),
+                            ItemCameraTransforms.TransformType.GROUND,
+                            combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn);
+                }
+                if (tileEntityIn.rotationTick <= 0) {
+                    tileEntityIn.rotationTick += 360;
+                }
             }
-            if (tileEntityIn.rotationTick <= 0) {
-                tileEntityIn.rotationTick += 360;
-            }
+
+            matrixStackIn.pop();
         }
-
-        matrixStackIn.pop();
     }
 
 }

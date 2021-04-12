@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class ModItemGroup extends ItemGroup {
 
-    private static final ItemGroup GROUP = new ModItemGroup("ModItemGroup.get()")
+    private static final ItemGroup GROUP = new ModItemGroup("voidmagic.group")
             .setBackgroundImage(IdBuilder.mod("textures/creative_tab.png"));
 
     private ModItemGroup(String label) {

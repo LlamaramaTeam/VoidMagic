@@ -1,9 +1,12 @@
 package io.llamarama.team.voidmagic.common.event;
 
+import io.llamarama.team.voidmagic.VoidMagic;
 import io.llamarama.team.voidmagic.common.integration.CuriosIntegration;
 import io.llamarama.team.voidmagic.common.network.ModNetworking;
+import io.llamarama.team.voidmagic.util.config.CommonConfig;
 import io.llamarama.team.voidmagic.util.constants.StringConstants;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
@@ -24,24 +27,27 @@ public final class CommonInitEventHandler {
         return instance;
     }
 
+    @SubscribeEvent
     public void enqueueIMC(final InterModEnqueueEvent event) {
-        if (ModList.get().isLoaded(StringConstants.CURIOS_ID.get())) {
+        boolean curiosLoaded = ModList.get().isLoaded(StringConstants.CURIOS_ID.get());
+        if (curiosLoaded && CommonConfig.CURIOS_ENABLED.get()) {
             CuriosIntegration.getInstance().enableSupport(event);
+            VoidMagic.getLogger().info("Successfully added Curios integration.");
         }
     }
 
+    @SubscribeEvent
     public void processIMC(final InterModProcessEvent event) {
 
     }
 
+    @SubscribeEvent
     public void commotInit(final FMLCommonSetupEvent event) {
         ModNetworking.get().initialize();
     }
 
     public void registerHandlers(final IEventBus modBus) {
-        modBus.addListener(this::commotInit);
-        modBus.addListener(this::enqueueIMC);
-        modBus.addListener(this::processIMC);
+        modBus.register(this);
     }
 
 }

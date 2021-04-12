@@ -47,7 +47,7 @@ public class OfferingPlateTileEntity extends TileEntity {
         }
     };
     private final LazyOptional<IItemHandler> itemOptional = LazyOptional.of(() -> items);
-    public int rotationTick;
+    public float rotationTick;
 
     public OfferingPlateTileEntity() {
         super(ModTileEntityTypes.OFFERING_PLATE.get());
