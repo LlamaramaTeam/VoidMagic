@@ -12,7 +12,7 @@ public abstract class GenericPacket implements IPacket {
     }
 
     public GenericPacket(PacketBuffer buffer) {
-
+        this();
     }
 
     @Override

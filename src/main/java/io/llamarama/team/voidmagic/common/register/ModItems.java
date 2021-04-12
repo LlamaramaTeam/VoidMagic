@@ -8,6 +8,7 @@ import net.minecraftforge.fml.RegistryObject;
 
 import java.util.function.Supplier;
 
+@SuppressWarnings("unused")
 public final class ModItems {
 
     public static final RegistryObject<Item> PUTILIAM = register("putiliam",

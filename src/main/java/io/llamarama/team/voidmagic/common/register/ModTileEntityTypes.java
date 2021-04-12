@@ -8,7 +8,6 @@ import net.minecraftforge.fml.RegistryObject;
 
 import java.util.function.Supplier;
 
-@SuppressWarnings("ALL")
 public final class ModTileEntityTypes {
 
     public static final RegistryObject<TileEntityType<OfferingPlateTileEntity>> OFFERING_PLATE = register("offering_plate",
