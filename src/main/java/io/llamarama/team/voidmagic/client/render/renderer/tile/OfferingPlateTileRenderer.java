@@ -45,6 +45,7 @@ public class OfferingPlateTileRenderer extends TileEntityRenderer<OfferingPlateT
                     VoidMagicClient.getGame().getBlockRendererDispatcher().renderBlock(
                             Blocks.DRAGON_EGG.getDefaultState(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
                 } else {
+                    matrixStackIn.scale(1.5f, 1.5f, 1.5f);
                     Item item = stack.get().getItem();
                     VoidMagicClient.getGame().getItemRenderer().renderItem(item.getDefaultInstance(),
                             ItemCameraTransforms.TransformType.GROUND,

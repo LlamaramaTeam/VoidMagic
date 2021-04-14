@@ -8,7 +8,6 @@ public class CommonConfig {
 
     public static final ForgeConfigSpec.BooleanValue CURIOS_ENABLED;
     public static final ForgeConfigSpec.BooleanValue JEI_ENABLED;
-    public static final ForgeConfigSpec.BooleanValue GIVE_BOOK_ON_START;
 
     static {
         ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
@@ -22,14 +21,8 @@ public class CommonConfig {
         String jeiComment = " Enables/disables integration with JEI.(Required minecraft restart.)";
         JEI_ENABLED = builder.push("jei").comment(jeiComment).define("enableJei", () -> true);
         builder.pop();
-
-        builder.comment(" Miscellanious configuration.").push("misc");
-
-        String giveBookOnSpawnComment = " Determines whether a player will get the guide book when he first joins";
-        GIVE_BOOK_ON_START = builder.comment(giveBookOnSpawnComment).define("giveBookOnStart", () -> false);
         builder.pop();
 
-        builder.pop();
         INSTANCE = builder.build();
     }
 }

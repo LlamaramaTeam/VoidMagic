@@ -13,6 +13,7 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -20,6 +21,8 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 public class OfferingPlateBlock extends PlateBlock {
 
@@ -74,6 +77,22 @@ public class OfferingPlateBlock extends PlateBlock {
             }
         });
         return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
+    }
+
+    @Override
+    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if (!(tileEntity instanceof OfferingPlateTileEntity)) {
+            return super.getPickBlock(state, target, world, pos, player);
+        }
+
+        final AtomicReference<ItemStack> result = new AtomicReference<>();
+        tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent((itemHandler) -> {
+            ItemStack copy = itemHandler.getStackInSlot(0).copy();
+            result.set(copy);
+        });
+
+        return result.get();
     }
 
 }

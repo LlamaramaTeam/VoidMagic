@@ -1,6 +1,7 @@
 package io.llamarama.team.voidmagic.common.network;
 
 import io.llamarama.team.voidmagic.common.network.packet.IPacket;
+import io.llamarama.team.voidmagic.common.network.packet.OpenGuideBookScreenPacket;
 import io.llamarama.team.voidmagic.common.network.packet.SendChatMessagePacket;
 import io.llamarama.team.voidmagic.util.constants.StringConstants;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -58,6 +59,7 @@ public class ModNetworking {
                 StringConstants.NETWORK_PROTOCOL_VERSION.get()::equals);
 
         this.registerPacket(SendChatMessagePacket.class, SendChatMessagePacket::new);
+        this.registerPacket(OpenGuideBookScreenPacket.class, OpenGuideBookScreenPacket::new);
     }
 
 }

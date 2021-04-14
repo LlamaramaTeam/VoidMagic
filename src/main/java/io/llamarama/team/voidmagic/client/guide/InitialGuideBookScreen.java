@@ -2,7 +2,6 @@ package io.llamarama.team.voidmagic.client.guide;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import io.llamarama.team.voidmagic.client.VoidMagicClient;
-import io.llamarama.team.voidmagic.common.register.ModBlocks;
 import io.llamarama.team.voidmagic.common.register.ModRegistries;
 import io.llamarama.team.voidmagic.util.IdBuilder;
 import io.llamarama.team.voidmagic.util.constants.CustomTranslations;
@@ -41,6 +40,11 @@ public class InitialGuideBookScreen extends Screen {
     }
 
     @Override
+    public boolean isPauseScreen() {
+        return false;
+    }
+
+    @Override
     public void init(Minecraft minecraft, int width, int height) {
         super.init(minecraft, width, height);
         this.addButton(new Button(0, 0, 20, 40,
@@ -50,10 +54,6 @@ public class InitialGuideBookScreen extends Screen {
             if (player != null) {
                 player.sendChatMessage("hallo");
             }
-
-            VoidMagicClient.getGame().getBlockRendererDispatcher()
-                    .renderBlock(ModBlocks.TOFAL.get().getDefaultState(), new MatrixStack(),
-                            minecraft.getRenderTypeBuffers().getBufferSource(), 10, 1);
         }));
     }
 

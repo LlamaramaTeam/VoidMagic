@@ -18,7 +18,7 @@ public class ClientConfig {
         ENABLE_ITEM_RENDERING = builder.comment(enableItemsComment).define("renderItems", () -> true);
 
         String tickPerRotComment = " Determines the amount of time a full rotation takes for an item on a pedestal.";
-        TICKS_PER_ROTATION = builder.comment(tickPerRotComment).defineInRange("ticks", 360, 60, 1200);
+        TICKS_PER_ROTATION = builder.comment(tickPerRotComment).defineInRange("ticks", 360, 20, 1200);
 
         String specialBlockComment = " Allows certain blocks to be rendered differently on the pedestal.";
         SPECIAL_BLOCK_RENDERING = builder.comment(specialBlockComment).define("specialBlockRendering", true);

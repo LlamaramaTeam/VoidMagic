@@ -1,7 +1,7 @@
 package io.llamarama.team.voidmagic.common.event;
 
 import io.llamarama.team.voidmagic.common.register.ModItems;
-import io.llamarama.team.voidmagic.util.config.CommonConfig;
+import io.llamarama.team.voidmagic.util.config.ServerConfig;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -36,7 +36,7 @@ public class GameplayEventHandler {
         int deaths = ((ServerPlayerEntity) player).getStats().getValue(Stats.CUSTOM.get(Stats.DEATHS));
         int minutePlayed = ((ServerPlayerEntity) player).getStats().getValue(Stats.CUSTOM.get(Stats.PLAY_ONE_MINUTE));
 
-        if (deaths == 0 && minutePlayed == 0 && CommonConfig.GIVE_BOOK_ON_START.get()) {
+        if (deaths == 0 && minutePlayed == 0 && ServerConfig.GIVE_BOOK_ON_START.get()) {
             player.addItemStackToInventory(new ItemStack(ModItems.GUIDE_BOOK.get()));
         }
     }

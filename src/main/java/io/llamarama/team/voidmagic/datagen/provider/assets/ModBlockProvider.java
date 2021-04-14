@@ -51,14 +51,17 @@ public class ModBlockProvider extends BlockStateProvider {
             }
         });
 
-        this.plateBlockModel(ModBlocks.OFFERING_PLATE.get());
+        this.plateBlockModel(ModBlocks.OFFERING_PLATE.get(), IdBuilder.mod("block/withered_stone"));
 
         VoidMagic.getLogger().info("Added all default block models.");
     }
 
     private void plateBlockModel(Block block) {
-        Block target = ((PlateBlock) block).getTarget();
-        ResourceLocation texture = IdBuilder.mod("block/" + IdHelper.getNonNullPath(target));
+        String path = IdHelper.getNonNullPath(((PlateBlock) block).getTarget());
+        this.plateBlockModel(block, IdBuilder.mod("block/" + path));
+    }
+
+    private void plateBlockModel(Block block, ResourceLocation texture) {
         BlockModelBuilder builder =
                 this.models().getBuilder("block/" + IdHelper.getNonNullPath(block))
                         .element().from(0, 0, 0).to(16, 4, 16)
