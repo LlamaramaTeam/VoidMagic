@@ -3,6 +3,7 @@ package io.llamarama.team.voidmagic;
 import io.llamarama.team.voidmagic.client.VoidMagicClient;
 import io.llamarama.team.voidmagic.common.event.CommonInitEventHandler;
 import io.llamarama.team.voidmagic.common.event.GameplayEventHandler;
+import io.llamarama.team.voidmagic.common.event.WorldgenEventHandler;
 import io.llamarama.team.voidmagic.common.register.ModRegistries;
 import io.llamarama.team.voidmagic.util.config.ConfigInitializer;
 import io.llamarama.team.voidmagic.util.constants.StringConstants;
@@ -20,7 +21,7 @@ import org.apache.logging.log4j.Logger;
 public class VoidMagic {
 
     public static final String MOD_ID = StringConstants.MOD_ID.get();
-    private static final Logger LOGGER = LogManager.getLogger("Void Magic");
+    private static final Logger LOGGER = LogManager.getLogger("VoidMagic");
 
     public VoidMagic() {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -31,6 +32,7 @@ public class VoidMagic {
 
         CommonInitEventHandler.getInstance().registerHandlers(modBus);
         GameplayEventHandler.getInstance().registerHandlers(forgeBus);
+        WorldgenEventHandler.getInstance().registerHandlers(forgeBus);
         ModRegistries.initRegistries(modBus);
 
         // Initialize the client side of the mod.

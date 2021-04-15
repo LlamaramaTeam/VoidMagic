@@ -1,6 +1,7 @@
 package io.llamarama.team.voidmagic.common.event;
 
 import io.llamarama.team.voidmagic.VoidMagic;
+import io.llamarama.team.voidmagic.common.capability.VoidMagicCapabilities;
 import io.llamarama.team.voidmagic.common.integration.CuriosIntegration;
 import io.llamarama.team.voidmagic.common.network.ModNetworking;
 import io.llamarama.team.voidmagic.util.config.CommonConfig;
@@ -28,6 +29,12 @@ public final class CommonInitEventHandler {
     }
 
     @SubscribeEvent
+    public void commotInit(final FMLCommonSetupEvent event) {
+        ModNetworking.get().initialize();
+        VoidMagicCapabilities.register();
+    }
+
+    @SubscribeEvent
     public void enqueueIMC(final InterModEnqueueEvent event) {
         boolean curiosLoaded = ModList.get().isLoaded(StringConstants.CURIOS_ID.get());
         if (curiosLoaded && CommonConfig.CURIOS_ENABLED.get()) {
@@ -39,11 +46,6 @@ public final class CommonInitEventHandler {
     @SubscribeEvent
     public void processIMC(final InterModProcessEvent event) {
 
-    }
-
-    @SubscribeEvent
-    public void commotInit(final FMLCommonSetupEvent event) {
-        ModNetworking.get().initialize();
     }
 
     public void registerHandlers(final IEventBus modBus) {
