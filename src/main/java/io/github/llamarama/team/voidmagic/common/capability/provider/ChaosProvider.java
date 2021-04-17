@@ -1,34 +1,35 @@
 package io.github.llamarama.team.voidmagic.common.capability.provider;
 
-import io.github.llamarama.team.voidmagic.common.capability.VoidMagicCapabilities;
 import io.github.llamarama.team.voidmagic.common.capability.impl.ChaosHandler;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Random;
-
 public class ChaosProvider implements ICapabilitySerializable<CompoundNBT> {
 
-    public static final ChaosHandler handler = new ChaosHandler(1000, new Random());
-    public static final LazyOptional<ChaosHandler> chaos = LazyOptional.of(() -> handler);
+    private final LazyOptional<ChaosHandler> chaos;
+    private final ChaosHandler handler;
 
-    public static void invalidate() {
-        chaos.invalidate();
+    public ChaosProvider(Chunk chunk) {
+        this.handler = new ChaosHandler().onChangeRun(chunk::markDirty);
+        this.chaos = LazyOptional.of(() -> this.handler);
+    }
+
+    @NotNull
+    @Override
+    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap) {
+        return this.chaos.cast();
     }
 
     @NotNull
     @Override
     public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if (cap == VoidMagicCapabilities.CHAOS) {
-            return chaos.cast();
-        }
-
-        return LazyOptional.empty().cast();
+        return this.chaos.cast();
     }
 
     @Override
@@ -39,6 +40,10 @@ public class ChaosProvider implements ICapabilitySerializable<CompoundNBT> {
     @Override
     public void deserializeNBT(CompoundNBT nbt) {
         handler.deserializeNBT(nbt);
+    }
+
+    public void invalidate() {
+        this.chaos.invalidate();
     }
 
 }

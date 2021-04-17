@@ -13,7 +13,7 @@ public final class VoidMagicCapabilities {
     public static Capability<IChaosHandler> CHAOS = null;
 
     public static void register() {
-        CapabilityManager.INSTANCE.register(IChaosHandler.class, new ChaosStorage(), () -> ChaosHandler.DEFAULT);
+        CapabilityManager.INSTANCE.register(IChaosHandler.class, new ChaosStorage(), ChaosHandler::new);
     }
 
 

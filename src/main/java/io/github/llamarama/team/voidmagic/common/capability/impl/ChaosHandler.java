@@ -1,19 +1,23 @@
 package io.github.llamarama.team.voidmagic.common.capability.impl;
 
+import io.github.llamarama.team.voidmagic.common.capability.VoidMagicCapabilities;
 import io.github.llamarama.team.voidmagic.common.capability.handler.IChaosHandler;
-import io.github.llamarama.team.voidmagic.util.constants.NBTConstants;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.util.INBTSerializable;
 
+import javax.annotation.Nonnull;
 import java.util.Random;
 
 public class ChaosHandler implements IChaosHandler, INBTSerializable<CompoundNBT> {
 
-    public static final ChaosHandler DEFAULT = new ChaosHandler(1000, new Random());
-
     private int chaos;
     private int maxChaos;
+    private Runnable markDirty;
+
+    public ChaosHandler() {
+        this(1000, new Random());
+    }
 
     public ChaosHandler(int maxChaos, Random random) {
         this.maxChaos = maxChaos;
@@ -27,16 +31,27 @@ public class ChaosHandler implements IChaosHandler, INBTSerializable<CompoundNBT
 
     @Override
     public void setChaos(int newVal) {
-        if (newVal + this.chaos > this.maxChaos) {
-            throw new IllegalArgumentException("Can't overload the chunks chaos more than its max size!");
-        }
-
         this.chaos = newVal;
         this.markDirty();
     }
 
-    public void markDirty() {
 
+    // Do NOT override this method.
+    @Deprecated
+    public void markDirty() {
+        this.markDirty.run();
+    }
+
+    /**
+     * @param markDirty Has to be the mark dirty method of the
+     *                  {@link net.minecraftforge.common.capabilities.ICapabilityProvider} used.
+     * @return This instance.
+     */
+    @Nonnull
+    public ChaosHandler onChangeRun(Runnable markDirty) {
+        this.markDirty = markDirty;
+
+        return this;
     }
 
     @Override
@@ -51,21 +66,17 @@ public class ChaosHandler implements IChaosHandler, INBTSerializable<CompoundNBT
     @Override
     public void setMaxChaos(int max) {
         this.maxChaos = max;
+        this.markDirty();
     }
 
     @Override
     public CompoundNBT serializeNBT() {
-        CompoundNBT tag = new CompoundNBT();
-
-        tag.putInt(NBTConstants.MAX_CHAOS, this.maxChaos);
-        tag.putInt(NBTConstants.CHAOS, this.chaos);
-        return tag;
+        return (CompoundNBT) VoidMagicCapabilities.CHAOS.writeNBT(this, null);
     }
 
     @Override
     public void deserializeNBT(CompoundNBT nbt) {
-        this.maxChaos = nbt.getInt(NBTConstants.MAX_CHAOS);
-        this.chaos = nbt.getInt(NBTConstants.CHAOS);
+        VoidMagicCapabilities.CHAOS.readNBT(this, null, nbt);
     }
 
 }

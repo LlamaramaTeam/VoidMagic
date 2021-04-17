@@ -1,7 +1,11 @@
 package io.github.llamarama.team.voidmagic.common.event;
 
+import io.github.llamarama.team.voidmagic.common.capability.VoidMagicCapabilities;
+import io.github.llamarama.team.voidmagic.common.capability.provider.ChaosProvider;
 import io.github.llamarama.team.voidmagic.common.register.ModItems;
+import io.github.llamarama.team.voidmagic.util.IdBuilder;
 import io.github.llamarama.team.voidmagic.util.config.ServerConfig;
+import io.github.llamarama.team.voidmagic.util.constants.NBTConstants;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -47,8 +51,14 @@ public class GameplayEventHandler {
     public void attachCustomCaps(final AttachCapabilitiesEvent<Chunk> event) {
         // TDOD: Finish this because it's dangerous.
         // Do NOT uncomment this.
-//        event.addCapability(IdBuilder.mod(NBTConstants.CHAOS), new ChaosProvider());
-//        event.addListener(ChaosProvider::invalidate);
+        // So as u can this destroyed my pc and a world yesterday.
+        // Idk if i want to trust it.
+        // But im doing it anyway.
+        if (!event.getObject().getCapability(VoidMagicCapabilities.CHAOS).isPresent()) {
+            ChaosProvider provider = new ChaosProvider(event.getObject());
+            event.addCapability(IdBuilder.mod(NBTConstants.CHAOS), provider);
+            event.addListener(provider::invalidate);
+        }
     }
 
     public void registerHandlers(IEventBus forgeBus) {

@@ -2,8 +2,9 @@ package io.github.llamarama.team.voidmagic.client.guide;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import io.github.llamarama.team.voidmagic.client.VoidMagicClient;
+import io.github.llamarama.team.voidmagic.common.network.ModNetworking;
+import io.github.llamarama.team.voidmagic.common.network.packet.ReduceChaosPacket;
 import io.github.llamarama.team.voidmagic.common.register.ModRegistries;
-import io.github.llamarama.team.voidmagic.util.IdBuilder;
 import io.github.llamarama.team.voidmagic.util.constants.CustomTranslations;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
@@ -15,7 +16,6 @@ import net.minecraft.client.renderer.WorldVertexBufferUploader;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -27,14 +27,12 @@ import java.util.stream.Collectors;
 @OnlyIn(Dist.CLIENT)
 public class InitialGuideBookScreen extends Screen {
 
-    private final ResourceLocation TEXTURE;
     private final ItemStack itemInHand;
     private final List<Item> entries;
 
     public InitialGuideBookScreen(ItemStack itemInHand) {
         super(new TranslationTextComponent(CustomTranslations.GUIDE_BOOK_SCREEN.get()));
         this.itemInHand = itemInHand;
-        this.TEXTURE = IdBuilder.mc("textures/block/dirt.png");
         this.entries =
                 ModRegistries.ITEMS.getEntries().stream().map(RegistryObject::get).collect(Collectors.toList());
     }
@@ -54,6 +52,8 @@ public class InitialGuideBookScreen extends Screen {
             if (player != null) {
                 player.sendChatMessage("hallo");
             }
+
+            ModNetworking.get().sendToServer(new ReduceChaosPacket(10));
         }));
     }
 

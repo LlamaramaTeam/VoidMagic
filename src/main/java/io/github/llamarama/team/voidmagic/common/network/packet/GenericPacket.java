@@ -7,7 +7,7 @@ import java.util.function.Supplier;
 
 public abstract class GenericPacket implements IPacket {
 
-    protected GenericPacket() {
+    public GenericPacket() {
 
     }
 
