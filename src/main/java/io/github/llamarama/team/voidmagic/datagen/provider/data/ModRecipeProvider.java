@@ -1,5 +1,6 @@
 package io.github.llamarama.team.voidmagic.datagen.provider.data;
 
+import io.github.llamarama.team.voidmagic.common.block.PlateBlock;
 import io.github.llamarama.team.voidmagic.common.register.ModBlocks;
 import io.github.llamarama.team.voidmagic.common.tag.ModTags;
 import io.github.llamarama.team.voidmagic.util.IdBuilder;
@@ -65,6 +66,8 @@ public class ModRecipeProvider extends ForgeRecipeProvider {
         this.createCuttingRecipeFromTag(ModTags.Items.TOFAL_BLOCKS, ModBlocks.TOFAL_TILES_SLAB.get());
         this.createCuttingRecipeFromTag(ModTags.Items.TOFAL_BLOCKS, ModBlocks.TOFAL_BRICKS_SLAB.get());
         this.createCuttingRecipeFromTag(ModTags.Items.TOFAL_BLOCKS, ModBlocks.TOFAL_BRICK_STAIRS.get());
+        this.createCuttingRecipeFromTag(ModTags.Items.TOFAL_BLOCKS, ModBlocks.TOFAL_PLATE.get());
+        this.createCuttingRecipeFromTag(ModTags.Items.WITHERED_STONE_BLOCKS, ModBlocks.WITHERED_STONE_PLATE.get());
     }
 
     private void createBrickRecipe(Block brickBlock, Block original) {
@@ -90,6 +93,8 @@ public class ModRecipeProvider extends ForgeRecipeProvider {
 
         if (blockOut instanceof SlabBlock) {
             countOut = 2;
+        } else if (blockOut instanceof PlateBlock) {
+            countOut = 4;
         }
 
         if (blockIn.getRegistryName() == null || blockOut.getRegistryName() == null) {

@@ -1,4 +1,5 @@
 {
+  "block.voidmagic.chalk": "Chalk ",
   "block.voidmagic.chiseled_withered_stone_bricks": "Chiseled Withered Stone Bricks ",
   "block.voidmagic.cracked_withered_stone_bricks": "Cracked Withered Stone Bricks ",
   "block.voidmagic.end_putiliam_ore": "End Putiliam Ore ",
@@ -22,5 +23,5 @@
   "block.voidmagic.withered_stone_slab": "Withered Stone Slab ",
   "item.voidmagic.guide_book": "Guide Book ",
   "item.voidmagic.putiliam": "Putiliam ",
-  "itemGroup.ModItemGroup.get()": "Void Magic"
+  "itemGroup.voidmagic.group": "Void Magic"
 }

@@ -1,6 +1,7 @@
 package io.github.llamarama.team.voidmagic.common.register;
 
 import io.github.llamarama.team.voidmagic.common.block.*;
+import io.github.llamarama.team.voidmagic.common.block.util.ChalkType;
 import io.github.llamarama.team.voidmagic.util.ModItemGroup;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -61,6 +62,8 @@ public final class ModBlocks {
             () -> new OfferingPlateBlock(copyProperties(WITHERED_STONE_PLATE.get())));
     public static RegistryObject<PillarBlock> WITHERED_STONE_PILLAR = register("withered_stone_pillar",
             () -> new PillarBlock(copyProperties(WITHERED_STONE.get())));
+    public static final RegistryObject<ChalkBlock> CHALK = register("chalk",
+            () -> new ChalkBlock(createChalkProps()));
 
     private ModBlocks() {
     }
@@ -95,8 +98,22 @@ public final class ModBlocks {
         return AbstractBlock.Properties.create(Material.ROCK, MaterialColor.ADOBE)
                 .hardnessAndResistance(3.0f)
                 .harvestTool(ToolType.PICKAXE)
-                .harvestLevel(2).setLightLevel((state) -> 7)
+                .harvestLevel(2)
+                .setLightLevel((state) -> 7)
                 .setRequiresTool();
+    }
+
+    @NotNull
+    private static AbstractBlock.Properties createChalkProps() {
+        return AbstractBlock.Properties.create(Material.ROCK, MaterialColor.GRAY)
+                .doesNotBlockMovement()
+                .notSolid()
+                .setLightLevel((state) -> {
+                    ChalkType chalkType = state.get(ChalkBlock.TYPE);
+                    return chalkType.getLightLevel();
+                })
+                .zeroHardnessAndResistance()
+                .sound(SoundType.STONE);
     }
 
     @Nullable

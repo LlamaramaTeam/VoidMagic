@@ -20,15 +20,9 @@ public interface IChaosHandler {
 
     default void increase(int amount) {
         float newVal = amount + getChaos();
-        while (newVal > getMaxChaos()) {
-            newVal /= 0.9f;
-        }
 
         this.setChaos(MathHelper.floor(newVal));
     }
 
-    int getMaxChaos();
-
-    void setMaxChaos(int max);
 
 }

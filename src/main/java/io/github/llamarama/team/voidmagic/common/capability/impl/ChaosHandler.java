@@ -6,22 +6,19 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.util.INBTSerializable;
 
-import javax.annotation.Nonnull;
 import java.util.Random;
 
 public class ChaosHandler implements IChaosHandler, INBTSerializable<CompoundNBT> {
 
     private int chaos;
-    private int maxChaos;
     private Runnable markDirty;
 
     public ChaosHandler() {
-        this(1000, new Random());
+        this(new Random());
     }
 
-    public ChaosHandler(int maxChaos, Random random) {
-        this.maxChaos = maxChaos;
-        this.chaos = MathHelper.nextInt(random, maxChaos / 3, maxChaos);
+    public ChaosHandler(Random random) {
+        this.chaos = MathHelper.nextInt(random, 100, 1000);
     }
 
     @Override
@@ -37,29 +34,11 @@ public class ChaosHandler implements IChaosHandler, INBTSerializable<CompoundNBT
 
     /**
      * @param markDirty Has to be the mark dirty method of the
-     * {@link net.minecraftforge.common.capabilities.ICapabilityProvider} used.
-     * @return This instance.
+     *                  {@link net.minecraftforge.common.capabilities.ICapabilityProvider} used.
      */
-    @Nonnull
-    public ChaosHandler onChangeRun(Runnable markDirty) {
+    public void onChangeRun(Runnable markDirty) {
         this.markDirty = markDirty;
 
-        return this;
-    }
-
-    @Override
-    public int getMaxChaos() {
-        return this.maxChaos;
-    }
-
-    /**
-     * @Deprecated Do NOT call this method.
-     */
-    @Deprecated
-    @Override
-    public void setMaxChaos(int max) {
-        this.maxChaos = max;
-        this.markDirty.run();
     }
 
     @Override

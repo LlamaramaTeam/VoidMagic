@@ -1,7 +1,7 @@
 package io.github.llamarama.team.voidmagic.common.event;
 
 import io.github.llamarama.team.voidmagic.common.capability.VoidMagicCapabilities;
-import io.github.llamarama.team.voidmagic.common.capability.provider.ChaosProvider;
+import io.github.llamarama.team.voidmagic.common.capability.provider.ChaosChunkProvider;
 import io.github.llamarama.team.voidmagic.common.register.ModItems;
 import io.github.llamarama.team.voidmagic.util.IdBuilder;
 import io.github.llamarama.team.voidmagic.util.config.ServerConfig;
@@ -49,14 +49,10 @@ public class GameplayEventHandler {
 
     @SubscribeEvent
     public void attachCustomCaps(final AttachCapabilitiesEvent<Chunk> event) {
-        // TDOD: Finish this because it's dangerous.
-        // Do NOT uncomment this.
-        // So as u can this destroyed my pc and a world yesterday.
-        // Idk if i want to trust it.
-        // But im doing it anyway.
+        // TODO: Finish this because it's dangerous.
         if (!event.getObject().getCapability(VoidMagicCapabilities.CHAOS).isPresent()) {
-            ChaosProvider provider = new ChaosProvider(event.getObject());
-            event.addCapability(IdBuilder.mod(NBTConstants.CHAOS), provider);
+            ChaosChunkProvider provider = new ChaosChunkProvider(event.getObject());
+            event.addCapability(IdBuilder.mod(NBTConstants.CHAOS.toLowerCase()), provider);
             event.addListener(provider::invalidate);
         }
     }

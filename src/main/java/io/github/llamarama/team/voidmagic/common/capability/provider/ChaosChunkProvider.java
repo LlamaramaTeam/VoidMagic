@@ -10,14 +10,13 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ChaosProvider implements ICapabilitySerializable<CompoundNBT> {
+public class ChaosChunkProvider implements ICapabilitySerializable<CompoundNBT> {
 
-    private final LazyOptional<ChaosHandler> chaos;
-    private final ChaosHandler handler;
+    private final ChaosHandler handler = new ChaosHandler();
+    private final LazyOptional<ChaosHandler> chaos = LazyOptional.of(() -> handler);
 
-    public ChaosProvider(Chunk chunk) {
-        this.handler = new ChaosHandler().onChangeRun(chunk::markDirty);
-        this.chaos = LazyOptional.of(() -> this.handler);
+    public ChaosChunkProvider(Chunk chunk) {
+        this.handler.onChangeRun(chunk::markDirty);
     }
 
     @NotNull
