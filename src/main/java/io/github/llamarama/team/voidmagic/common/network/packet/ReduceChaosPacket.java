@@ -6,6 +6,7 @@ import io.github.llamarama.team.voidmagic.common.capability.handler.IChaosHandle
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -44,9 +45,11 @@ public class ReduceChaosPacket extends GenericPacket implements IPacket {
             VoidMagic.getLogger().info("Starting processing of packet!");
             BlockPos position = sender.getPosition();
             ServerWorld serverWorld = sender.getServerWorld();
-            LazyOptional<IChaosHandler> capability = serverWorld.getChunkAt(position).getCapability(VoidMagicCapabilities.CHAOS);
-
-            capability.ifPresent((chaosHandler) -> chaosHandler.consume(this.amount));
+            if (!serverWorld.isRemote()) {
+                LazyOptional<IChaosHandler> capability = serverWorld.getChunkAt(position).getCapability(VoidMagicCapabilities.CHAOS);
+                sender.sendMessage(new StringTextComponent(Integer.toString(this.amount)), sender.getUniqueID());
+                capability.ifPresent((chaosHandler) -> chaosHandler.increase(this.amount));
+            }
         });
 
         contextSupplier.get().setPacketHandled(result.get());

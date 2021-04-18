@@ -32,19 +32,12 @@ public class ChaosHandler implements IChaosHandler, INBTSerializable<CompoundNBT
     @Override
     public void setChaos(int newVal) {
         this.chaos = newVal;
-        this.markDirty();
-    }
-
-
-    // Do NOT override this method.
-    @Deprecated
-    public void markDirty() {
         this.markDirty.run();
     }
 
     /**
      * @param markDirty Has to be the mark dirty method of the
-     *                  {@link net.minecraftforge.common.capabilities.ICapabilityProvider} used.
+     * {@link net.minecraftforge.common.capabilities.ICapabilityProvider} used.
      * @return This instance.
      */
     @Nonnull
@@ -66,7 +59,7 @@ public class ChaosHandler implements IChaosHandler, INBTSerializable<CompoundNBT
     @Override
     public void setMaxChaos(int max) {
         this.maxChaos = max;
-        this.markDirty();
+        this.markDirty.run();
     }
 
     @Override
