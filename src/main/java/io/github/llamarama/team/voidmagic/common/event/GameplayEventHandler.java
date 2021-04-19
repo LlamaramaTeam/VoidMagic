@@ -45,11 +45,24 @@ public class GameplayEventHandler implements IEventHandler {
         }
     }
 
+    /**
+     * @param event nothing.
+     * @Deprecated Test
+     */
+//    @SubscribeEvent
+//    public void attachToEntity(final AttachCapabilitiesEvent<Entity> event) {
+//        EntityType<?> type = event.getObject().getType();
+//
+//        if (type == EntityType.BLAZE) {
+//            event.addCapability(IdBuilder.mod(NBTConstants.CHAOS.toLowerCase()), new ChaosEntityProvider());
+//        }
+//    }
     @SubscribeEvent
     public void attachCustomCaps(final AttachCapabilitiesEvent<Chunk> event) {
         // TODO: Finish this because it's dangerous.
-        ChaosChunkProvider provider = new ChaosChunkProvider(event.getObject());
-        event.addCapability(IdBuilder.mod(NBTConstants.CHAOS.toLowerCase()), provider);
+        Chunk object = event.getObject();
+        ChaosChunkProvider provider = new ChaosChunkProvider(object);
+        event.addCapability(IdBuilder.mod(NBTConstants.CHAOS), provider);
         event.addListener(provider::invalidate);
     }
 

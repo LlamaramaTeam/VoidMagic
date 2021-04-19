@@ -6,11 +6,11 @@ import net.minecraft.util.ResourceLocation;
 public final class IdBuilder {
 
     public static ResourceLocation mod(String path) {
-        return new ResourceLocation(VoidMagic.MOD_ID, path);
+        return new ResourceLocation(VoidMagic.MOD_ID, path.toLowerCase());
     }
 
     public static ResourceLocation mc(String path) {
-        return new ResourceLocation("minecraft", path);
+        return new ResourceLocation("minecraft", path.toLowerCase());
     }
 
 }
