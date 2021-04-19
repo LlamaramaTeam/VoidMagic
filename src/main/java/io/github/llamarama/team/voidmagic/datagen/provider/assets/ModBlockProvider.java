@@ -20,8 +20,8 @@ import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.fml.RegistryObject;
 
-import java.util.Arrays;
 import java.util.Set;
+import java.util.stream.Stream;
 
 public class ModBlockProvider extends BlockStateProvider {
 
@@ -88,7 +88,7 @@ public class ModBlockProvider extends BlockStateProvider {
                 this.itemModels().getBuilder("item/" + IdHelper.getNonNullPath(block))
                         .parent(builder).transforms();
 
-        Arrays.stream(ModelBuilder.Perspective.values()).forEach((perspective) -> {
+        Stream.of(ModelBuilder.Perspective.values()).forEach((perspective) -> {
             if (perspective == ModelBuilder.Perspective.FIRSTPERSON_LEFT || perspective == ModelBuilder.Perspective.FIRSTPERSON_RIGHT) {
                 itemBuilder.transform(perspective)
                         .rotation(0, 45, 0)

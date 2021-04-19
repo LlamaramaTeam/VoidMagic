@@ -6,14 +6,13 @@ import io.github.llamarama.team.voidmagic.common.integration.CuriosIntegration;
 import io.github.llamarama.team.voidmagic.common.network.ModNetworking;
 import io.github.llamarama.team.voidmagic.util.config.CommonConfig;
 import io.github.llamarama.team.voidmagic.util.constants.StringConstants;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 
-public final class CommonInitEventHandler {
+public final class CommonInitEventHandler implements IEventHandler {
 
     private static CommonInitEventHandler instance;
 
@@ -46,10 +45,6 @@ public final class CommonInitEventHandler {
     @SubscribeEvent
     public void processIMC(final InterModProcessEvent event) {
 
-    }
-
-    public void registerHandlers(final IEventBus modBus) {
-        modBus.register(this);
     }
 
 }

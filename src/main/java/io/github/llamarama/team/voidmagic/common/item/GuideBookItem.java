@@ -1,7 +1,7 @@
 package io.github.llamarama.team.voidmagic.common.item;
 
 import io.github.llamarama.team.voidmagic.common.network.ModNetworking;
-import io.github.llamarama.team.voidmagic.common.network.packet.OpenGuideBookScreenPacket;
+import io.github.llamarama.team.voidmagic.common.network.packet.OpenBookScreenPacket;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
@@ -21,11 +21,8 @@ public class GuideBookItem extends Item {
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity user, Hand hand) {
         ItemStack itemInHand = user.getHeldItem(hand);
         if (!world.isRemote) {
-            ModNetworking.get().sendToClient(
-                    new OpenGuideBookScreenPacket(1),
-                    (ServerPlayerEntity) user);
+            ModNetworking.get().sendToClient(new OpenBookScreenPacket(itemInHand), (ServerPlayerEntity) user);
             user.playSound(SoundEvents.ITEM_BOOK_PAGE_TURN, 1.0F, 1.0F);
-            return ActionResult.resultSuccess(itemInHand);
         }
 
         return ActionResult.resultSuccess(itemInHand);

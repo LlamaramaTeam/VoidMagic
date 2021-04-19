@@ -1,6 +1,6 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package io.github.llamarama.team.voidmagic.client.guide;
+package io.github.llamarama.team.voidmagic.client.render.guide;
 
 import mcp.MethodsReturnNonnullByDefault;
 

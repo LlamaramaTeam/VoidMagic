@@ -1,4 +1,4 @@
-package io.github.llamarama.team.voidmagic.client.guide;
+package io.github.llamarama.team.voidmagic.client.render.guide;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import io.github.llamarama.team.voidmagic.client.VoidMagicClient;
@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldVertexBufferUploader;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -45,15 +46,17 @@ public class InitialGuideBookScreen extends Screen {
     @Override
     public void init(Minecraft minecraft, int width, int height) {
         super.init(minecraft, width, height);
-        this.addButton(new Button(0, 0, 20, 40,
+        this.addButton(new Button(width / 2, height / 2, 100, 20,
                 new TranslationTextComponent("button"), (button) -> {
             ClientPlayerEntity player = VoidMagicClient.getGame().player;
 
             if (player != null) {
+                ClientWorld world = player.connection.getWorld();
                 player.sendChatMessage("hallo");
+                ModNetworking.get().sendToServer(
+                        new ReduceChaosPacket(10, world.getChunkAt(player.getPosition()))
+                );
             }
-
-            ModNetworking.get().sendToServer(new ReduceChaosPacket(10));
         }));
     }
 

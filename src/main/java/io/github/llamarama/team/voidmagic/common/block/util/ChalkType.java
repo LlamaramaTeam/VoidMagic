@@ -40,13 +40,7 @@ public enum ChalkType implements IStringSerializable {
             return ChalkType.NONE;
         }
 
-        for (ChalkType type : ChalkType.values()) {
-            if (type.ordinal() == ordinal + 1) {
-                return type;
-            }
-        }
-
-        throw new IllegalStateException("Could not get valid next property for " + this.getString());
+        return ChalkType.values()[++ordinal];
     }
 
 }

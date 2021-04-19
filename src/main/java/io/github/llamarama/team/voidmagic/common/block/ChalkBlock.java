@@ -1,6 +1,7 @@
 package io.github.llamarama.team.voidmagic.common.block;
 
 import io.github.llamarama.team.voidmagic.common.block.util.ChalkType;
+import io.github.llamarama.team.voidmagic.common.register.ModBlocks;
 import io.github.llamarama.team.voidmagic.common.register.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -33,20 +34,21 @@ public class ChalkBlock extends Block {
     @SuppressWarnings("deprecation")
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        return Block.makeCuboidShape(0, 0, 0, 16, 2, 16);
+        return Block.makeCuboidShape(0, 0, 0, 16, 0.5d, 16);
     }
 
     @SuppressWarnings("deprecation")
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         ItemStack heldItem = player.getHeldItem(handIn);
+        boolean holdsItem = heldItem.getItem() == ModItems.GUIDE_BOOK.get();
         if (worldIn.isRemote) {
-            return heldItem.getItem() == ModItems.GUIDE_BOOK.get()
+            return holdsItem
                     ? ActionResultType.SUCCESS
                     : ActionResultType.PASS;
         }
 
-        if (heldItem.getItem() == ModItems.GUIDE_BOOK.get() && state.getBlock() instanceof ChalkBlock) {
+        if (holdsItem && state.getBlock() == ModBlocks.CHALK.get()) {
             ChalkType chalkType = state.get(TYPE);
             worldIn.setBlockState(pos, state.with(TYPE, chalkType.next()));
         }

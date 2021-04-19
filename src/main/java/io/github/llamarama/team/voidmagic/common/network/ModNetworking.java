@@ -1,9 +1,6 @@
 package io.github.llamarama.team.voidmagic.common.network;
 
-import io.github.llamarama.team.voidmagic.common.network.packet.IPacket;
-import io.github.llamarama.team.voidmagic.common.network.packet.OpenGuideBookScreenPacket;
-import io.github.llamarama.team.voidmagic.common.network.packet.ReduceChaosPacket;
-import io.github.llamarama.team.voidmagic.common.network.packet.SendChatMessagePacket;
+import io.github.llamarama.team.voidmagic.common.network.packet.*;
 import io.github.llamarama.team.voidmagic.util.constants.StringConstants;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
@@ -63,8 +60,9 @@ public class ModNetworking {
 
     private void registerPackets() {
         this.registerPacket(SendChatMessagePacket.class, SendChatMessagePacket::new);
-        this.registerPacket(OpenGuideBookScreenPacket.class, OpenGuideBookScreenPacket::new);
         this.registerPacket(ReduceChaosPacket.class, ReduceChaosPacket::new);
+        this.registerPacket(ChunkChaosUpdatePacket.class, ChunkChaosUpdatePacket::new);
+        this.registerPacket(OpenBookScreenPacket.class, OpenBookScreenPacket::new);
     }
 
 }

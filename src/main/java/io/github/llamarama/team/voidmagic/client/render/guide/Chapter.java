@@ -1,4 +1,4 @@
-package io.github.llamarama.team.voidmagic.client.guide;
+package io.github.llamarama.team.voidmagic.client.render.guide;
 
 import com.google.common.collect.Lists;
 import net.minecraft.client.gui.screen.Screen;

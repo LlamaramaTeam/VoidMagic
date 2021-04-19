@@ -1,6 +1,5 @@
 package io.github.llamarama.team.voidmagic.common.event;
 
-import io.github.llamarama.team.voidmagic.common.capability.VoidMagicCapabilities;
 import io.github.llamarama.team.voidmagic.common.capability.provider.ChaosChunkProvider;
 import io.github.llamarama.team.voidmagic.common.register.ModItems;
 import io.github.llamarama.team.voidmagic.util.IdBuilder;
@@ -13,10 +12,9 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-public class GameplayEventHandler {
+public class GameplayEventHandler implements IEventHandler {
 
     private static GameplayEventHandler instance;
 
@@ -50,15 +48,9 @@ public class GameplayEventHandler {
     @SubscribeEvent
     public void attachCustomCaps(final AttachCapabilitiesEvent<Chunk> event) {
         // TODO: Finish this because it's dangerous.
-        if (!event.getObject().getCapability(VoidMagicCapabilities.CHAOS).isPresent()) {
-            ChaosChunkProvider provider = new ChaosChunkProvider(event.getObject());
-            event.addCapability(IdBuilder.mod(NBTConstants.CHAOS.toLowerCase()), provider);
-            event.addListener(provider::invalidate);
-        }
-    }
-
-    public void registerHandlers(IEventBus forgeBus) {
-        forgeBus.register(this);
+        ChaosChunkProvider provider = new ChaosChunkProvider(event.getObject());
+        event.addCapability(IdBuilder.mod(NBTConstants.CHAOS.toLowerCase()), provider);
+        event.addListener(provider::invalidate);
     }
 
 }

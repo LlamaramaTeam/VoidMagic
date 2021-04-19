@@ -3,10 +3,7 @@ package io.github.llamarama.team.voidmagic.common.capability.impl;
 import io.github.llamarama.team.voidmagic.common.capability.VoidMagicCapabilities;
 import io.github.llamarama.team.voidmagic.common.capability.handler.IChaosHandler;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.util.INBTSerializable;
-
-import java.util.Random;
 
 public class ChaosHandler implements IChaosHandler, INBTSerializable<CompoundNBT> {
 
@@ -14,11 +11,11 @@ public class ChaosHandler implements IChaosHandler, INBTSerializable<CompoundNBT
     private Runnable markDirty;
 
     public ChaosHandler() {
-        this(new Random());
+        this(1000);
     }
 
-    public ChaosHandler(Random random) {
-        this.chaos = MathHelper.nextInt(random, 100, 1000);
+    public ChaosHandler(int chaos) {
+        this.chaos = chaos;
     }
 
     @Override
@@ -38,7 +35,6 @@ public class ChaosHandler implements IChaosHandler, INBTSerializable<CompoundNBT
      */
     public void onChangeRun(Runnable markDirty) {
         this.markDirty = markDirty;
-
     }
 
     @Override

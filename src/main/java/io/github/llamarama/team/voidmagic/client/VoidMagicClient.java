@@ -19,8 +19,10 @@ public class VoidMagicClient {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         IEventBus forgeBus = MinecraftForge.EVENT_BUS;
 
+        // Initialize all client event handlers.
         ClientInitEventHandler.getInstance().registerHandlers(modEventBus);
         ClientGameplayEventHandler.getInstance().registerHandlers(forgeBus);
+
         VoidMagic.getLogger().info("Loaded client side of VoidMagic");
     }
 
