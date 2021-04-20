@@ -2,13 +2,12 @@ package io.github.llamarama.team.voidmagic.common.network.packet;
 
 import io.github.llamarama.team.voidmagic.VoidMagic;
 import io.github.llamarama.team.voidmagic.client.VoidMagicClient;
+import io.github.llamarama.team.voidmagic.common.capability.CapUtils;
 import io.github.llamarama.team.voidmagic.common.capability.VoidMagicCapabilities;
-import io.github.llamarama.team.voidmagic.common.capability.handler.IChaosHandler;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -65,7 +64,6 @@ public class ChunkChaosUpdatePacket extends GenericPacket {
             );
 
             buffer.writeInt(updatedChaos.get());
-            VoidMagic.getLogger().debug("Encoded packet.");
         }
     }
 
@@ -79,11 +77,9 @@ public class ChunkChaosUpdatePacket extends GenericPacket {
                 return;
             }
 
-            LazyOptional<IChaosHandler> chaos = this.chunk.getCapability(VoidMagicCapabilities.CHAOS);
-            chaos.ifPresent((chaosHandler) -> chaosHandler.setChaos(this.updatedVal));
+            CapUtils.executeForChaos(chunk, (chaosHandler) -> chaosHandler.setChaos(this.updatedVal));
         });
 
-        VoidMagic.getLogger().debug("Update packet was handled.");
         contextSupplier.get().setPacketHandled(out.get());
         return out.get();
     }
