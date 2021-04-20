@@ -3,7 +3,7 @@ package io.github.llamarama.team.voidmagic.common.network.packet;
 import io.github.llamarama.team.voidmagic.VoidMagic;
 import io.github.llamarama.team.voidmagic.client.VoidMagicClient;
 import io.github.llamarama.team.voidmagic.common.capability.CapUtils;
-import io.github.llamarama.team.voidmagic.common.capability.VoidMagicCapabilities;
+import io.github.llamarama.team.voidmagic.common.capability.VoidMagicCaps;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.world.chunk.Chunk;
@@ -59,7 +59,7 @@ public class ChunkChaosUpdatePacket extends GenericPacket {
             buffer.writeInt(x);
             buffer.writeInt(z);
             final AtomicInteger updatedChaos = new AtomicInteger(0);
-            this.chunk.getCapability(VoidMagicCapabilities.CHAOS).ifPresent(
+            this.chunk.getCapability(VoidMagicCaps.CHAOS).ifPresent(
                     (chaosHandler) -> updatedChaos.set(chaosHandler.getChaos())
             );
 

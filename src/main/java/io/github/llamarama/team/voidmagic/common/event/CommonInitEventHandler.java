@@ -1,7 +1,7 @@
 package io.github.llamarama.team.voidmagic.common.event;
 
 import io.github.llamarama.team.voidmagic.VoidMagic;
-import io.github.llamarama.team.voidmagic.common.capability.VoidMagicCapabilities;
+import io.github.llamarama.team.voidmagic.common.capability.VoidMagicCaps;
 import io.github.llamarama.team.voidmagic.common.integration.CuriosIntegration;
 import io.github.llamarama.team.voidmagic.common.network.ModNetworking;
 import io.github.llamarama.team.voidmagic.util.config.CommonConfig;
@@ -30,7 +30,7 @@ public final class CommonInitEventHandler implements IEventHandler {
     @SubscribeEvent
     public void commotInit(final FMLCommonSetupEvent event) {
         ModNetworking.get().initialize();
-        VoidMagicCapabilities.register();
+        VoidMagicCaps.register();
     }
 
     @SubscribeEvent

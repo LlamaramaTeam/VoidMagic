@@ -1,7 +1,7 @@
 package io.github.llamarama.team.voidmagic.common.event;
 
 import io.github.llamarama.team.voidmagic.common.capability.CapUtils;
-import io.github.llamarama.team.voidmagic.common.capability.VoidMagicCapabilities;
+import io.github.llamarama.team.voidmagic.common.capability.VoidMagicCaps;
 import io.github.llamarama.team.voidmagic.common.capability.handler.IChaosHandler;
 import io.github.llamarama.team.voidmagic.common.capability.provider.ChaosChunkProvider;
 import io.github.llamarama.team.voidmagic.common.network.ModNetworking;
@@ -42,6 +42,11 @@ public class GameplayEventHandler implements IEventHandler {
         return instance;
     }
 
+    /**
+     * Give the book if that config option is enabled.
+     *
+     * @param event {@link PlayerEvent.PlayerRespawnEvent}
+     */
     @SubscribeEvent
     public void onPlayerSpawn(final PlayerEvent.PlayerRespawnEvent event) {
         PlayerEntity player = event.getPlayer();
@@ -58,18 +63,6 @@ public class GameplayEventHandler implements IEventHandler {
         }
     }
 
-    /**
-     * @param event nothing.
-     * @Deprecated Test
-     */
-//    @SubscribeEvent
-//    public void attachToEntity(final AttachCapabilitiesEvent<Entity> event) {
-//        EntityType<?> type = event.getObject().getType();
-//
-//        if (type == EntityType.BLAZE) {
-//            event.addCapability(IdBuilder.mod(NBTConstants.CHAOS.toLowerCase()), new ChaosEntityProvider());
-//        }
-//    }
     @SubscribeEvent
     public void attachCustomCaps(final AttachCapabilitiesEvent<Chunk> event) {
         // TODO: Finish this because it's dangerous.
@@ -79,6 +72,11 @@ public class GameplayEventHandler implements IEventHandler {
         event.addListener(provider::invalidate);
     }
 
+    /**
+     * Probably not the best solution. Will change.
+     *
+     * @param event {@link EntityEvent.EnteringChunk}
+     */
     @SubscribeEvent
     public void onEnterChunk(final EntityEvent.EnteringChunk event) {
         Entity entity = event.getEntity();
@@ -92,6 +90,7 @@ public class GameplayEventHandler implements IEventHandler {
     public void onLogin(final PlayerEvent.PlayerLoggedInEvent event) {
         PlayerEntity player = event.getPlayer();
 
+        // First we update the chunk the player is in so that he can she the actual chaos value.
         if (player instanceof ServerPlayerEntity) {
             Chunk chunkAt = player.world.getChunkAt(player.getPosition());
 
@@ -101,6 +100,12 @@ public class GameplayEventHandler implements IEventHandler {
         }
     }
 
+    /**
+     * @param event Just testing
+     *              Marked for removal
+     * @Deprecated
+     */
+    @Deprecated
     @SubscribeEvent
     public void onHit(final LivingDamageEvent event) {
         LivingEntity entityLiving = event.getEntityLiving();
@@ -112,7 +117,7 @@ public class GameplayEventHandler implements IEventHandler {
             BlockPos position = entityLiving.getPosition();
 
             LazyOptional<IChaosHandler> capability =
-                    entityLiving.getEntityWorld().getChunkAt(position).getCapability(VoidMagicCapabilities.CHAOS);
+                    entityLiving.getEntityWorld().getChunkAt(position).getCapability(VoidMagicCaps.CHAOS);
 
             capability.ifPresent((chaosHandler) ->
                     PlayerUtil.sendMessage(chaosHandler.getChaos(), ((ServerPlayerEntity) trueSource)));

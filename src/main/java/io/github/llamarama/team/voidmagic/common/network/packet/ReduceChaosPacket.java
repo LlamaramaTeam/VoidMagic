@@ -1,7 +1,7 @@
 package io.github.llamarama.team.voidmagic.common.network.packet;
 
 import io.github.llamarama.team.voidmagic.VoidMagic;
-import io.github.llamarama.team.voidmagic.common.capability.VoidMagicCapabilities;
+import io.github.llamarama.team.voidmagic.common.capability.VoidMagicCaps;
 import io.github.llamarama.team.voidmagic.common.capability.handler.IChaosHandler;
 import io.github.llamarama.team.voidmagic.common.network.ModNetworking;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -58,7 +58,7 @@ public class ReduceChaosPacket extends GenericPacket implements IPacket {
 
             Chunk chunk = serverWorld.getChunk(this.x, this.z);
             LazyOptional<IChaosHandler> capability =
-                    chunk.getCapability(VoidMagicCapabilities.CHAOS);
+                    chunk.getCapability(VoidMagicCaps.CHAOS);
 
             sender.sendMessage(
                     new StringTextComponent(Integer.toString(this.amount)), sender.getUniqueID());

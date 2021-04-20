@@ -7,7 +7,7 @@ import net.minecraftforge.common.util.NonNullConsumer;
 public class CapUtils {
 
     public static void executeForChaos(Chunk chunk, NonNullConsumer<IChaosHandler> consumer) {
-        chunk.getCapability(VoidMagicCapabilities.CHAOS).ifPresent(consumer);
+        chunk.getCapability(VoidMagicCaps.CHAOS).ifPresent(consumer);
     }
 
 }

@@ -1,7 +1,7 @@
 package io.github.llamarama.team.voidmagic.client.event;
 
 import io.github.llamarama.team.voidmagic.client.VoidMagicClient;
-import io.github.llamarama.team.voidmagic.common.capability.VoidMagicCapabilities;
+import io.github.llamarama.team.voidmagic.common.capability.VoidMagicCaps;
 import io.github.llamarama.team.voidmagic.common.capability.handler.IChaosHandler;
 import io.github.llamarama.team.voidmagic.common.event.IEventHandler;
 import io.github.llamarama.team.voidmagic.common.register.ModItems;
@@ -35,7 +35,7 @@ public class ClientGameplayEventHandler implements IEventHandler {
             BlockPos position = player.getPosition();
             final AtomicInteger integer = new AtomicInteger(0);
             LazyOptional<IChaosHandler> capability =
-                    player.getEntityWorld().getChunkAt(position).getCapability(VoidMagicCapabilities.CHAOS);
+                    player.getEntityWorld().getChunkAt(position).getCapability(VoidMagicCaps.CHAOS);
             capability.ifPresent((chaosHandler) -> integer.set(chaosHandler.getChaos()));
 
             player.sendStatusMessage(new StringTextComponent(Integer.toString(integer.get())), true);

@@ -1,6 +1,6 @@
 package io.github.llamarama.team.voidmagic.common.capability.impl;
 
-import io.github.llamarama.team.voidmagic.common.capability.VoidMagicCapabilities;
+import io.github.llamarama.team.voidmagic.common.capability.VoidMagicCaps;
 import io.github.llamarama.team.voidmagic.common.capability.handler.IChaosHandler;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -39,12 +39,12 @@ public class ChaosHandler implements IChaosHandler, INBTSerializable<CompoundNBT
 
     @Override
     public CompoundNBT serializeNBT() {
-        return (CompoundNBT) VoidMagicCapabilities.CHAOS.writeNBT(this, null);
+        return (CompoundNBT) VoidMagicCaps.CHAOS.writeNBT(this, null);
     }
 
     @Override
     public void deserializeNBT(CompoundNBT nbt) {
-        VoidMagicCapabilities.CHAOS.readNBT(this, null, nbt);
+        VoidMagicCaps.CHAOS.readNBT(this, null, nbt);
     }
 
 }

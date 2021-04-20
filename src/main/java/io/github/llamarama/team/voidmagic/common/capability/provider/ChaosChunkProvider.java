@@ -1,5 +1,6 @@
 package io.github.llamarama.team.voidmagic.common.capability.provider;
 
+import io.github.llamarama.team.voidmagic.common.capability.VoidMagicCaps;
 import io.github.llamarama.team.voidmagic.common.capability.impl.ChaosHandler;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
@@ -21,14 +22,8 @@ public class ChaosChunkProvider implements ICapabilitySerializable<CompoundNBT> 
 
     @NotNull
     @Override
-    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap) {
-        return this.chaos.cast();
-    }
-
-    @NotNull
-    @Override
     public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        return this.chaos.cast();
+        return cap == VoidMagicCaps.CHAOS ? this.chaos.cast() : LazyOptional.empty();
     }
 
     @Override
