@@ -14,7 +14,6 @@ public class ChaosStorage implements Capability.IStorage<IChaosHandler> {
     @Override
     public INBT writeNBT(Capability<IChaosHandler> capability, IChaosHandler instance, @Nullable Direction side) {
         CompoundNBT nbt = new CompoundNBT();
-
         nbt.putInt(NBTConstants.CHAOS, instance.getChaos());
         return nbt;
     }

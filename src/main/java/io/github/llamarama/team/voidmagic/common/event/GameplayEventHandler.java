@@ -1,31 +1,28 @@
 package io.github.llamarama.team.voidmagic.common.event;
 
-import io.github.llamarama.team.voidmagic.common.capability.CapUtils;
-import io.github.llamarama.team.voidmagic.common.capability.VoidMagicCaps;
-import io.github.llamarama.team.voidmagic.common.capability.handler.IChaosHandler;
 import io.github.llamarama.team.voidmagic.common.capability.provider.ChaosChunkProvider;
-import io.github.llamarama.team.voidmagic.common.network.ModNetworking;
-import io.github.llamarama.team.voidmagic.common.network.packet.ChunkChaosUpdatePacket;
 import io.github.llamarama.team.voidmagic.common.register.ModItems;
+import io.github.llamarama.team.voidmagic.misc.ChunkSyncManager;
 import io.github.llamarama.team.voidmagic.util.IdBuilder;
-import io.github.llamarama.team.voidmagic.util.PlayerUtil;
 import io.github.llamarama.team.voidmagic.util.config.ServerConfig;
 import io.github.llamarama.team.voidmagic.util.constants.NBTConstants;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.entity.EntityEvent;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.world.ChunkWatchEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
+import net.minecraftforge.fml.event.server.FMLServerStoppingEvent;
 
 public class GameplayEventHandler implements IEventHandler {
 
@@ -42,25 +39,26 @@ public class GameplayEventHandler implements IEventHandler {
         return instance;
     }
 
-    /**
-     * Give the book if that config option is enabled.
-     *
-     * @param event {@link PlayerEvent.PlayerRespawnEvent}
-     */
     @SubscribeEvent
-    public void onPlayerSpawn(final PlayerEvent.PlayerRespawnEvent event) {
-        PlayerEntity player = event.getPlayer();
+    public void onServerStart(final FMLServerStartingEvent event) {
+        // Create a chunk sync manager for the server.
+        ChunkSyncManager.INSTANCE = new ChunkSyncManager();
+    }
 
-        if (player.world.isRemote) {
-            return;
+    @SubscribeEvent
+    public void chunkWatched(final ChunkWatchEvent.Watch event) {
+        ChunkPos pos = event.getPos();
+
+        if (event.getWorld().isAreaLoaded(new BlockPos(pos.x * 16, 0, pos.z * 16), 1)) {
+            ChunkSyncManager.INSTANCE.push(pos, event.getPlayer());
         }
+    }
 
-        int deaths = ((ServerPlayerEntity) player).getStats().getValue(Stats.CUSTOM.get(Stats.DEATHS));
-        int minutePlayed = ((ServerPlayerEntity) player).getStats().getValue(Stats.CUSTOM.get(Stats.PLAY_ONE_MINUTE));
+    @SubscribeEvent
+    public void chunkUnwatched(final ChunkWatchEvent.UnWatch event) {
+        ChunkPos pos = event.getPos();
 
-        if (deaths == 0 && minutePlayed == 0 && ServerConfig.GIVE_BOOK_ON_START.get()) {
-            player.addItemStackToInventory(new ItemStack(ModItems.GUIDE_BOOK.get()));
-        }
+        ChunkSyncManager.INSTANCE.pop(event.getPlayer(), pos);
     }
 
     @SubscribeEvent
@@ -72,57 +70,60 @@ public class GameplayEventHandler implements IEventHandler {
         event.addListener(provider::invalidate);
     }
 
-    /**
-     * Probably not the best solution. Will change.
-     *
-     * @param event {@link EntityEvent.EnteringChunk}
-     */
     @SubscribeEvent
-    public void onEnterChunk(final EntityEvent.EnteringChunk event) {
-        Entity entity = event.getEntity();
-        if (entity instanceof ServerPlayerEntity && !entity.world.isRemote) {
-            Chunk chunk = entity.world.getChunk(event.getNewChunkX(), event.getNewChunkZ());
-            ModNetworking.get().sendToClient(new ChunkChaosUpdatePacket(chunk), (ServerPlayerEntity) entity);
+    public void onWorldTick(final TickEvent.WorldTickEvent event) {
+        World world = event.world;
+        if (!event.world.isRemote && event.phase == TickEvent.Phase.START) {
+            ChunkSyncManager.INSTANCE.enqueue(() -> {
+                world.getPlayers().forEach((playerEntity) -> {
+                    if (playerEntity instanceof ServerPlayerEntity)
+                        ChunkSyncManager.INSTANCE.sendStatus((ServerPlayerEntity) playerEntity);
+                });
+
+                ChunkSyncManager.INSTANCE.popAll();
+            });
         }
+    }
+
+    @SubscribeEvent
+    public void onDisconnect(final PlayerEvent.PlayerLoggedOutEvent event) {
+        PlayerEntity player = event.getPlayer();
+
+        ChunkSyncManager.INSTANCE.popKey(player.getUniqueID());
     }
 
     @SubscribeEvent
     public void onLogin(final PlayerEvent.PlayerLoggedInEvent event) {
         PlayerEntity player = event.getPlayer();
 
-        // First we update the chunk the player is in so that he can she the actual chaos value.
         if (player instanceof ServerPlayerEntity) {
-            Chunk chunkAt = player.world.getChunkAt(player.getPosition());
+            // Give the book if that config option is enabled.
+            int deaths = ((ServerPlayerEntity) player).getStats().getValue(Stats.CUSTOM.get(Stats.DEATHS));
+            int minutePlayed = ((ServerPlayerEntity) player).getStats().getValue(Stats.CUSTOM.get(Stats.PLAY_ONE_MINUTE));
 
-            CapUtils.executeForChaos(chunkAt, (chaosHandler) ->
-                    ModNetworking.get().sendToClient(new ChunkChaosUpdatePacket(chunkAt), (ServerPlayerEntity) player)
-            );
+            if (deaths == 0 && minutePlayed == 0 && ServerConfig.GIVE_BOOK_ON_START.get()) {
+                player.addItemStackToInventory(new ItemStack(ModItems.GUIDE_BOOK.get()));
+            }
+
         }
     }
 
-    /**
-     * @param event Just testing
-     *              Marked for removal
-     * @Deprecated
-     */
-    @Deprecated
     @SubscribeEvent
-    public void onHit(final LivingDamageEvent event) {
-        LivingEntity entityLiving = event.getEntityLiving();
+    public void onServerClose(final FMLServerStoppingEvent event) {
+        // Remove the chunk sync manager from memory to prevent unecessary garbage collection.
+        ChunkSyncManager.INSTANCE.popAll();
+    }
+
+    @SubscribeEvent
+    public void onLivingHurt(final LivingHurtEvent event) {
         DamageSource source = event.getSource();
 
-        Entity trueSource = source.getTrueSource();
+        if (event.getEntity().world.isRemote)
+            return;
 
-        if (trueSource instanceof ServerPlayerEntity) {
-            BlockPos position = entityLiving.getPosition();
+        if (source.getTrueSource() instanceof PlayerEntity)
+            ChunkSyncManager.INSTANCE.sendStatus((ServerPlayerEntity) source.getTrueSource());
 
-            LazyOptional<IChaosHandler> capability =
-                    entityLiving.getEntityWorld().getChunkAt(position).getCapability(VoidMagicCaps.CHAOS);
-
-            capability.ifPresent((chaosHandler) ->
-                    PlayerUtil.sendMessage(chaosHandler.getChaos(), ((ServerPlayerEntity) trueSource)));
-        }
     }
-
 
 }

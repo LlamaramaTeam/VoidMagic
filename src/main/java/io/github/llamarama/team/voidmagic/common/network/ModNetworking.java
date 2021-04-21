@@ -5,8 +5,8 @@ import io.github.llamarama.team.voidmagic.util.constants.StringConstants;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkRegistry;
+import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 import java.util.function.Function;
@@ -31,7 +31,7 @@ public class ModNetworking {
     }
 
     public void sendToClient(IPacket packet, ServerPlayerEntity playerEntity) {
-        CHANNEL.sendTo(packet, playerEntity.connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
+        CHANNEL.send(PacketDistributor.PLAYER.with(() -> playerEntity), packet);
     }
 
     public void sendToAll(IPacket packet, ServerWorld world) {
@@ -63,6 +63,7 @@ public class ModNetworking {
         this.registerPacket(ReduceChaosPacket.class, ReduceChaosPacket::new);
         this.registerPacket(ChunkChaosUpdatePacket.class, ChunkChaosUpdatePacket::new);
         this.registerPacket(OpenBookScreenPacket.class, OpenBookScreenPacket::new);
+        this.registerPacket(MassChunkUpdatePacket.class, MassChunkUpdatePacket::new);
     }
 
 }
