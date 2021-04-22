@@ -34,7 +34,7 @@ public class ChalkBlock extends Block {
     @SuppressWarnings("deprecation")
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        return Block.makeCuboidShape(0, 0, 0, 16, 0.5d, 16);
+        return Block.makeCuboidShape(0, 0, 0, 16, 1, 16);
     }
 
     @SuppressWarnings("deprecation")

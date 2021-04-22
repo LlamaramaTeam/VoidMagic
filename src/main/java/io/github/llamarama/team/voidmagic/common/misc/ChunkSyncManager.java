@@ -1,4 +1,4 @@
-package io.github.llamarama.team.voidmagic.misc;
+package io.github.llamarama.team.voidmagic.common.misc;
 
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
