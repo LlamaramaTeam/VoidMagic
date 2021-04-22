@@ -2,6 +2,7 @@ package io.github.llamarama.team.voidmagic.datagen.provider.assets;
 
 import com.google.common.collect.Sets;
 import io.github.llamarama.team.voidmagic.VoidMagic;
+import io.github.llamarama.team.voidmagic.common.register.ModItems;
 import io.github.llamarama.team.voidmagic.common.register.ModRegistries;
 import io.github.llamarama.team.voidmagic.util.IdBuilder;
 import net.minecraft.data.DataGenerator;
@@ -26,6 +27,7 @@ public class ModItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         VoidMagic.getLogger().info("Starting item providers");
+        this.blacklist.add(ModItems.GUIDE_BOOK.get());
 
         ModRegistries.ITEMS.getEntries().stream()
                 .filter((registryObject) -> !this.blacklist.contains(registryObject.get()))
