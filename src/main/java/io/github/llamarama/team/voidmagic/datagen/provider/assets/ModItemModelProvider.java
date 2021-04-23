@@ -2,9 +2,11 @@ package io.github.llamarama.team.voidmagic.datagen.provider.assets;
 
 import com.google.common.collect.Sets;
 import io.github.llamarama.team.voidmagic.VoidMagic;
+import io.github.llamarama.team.voidmagic.common.register.ModBlocks;
 import io.github.llamarama.team.voidmagic.common.register.ModItems;
 import io.github.llamarama.team.voidmagic.common.register.ModRegistries;
 import io.github.llamarama.team.voidmagic.util.IdBuilder;
+import io.github.llamarama.team.voidmagic.util.IdHelper;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -38,11 +40,19 @@ public class ModItemModelProvider extends ItemModelProvider {
 
         });
 
+        this.registerNormalItem(ModBlocks.CHALK.get().asItem());
+
         VoidMagic.getLogger().info("Added all default item models.");
     }
 
     private <I extends Item> void registerNormalItem(RegistryObject<I> item) {
         String path = item.getId().getPath();
+        ModelFile model = new ModelFile.ExistingModelFile(mcLoc("item/generated"), this.existingFileHelper);
+        this.getBuilder(path).parent(model).texture("layer0", IdBuilder.mod("item/" + path));
+    }
+
+    private <I extends Item> void registerNormalItem(I item) {
+        String path = IdHelper.getNonNullPath(item);
         ModelFile model = new ModelFile.ExistingModelFile(mcLoc("item/generated"), this.existingFileHelper);
         this.getBuilder(path).parent(model).texture("layer0", IdBuilder.mod("item/" + path));
     }

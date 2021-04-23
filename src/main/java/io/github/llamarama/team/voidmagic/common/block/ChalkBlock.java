@@ -59,7 +59,8 @@ public class ChalkBlock extends Block {
     @SuppressWarnings("deprecation")
     @Override
     public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-        return !worldIn.isAirBlock(pos.down());
+        BlockState worldInBlockState = worldIn.getBlockState(pos.down());
+        return !worldIn.isAirBlock(pos.down()) && worldInBlockState.isSolidSide(worldIn, pos.down(), Direction.UP);
     }
 
     @SuppressWarnings("deprecation")
