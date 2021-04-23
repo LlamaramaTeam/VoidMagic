@@ -6,37 +6,34 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
-public class ReduceChaosPacket extends GenericPacket implements IPacket {
+public class IncreaseChaosPacket extends GenericPacket {
 
+    private final ChunkPos chunkPos;
     private final int amount;
-    private final int x, z;
 
-    public ReduceChaosPacket(int amount, Chunk chunk) {
+    public IncreaseChaosPacket(ChunkPos chunkPos, int amount) {
         super();
+        this.chunkPos = chunkPos;
         this.amount = amount;
-        ChunkPos pos = chunk.getPos();
-
-        this.x = pos.x;
-        this.z = pos.z;
     }
 
-    public ReduceChaosPacket(PacketBuffer buffer) {
+    public IncreaseChaosPacket(PacketBuffer buffer) {
         super(buffer);
-        this.x = buffer.readInt();
-        this.z = buffer.readInt();
+        int x = buffer.readInt();
+        int z = buffer.readInt();
+        this.chunkPos = new ChunkPos(x, z);
         this.amount = buffer.readInt();
     }
 
     @Override
     public void encode(PacketBuffer buffer) {
-        buffer.writeInt(x);
-        buffer.writeInt(z);
+        buffer.writeInt(this.chunkPos.x);
+        buffer.writeInt(this.chunkPos.z);
         buffer.writeInt(this.amount);
     }
 
@@ -44,18 +41,16 @@ public class ReduceChaosPacket extends GenericPacket implements IPacket {
     public boolean handle(Supplier<NetworkEvent.Context> contextSupplier) {
         final AtomicBoolean result = new AtomicBoolean(true);
         contextSupplier.get().enqueueWork(() -> {
-            ServerPlayerEntity sender = contextSupplier.get().getSender();
-            if (sender == null) {
+            ServerPlayerEntity player = contextSupplier.get().getSender();
+            if (player == null) {
                 result.set(false);
                 return;
             }
-            ServerWorld serverWorld = sender.getServerWorld();
-
-            Chunk chunk = serverWorld.getChunk(this.x, this.z);
+            Chunk chunk = player.getServerWorld().getChunk(this.chunkPos.x, this.chunkPos.z);
 
             chunk.getCapability(VoidMagicCaps.CHAOS).ifPresent((chaosHandler) -> {
-                chaosHandler.consume(this.amount);
-                ModNetworking.get().sendToAll(new ChunkChaosUpdatePacket(chunk), serverWorld);
+                chaosHandler.increase(this.amount);
+                ModNetworking.get().sendToAll(new ChunkChaosUpdatePacket(chunk), player.getServerWorld());
             });
         });
 

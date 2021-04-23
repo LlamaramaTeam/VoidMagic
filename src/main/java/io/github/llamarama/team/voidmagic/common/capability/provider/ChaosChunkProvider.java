@@ -23,7 +23,7 @@ public class ChaosChunkProvider implements ICapabilitySerializable<CompoundNBT> 
     @NotNull
     @Override
     public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        return cap == VoidMagicCaps.CHAOS ? this.chaos.cast() : LazyOptional.empty();
+        return cap == VoidMagicCaps.CHAOS ? this.chaos.cast() : LazyOptional.empty().cast();
     }
 
     @Override

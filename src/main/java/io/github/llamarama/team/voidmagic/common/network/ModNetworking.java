@@ -64,6 +64,7 @@ public class ModNetworking {
         this.registerPacket(ChunkChaosUpdatePacket.class, ChunkChaosUpdatePacket::new);
         this.registerPacket(OpenBookScreenPacket.class, OpenBookScreenPacket::new);
         this.registerPacket(MassChunkUpdatePacket.class, MassChunkUpdatePacket::new);
+        this.registerPacket(IncreaseChaosPacket.class, IncreaseChaosPacket::new);
     }
 
 }

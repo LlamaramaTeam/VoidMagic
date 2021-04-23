@@ -3,6 +3,7 @@ package io.github.llamarama.team.voidmagic.client.render.guide;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import io.github.llamarama.team.voidmagic.client.VoidMagicClient;
 import io.github.llamarama.team.voidmagic.common.network.ModNetworking;
+import io.github.llamarama.team.voidmagic.common.network.packet.IncreaseChaosPacket;
 import io.github.llamarama.team.voidmagic.common.network.packet.ReduceChaosPacket;
 import io.github.llamarama.team.voidmagic.common.register.ModRegistries;
 import io.github.llamarama.team.voidmagic.util.constants.CustomTranslations;
@@ -17,6 +18,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -47,16 +49,28 @@ public class InitialGuideBookScreen extends Screen {
     public void init(Minecraft minecraft, int width, int height) {
         super.init(minecraft, width, height);
         this.addButton(new Button(width / 2, height / 2, 100, 20,
-                new TranslationTextComponent("button"), (button) -> {
-            ClientPlayerEntity player = VoidMagicClient.getGame().player;
+                new StringTextComponent("decrease"), (button) -> {
+            ClientPlayerEntity player = minecraft.player;
 
-            if (player != null) {
-                ClientWorld world = player.connection.getWorld();
-                player.sendChatMessage("hallo");
-                ModNetworking.get().sendToServer(
-                        new ReduceChaosPacket(10, world.getChunkAt(player.getPosition()))
-                );
-            }
+            if (player == null)
+                return;
+
+            ClientWorld world = player.connection.getWorld();
+            ModNetworking.get().sendToServer(
+                    new ReduceChaosPacket(10, world.getChunkAt(player.getPosition()))
+            );
+        }));
+
+        this.addButton(new Button(width / 2 - width / 5, height / 2 - height / 5, 100, 20,
+                new StringTextComponent("increase"), (button) -> {
+            ClientPlayerEntity player = minecraft.player;
+
+            if (player == null)
+                return;
+
+            ClientWorld world = player.connection.getWorld();
+            ModNetworking.get().sendToServer(
+                    new IncreaseChaosPacket(world.getChunkAt(player.getPosition()).getPos(), 10));
         }));
     }
 

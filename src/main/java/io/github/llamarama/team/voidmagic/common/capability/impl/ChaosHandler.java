@@ -11,7 +11,7 @@ public class ChaosHandler implements IChaosHandler, INBTSerializable<CompoundNBT
     private Runnable markDirty;
 
     public ChaosHandler() {
-        this(1000);
+        this(100);
     }
 
     public ChaosHandler(int chaos) {

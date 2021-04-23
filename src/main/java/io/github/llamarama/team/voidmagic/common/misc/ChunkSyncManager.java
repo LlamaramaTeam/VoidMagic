@@ -33,10 +33,7 @@ public class ChunkSyncManager {
             return;
 
         UUID uniqueID = player.getUniqueID();
-        boolean put = this.pending.put(uniqueID, chunkPos);
-        VoidMagic.getLogger().debug(put);
-        if (put)
-            VoidMagic.getLogger().debug("Pushed chunk at " + chunkPos.x + ", " + chunkPos.z);
+        this.pending.put(uniqueID, chunkPos);
     }
 
     public void pop(PlayerEntity player, ChunkPos chunkPos) {
@@ -59,12 +56,10 @@ public class ChunkSyncManager {
     }
 
     public void sendStatus(ServerPlayerEntity player) {
-        VoidMagic.getLogger().debug("Status sent to " + player);
         ServerWorld world = player.getServerWorld();
         HashMap<ChunkPos, Integer> toBSent = new HashMap<>();
 
-        if (!this.pending.containsKey(player.getUniqueID()))
-            return;
+        if (!this.pending.containsKey(player.getUniqueID())) return;
 
         this.pending.values().forEach((chunkPos) -> {
             Chunk chunk = world.getChunk(chunkPos.x, chunkPos.z);
@@ -73,6 +68,8 @@ public class ChunkSyncManager {
         });
 
         ModNetworking.get().sendToClient(new MassChunkUpdatePacket(toBSent), player);
+        if (VoidMagic.getLogger().isDebugEnabled())
+            VoidMagic.getLogger().debug("Status sent to " + player);
     }
 
     public void enqueue(Runnable runnable) {
