@@ -8,10 +8,12 @@ import net.minecraftforge.fml.RegistryObject;
 
 import java.util.function.Supplier;
 
+@SuppressWarnings("ConstantConditions")
 public final class ModTileEntityTypes {
 
-    public static final RegistryObject<TileEntityType<OfferingPlateTileEntity>> OFFERING_PLATE = register("offering_plate",
-            () -> TileEntityType.Builder.create(OfferingPlateTileEntity::new, ModBlocks.OFFERING_PLATE.get()).build(null));
+    public static final RegistryObject<TileEntityType<OfferingPlateTileEntity>> OFFERING_PLATE =
+            register("offering_plate", () -> TileEntityType.Builder
+                    .create(OfferingPlateTileEntity::new, ModBlocks.OFFERING_PLATE.get()).build(null));
 
     private ModTileEntityTypes() {
     }
