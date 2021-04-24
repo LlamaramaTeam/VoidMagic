@@ -118,3 +118,9 @@ run/
 !gradle-wrapper.jar
 
 src/generated/resources/.cache/
+
+# Atom folders
+.project
+.settings/
+.classpath
+bin/
