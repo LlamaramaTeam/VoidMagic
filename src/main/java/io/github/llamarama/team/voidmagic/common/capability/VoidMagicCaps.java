@@ -1,6 +1,6 @@
 package io.github.llamarama.team.voidmagic.common.capability;
 
-import io.github.llamarama.team.voidmagic.common.capability.handler.IChaosHandler;
+import io.github.llamarama.team.voidmagic.api.capability.IChaosHandler;
 import io.github.llamarama.team.voidmagic.common.capability.impl.ChaosHandler;
 import io.github.llamarama.team.voidmagic.common.capability.storage.ChaosStorage;
 import net.minecraftforge.common.capabilities.Capability;

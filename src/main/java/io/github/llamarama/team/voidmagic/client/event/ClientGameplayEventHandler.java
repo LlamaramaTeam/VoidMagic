@@ -2,7 +2,7 @@ package io.github.llamarama.team.voidmagic.client.event;
 
 import io.github.llamarama.team.voidmagic.client.VoidMagicClient;
 import io.github.llamarama.team.voidmagic.common.capability.VoidMagicCaps;
-import io.github.llamarama.team.voidmagic.common.capability.handler.IChaosHandler;
+import io.github.llamarama.team.voidmagic.api.capability.IChaosHandler;
 import io.github.llamarama.team.voidmagic.common.event.IEventHandler;
 import io.github.llamarama.team.voidmagic.common.register.ModItems;
 import net.minecraft.client.entity.player.ClientPlayerEntity;

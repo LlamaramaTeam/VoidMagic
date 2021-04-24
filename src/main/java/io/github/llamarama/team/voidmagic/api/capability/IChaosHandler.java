@@ -1,4 +1,4 @@
-package io.github.llamarama.team.voidmagic.common.capability.handler;
+package io.github.llamarama.team.voidmagic.api.capability;
 
 import io.github.llamarama.team.voidmagic.util.config.ServerConfig;
 

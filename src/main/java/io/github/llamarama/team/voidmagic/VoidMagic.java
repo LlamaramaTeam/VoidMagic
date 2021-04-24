@@ -24,8 +24,8 @@ public class VoidMagic {
     private static final Logger LOGGER = LogManager.getLogger("VoidMagic");
 
     public VoidMagic() {
-        IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
-        IEventBus forgeBus = MinecraftForge.EVENT_BUS;
+        final IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
+        final IEventBus forgeBus = MinecraftForge.EVENT_BUS;
 
         // Initialize the mod's configuration.
         ConfigInitializer.init(ModLoadingContext.get());

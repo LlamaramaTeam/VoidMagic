@@ -1,6 +1,6 @@
 package io.github.llamarama.team.voidmagic.common.capability;
 
-import io.github.llamarama.team.voidmagic.common.capability.handler.IChaosHandler;
+import io.github.llamarama.team.voidmagic.api.capability.IChaosHandler;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.NonNullConsumer;
 
