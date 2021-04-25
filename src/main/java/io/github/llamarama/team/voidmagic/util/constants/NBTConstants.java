@@ -4,6 +4,8 @@ public interface NBTConstants {
 
     String INVENTORY = "Inventory";
     String CHAOS = "Chaos";
-    String MAX_CHAOS = "MaxChaos";
+    String ITEMSTACK_SIZE = "Size";
+    String ITEM_ID = "ItemId";
+    String EXTRA_NBT = "StackNBT";
 
 }
