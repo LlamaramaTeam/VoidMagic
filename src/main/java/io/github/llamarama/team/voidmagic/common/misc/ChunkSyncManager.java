@@ -13,7 +13,6 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
-import net.minecraftforge.fml.event.server.FMLServerStoppingEvent;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -30,8 +29,8 @@ public class ChunkSyncManager {
      * The way to access an instance of this class.
      * Keep in mind this instance is initialized at server start and removed at server stop.
      *
-     * @see io.github.llamarama.team.voidmagic.common.event.GameplayEventHandler#onServerStart(FMLServerStartingEvent)
-     * @see io.github.llamarama.team.voidmagic.common.event.GameplayEventHandler#onServerClose(FMLServerStoppingEvent)
+     * @see io.github.llamarama.team.voidmagic.common.event.GameplayEventHandler#onServerStart
+     * @see io.github.llamarama.team.voidmagic.common.event.GameplayEventHandler#onServerClose
      */
     public static ChunkSyncManager INSTANCE;
     /**
@@ -45,11 +44,13 @@ public class ChunkSyncManager {
     /**
      * Only called by {@link FMLServerStartingEvent}.
      *
-     * @see io.github.llamarama.team.voidmagic.common.event.GameplayEventHandler#onServerStart(FMLServerStartingEvent)
+     * @see io.github.llamarama.team.voidmagic.common.event.GameplayEventHandler#onServerStart
      */
     public ChunkSyncManager() {
+        // We use sets because we never need to worry about specific indeces for values.
         this.pending = Multimaps.newSetMultimap(new HashMap<>(), HashSet::new);
 
+        // This will remain so that players can debug whether the manager exists.
         VoidMagic.getLogger().info("Created chunk sync manager for server.");
     }
 
