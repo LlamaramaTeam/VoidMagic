@@ -41,8 +41,7 @@ public class ReduceChaosPacket extends GenericPacket implements IPacket {
     }
 
     @Override
-    public boolean handle(Supplier<NetworkEvent.Context> contextSupplier) {
-        final AtomicBoolean result = new AtomicBoolean(true);
+    public boolean handle(Supplier<NetworkEvent.Context> contextSupplier, AtomicBoolean result) {
         contextSupplier.get().enqueueWork(() -> {
             ServerPlayerEntity sender = contextSupplier.get().getSender();
             if (sender == null) {

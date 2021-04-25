@@ -38,8 +38,7 @@ public class IncreaseChaosPacket extends GenericPacket {
     }
 
     @Override
-    public boolean handle(Supplier<NetworkEvent.Context> contextSupplier) {
-        final AtomicBoolean result = new AtomicBoolean(true);
+    public boolean handle(Supplier<NetworkEvent.Context> contextSupplier, AtomicBoolean result) {
         contextSupplier.get().enqueueWork(() -> {
             ServerPlayerEntity player = contextSupplier.get().getSender();
             if (player == null) {

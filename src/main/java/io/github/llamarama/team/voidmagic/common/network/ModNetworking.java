@@ -9,6 +9,7 @@ import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
 public class ModNetworking {
@@ -46,7 +47,9 @@ public class ModNetworking {
         CHANNEL.messageBuilder(packetClass, id++)
                 .encoder(IPacket::encode)
                 .decoder(decoder)
-                .consumer(IPacket::handle)
+                .consumer((pct, contextSupplier) -> {
+                    return pct.handle(contextSupplier, new AtomicBoolean(true));
+                })
                 .add();
     }
 

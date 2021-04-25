@@ -68,20 +68,19 @@ public class ChunkChaosUpdatePacket extends GenericPacket {
     }
 
     @Override
-    public boolean handle(Supplier<NetworkEvent.Context> contextSupplier) {
-        final AtomicBoolean out = new AtomicBoolean(true);
+    public boolean handle(Supplier<NetworkEvent.Context> contextSupplier, AtomicBoolean result) {
 
         contextSupplier.get().enqueueWork(() -> {
             if (this.chunk == null) {
-                out.set(false);
+                result.set(false);
                 return;
             }
 
             CapUtils.executeForChaos(chunk, (chaosHandler) -> chaosHandler.setChaos(this.updatedVal));
         });
 
-        contextSupplier.get().setPacketHandled(out.get());
-        return out.get();
+        contextSupplier.get().setPacketHandled(result.get());
+        return result.get();
     }
 
 }

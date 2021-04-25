@@ -28,13 +28,11 @@ public class OpenBookScreenPacket extends GenericPacket {
     }
 
     @Override
-    public boolean handle(Supplier<NetworkEvent.Context> contextSupplier) {
-        final AtomicBoolean out = new AtomicBoolean(true);
-
+    public boolean handle(Supplier<NetworkEvent.Context> contextSupplier, AtomicBoolean result) {
         contextSupplier.get().enqueueWork(() -> ScreenUtilities.openInitialBookScreen(this.stack));
 
-        contextSupplier.get().setPacketHandled(out.get());
-        return out.get();
+        contextSupplier.get().setPacketHandled(result.get());
+        return result.get();
     }
 
 }

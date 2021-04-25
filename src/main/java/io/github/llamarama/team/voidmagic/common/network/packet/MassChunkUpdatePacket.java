@@ -61,9 +61,7 @@ public class MassChunkUpdatePacket extends GenericPacket {
     }
 
     @Override
-    public boolean handle(Supplier<NetworkEvent.Context> contextSupplier) {
-        final AtomicBoolean result = new AtomicBoolean(true);
-
+    public boolean handle(Supplier<NetworkEvent.Context> contextSupplier, AtomicBoolean result) {
         contextSupplier.get().enqueueWork(() -> {
             ClientWorld world = VoidMagicClient.getGame().world;
             if (world != null) {

@@ -5,6 +5,7 @@ import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 public class SendChatMessagePacket extends GenericPacket {
@@ -35,15 +36,15 @@ public class SendChatMessagePacket extends GenericPacket {
     }
 
     @Override
-    public boolean handle(Supplier<NetworkEvent.Context> contextSupplier) {
+    public boolean handle(Supplier<NetworkEvent.Context> contextSupplier, AtomicBoolean result) {
         contextSupplier.get().enqueueWork(() -> {
             ClientPlayerEntity player = VoidMagicClient.getGame().player;
             if (player != null) {
                 player.sendChatMessage(this.message);
             }
         });
-        contextSupplier.get().setPacketHandled(true);
-        return true;
+        contextSupplier.get().setPacketHandled(result.get());
+        return result.get();
     }
 
 }
