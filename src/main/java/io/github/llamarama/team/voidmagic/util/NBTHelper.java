@@ -8,7 +8,7 @@ public class NBTHelper {
 
     public static void writeItemStack(CompoundNBT tag, ItemStack stack) {
         tag.putInt(NBTConstants.ITEMSTACK_SIZE, stack.getCount());
-        tag.putString(NBTConstants.ITEM_ID, IdHelper.getNoNullId(stack.getItem()));
+        tag.putString(NBTConstants.ITEM_ID, IdHelper.getIdString(stack.getItem()));
         CompoundNBT stackTag = stack.getTag();
 
         if (stackTag != null) {

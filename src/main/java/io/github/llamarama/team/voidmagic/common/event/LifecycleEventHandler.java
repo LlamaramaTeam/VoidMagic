@@ -12,16 +12,16 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 
-public final class CommonInitEventHandler implements IEventHandler {
+public final class LifecycleEventHandler implements IEventHandler {
 
-    private static CommonInitEventHandler instance;
+    private static LifecycleEventHandler instance;
 
-    private CommonInitEventHandler() {
+    private LifecycleEventHandler() {
     }
 
-    public static CommonInitEventHandler getInstance() {
+    public static LifecycleEventHandler getInstance() {
         if (instance == null) {
-            instance = new CommonInitEventHandler();
+            instance = new LifecycleEventHandler();
         }
 
         return instance;

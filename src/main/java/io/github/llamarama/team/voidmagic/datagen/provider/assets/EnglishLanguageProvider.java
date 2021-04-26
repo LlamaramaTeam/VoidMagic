@@ -1,6 +1,7 @@
 package io.github.llamarama.team.voidmagic.datagen.provider.assets;
 
 import io.github.llamarama.team.voidmagic.VoidMagic;
+import io.github.llamarama.team.voidmagic.common.item.PackedBlockItem;
 import io.github.llamarama.team.voidmagic.common.register.ModRegistries;
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
@@ -19,6 +20,9 @@ public class EnglishLanguageProvider extends LanguageProvider {
     @Override
     protected void addTranslations() {
         this.add("itemGroup.voidmagic.group", "Void Magic");
+        this.add(PackedBlockItem.CONTENT_KEY, "Contents: %s");
+        this.add(PackedBlockItem.CONTAINS_KEY, "Contains %s stacks.");
+
         ModRegistries.BLOCKS.getEntries().forEach(this::getCamelCaseBlockName);
 
         ModRegistries.ITEMS.getEntries().stream()

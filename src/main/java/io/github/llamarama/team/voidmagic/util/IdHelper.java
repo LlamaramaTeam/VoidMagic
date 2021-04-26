@@ -28,8 +28,17 @@ public final class IdHelper {
         return StringConstants.EMPTY.get();
     }
 
-    public static String getNoNullId(Item item) {
+    public static String getIdString(Item item) {
         ResourceLocation registryName = item.getRegistryName();
+
+        if (registryName == null)
+            return StringConstants.EMPTY.get();
+
+        return registryName.toString();
+    }
+
+    public static String getIdString(Block block) {
+        ResourceLocation registryName = block.getRegistryName();
 
         if (registryName == null)
             return StringConstants.EMPTY.get();

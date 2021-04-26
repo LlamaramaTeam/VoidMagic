@@ -39,7 +39,6 @@ public class ModBlockProvider extends BlockStateProvider {
         this.blacklist.add(ModBlocks.TOFAL_PLATE.get());
         this.blacklist.add(ModBlocks.OFFERING_PLATE.get());
         this.blacklist.add(ModBlocks.CHALK.get());
-        this.blacklist.add(ModBlocks.PACKED_BLOCK.get());
 
         ModRegistries.BLOCKS.getEntries().stream()
                 .filter((block) -> !this.blacklist.contains(block.get()))

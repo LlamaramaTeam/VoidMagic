@@ -30,9 +30,10 @@ public class ModItemModelProvider extends ItemModelProvider {
     protected void registerModels() {
         VoidMagic.getLogger().info("Starting item providers");
         this.blacklist.add(ModItems.GUIDE_BOOK.get());
+        this.blacklist.add(ModItems.PACKED_BLOCK.get());
 
         // TODO: Find an actual texture for this.
-        this.blacklist.add(ModItems.SPELLBINDING_FABRIC.get());
+        this.blacklist.add(ModItems.SPELLBINDING_CLOTH.get());
 
         ModRegistries.ITEMS.getEntries().stream()
                 .filter((registryObject) -> !this.blacklist.contains(registryObject.get()))

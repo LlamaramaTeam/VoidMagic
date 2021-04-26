@@ -1,7 +1,8 @@
 package io.github.llamarama.team.voidmagic.common.register;
 
 import io.github.llamarama.team.voidmagic.common.item.GuideBookItem;
-import io.github.llamarama.team.voidmagic.common.item.SpellbindingFabricItem;
+import io.github.llamarama.team.voidmagic.common.item.PackedBlockItem;
+import io.github.llamarama.team.voidmagic.common.item.SpellBindingClothItem;
 import io.github.llamarama.team.voidmagic.util.ModItemGroup;
 import net.minecraft.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -21,8 +22,10 @@ public final class ModItems {
             () -> new Item(DEFAULT.get()));
     public static final RegistryObject<GuideBookItem> GUIDE_BOOK = register("guide_book",
             () -> new GuideBookItem(UNSTACKABLE.get()));
-    public static final RegistryObject<SpellbindingFabricItem> SPELLBINDING_FABRIC = register("spellbinding_fabric",
-            () -> new SpellbindingFabricItem(DEFAULT.get()));
+    public static final RegistryObject<PackedBlockItem> PACKED_BLOCK = register("packed_block",
+            () -> new PackedBlockItem(DEFAULT.get()));
+    public static final RegistryObject<SpellBindingClothItem> SPELLBINDING_CLOTH = register("spellbinding_cloth",
+            () -> new SpellBindingClothItem(DEFAULT.get()));
 
     private static <I extends Item> RegistryObject<I> register(String id, Supplier<I> item) {
         return ModRegistries.ITEMS.register(id, item);

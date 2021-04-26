@@ -7,5 +7,8 @@ public interface NBTConstants {
     String ITEMSTACK_SIZE = "Size";
     String ITEM_ID = "ItemId";
     String EXTRA_NBT = "StackNBT";
+    String BLOCK_ID = "BlockId";
+    String FLUID_STORAGE = "TankStorage";
+    String ENERGY_STORAGE = "Battery";
 
 }

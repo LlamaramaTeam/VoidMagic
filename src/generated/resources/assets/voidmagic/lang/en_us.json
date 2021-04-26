@@ -5,6 +5,8 @@
   "block.voidmagic.end_putiliam_ore": "End Putiliam Ore ",
   "block.voidmagic.offering_plate": "Offering Plate ",
   "block.voidmagic.overworld_putiliam_ore": "Overworld Putiliam Ore ",
+  "block.voidmagic.packed_block.contains": "Contains %s stacks.",
+  "block.voidmagic.packed_block.contents": "Contents: %s",
   "block.voidmagic.polished_withered_stone": "Polished Withered Stone ",
   "block.voidmagic.shadow_bricks": "Shadow Bricks ",
   "block.voidmagic.tofal": "Tofal ",
@@ -23,5 +25,6 @@
   "block.voidmagic.withered_stone_slab": "Withered Stone Slab ",
   "item.voidmagic.guide_book": "Guide Book ",
   "item.voidmagic.putiliam": "Putiliam ",
+  "item.voidmagic.spell_binding_cloth": "Spell Binding Cloth ",
   "itemGroup.voidmagic.group": "Void Magic"
 }

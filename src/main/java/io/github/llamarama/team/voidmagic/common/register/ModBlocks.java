@@ -64,8 +64,6 @@ public final class ModBlocks {
             () -> new PillarBlock(copyProperties(WITHERED_STONE.get())));
     public static final RegistryObject<ChalkBlock> CHALK = register("chalk",
             () -> new ChalkBlock(createChalkProps()));
-    public static final RegistryObject<PackedBlock> PACKED_BLOCK = register("packed_block",
-            () -> new PackedBlock(copyProperties(Blocks.WHITE_WOOL)));
 
     private ModBlocks() {
     }

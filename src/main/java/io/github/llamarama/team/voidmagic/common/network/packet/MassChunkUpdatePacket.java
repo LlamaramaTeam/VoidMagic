@@ -23,13 +23,11 @@ public class MassChunkUpdatePacket extends GenericPacket {
             throw new IllegalArgumentException("Cannot parse an empty hashmap");
 
         this.posCollection = posHashMap;
-        VoidMagic.getLogger().debug("Sent Packet!");
     }
 
     public MassChunkUpdatePacket(PacketBuffer buffer) {
         super(buffer);
 
-        VoidMagic.getLogger().debug("Received packet.");
         int size = buffer.readInt();
         HashMap<ChunkPos, Integer> read = new HashMap<>();
 
@@ -42,8 +40,6 @@ public class MassChunkUpdatePacket extends GenericPacket {
         }
 
         this.posCollection = read;
-
-        VoidMagic.getLogger().debug("Finished Decoding.");
     }
 
     @Override
@@ -56,8 +52,6 @@ public class MassChunkUpdatePacket extends GenericPacket {
             buffer.writeInt(current.z);
             buffer.writeInt(this.posCollection.get(current));
         }
-
-        VoidMagic.getLogger().debug("Finished encoding.");
     }
 
     @Override
