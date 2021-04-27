@@ -27,6 +27,12 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+/**
+ * Fancy shiny item, and stuff.
+ *
+ * @author 0xJoeMama
+ * @since 2021
+ */
 public class SpellBindingClothItem extends Item {
 
     public static final String SHINY_KEY = "item.voidmagic.spellbinding_cloth.shiny";
@@ -43,13 +49,15 @@ public class SpellBindingClothItem extends Item {
 
         if (playerEntity == null || !playerEntity.isSneaking())
             return ActionResultType.PASS;
+        // Make sure we are on the server for logic.
         if (!world.isRemote()) {
             TileEntity tileEntity = world.getTileEntity(pos);
             if (tileEntity == null)
                 return ActionResultType.PASS;
 
-
+            // Generate the itemstack of packed blocks that would be good for the target.
             ItemStack resultStack = this.getItemStackFromTarget(tileEntity, world, pos);
+            // Make sure no items are left before we break.
             this.breakWithNoItemDrops(pos, world);
             ItemEntity toSpawn =
                     new ItemEntity(world, pos.getX() + 0.5d, pos.getY() + 0.5f, pos.getZ() + 0.5f, resultStack);
@@ -87,6 +95,14 @@ public class SpellBindingClothItem extends Item {
         world.removeBlock(pos, false);
     }
 
+    /**
+     * Used to make an {@link ItemStack} with the correct NBT tag for an item usage.
+     *
+     * @param tileEntity The target inventory.
+     * @param world      The world that entity exists in.
+     * @param pos        The position of that entity.
+     * @return An {@link ItemStack} of {@link PackedBlockItem} that contains the correct tag.
+     */
     public ItemStack getItemStackFromTarget(TileEntity tileEntity, World world, BlockPos pos) {
         ItemStack stackOut = new ItemStack(ModItems.PACKED_BLOCK.get(), 1);
         // The block that will later be written to the stack nbt.
@@ -125,21 +141,43 @@ public class SpellBindingClothItem extends Item {
             i++;
         }
 
+        // Actually put the correct number in.
         stackOut.getOrCreateTag().putInt(NBTConstants.FILLED_STACKS, filledStacks);
 
+        // Return the stack.
         return stackOut;
     }
 
+    /**
+     * Create the tag that contains the block ID and the contents of the inventory.
+     *
+     * @param containerAccess The getItemStackInSlot type method of the target inventory.
+     * @param size            The size of the container.
+     * @param stackOut        That stack whose tag needs to be filled.
+     */
     protected void fillTag(Function<Integer, ItemStack> containerAccess, int size, ItemStack stackOut) {
         ListNBT inventoryTag = this.makeInventoryTag(containerAccess, size);
         this.addInventoryTag(stackOut, inventoryTag);
     }
 
+    /**
+     * Adds the tag that contains the contents of the inventory.
+     *
+     * @param stackOut         The stack whose tag will be modified.
+     * @param containerItemTag The content tag.
+     */
     public void addInventoryTag(ItemStack stackOut, ListNBT containerItemTag) {
         CompoundNBT stackTag = stackOut.getOrCreateTag();
         stackTag.put(NBTConstants.INVENTORY, containerItemTag);
     }
 
+    /**
+     * Creates the tag with the contents of the inventory.
+     *
+     * @param provider The getStackInSlot type method.
+     * @param size     The size of the inventory.
+     * @return The tag with the contents of the inventory.
+     */
     protected ListNBT makeInventoryTag(Function<Integer, ItemStack> provider, int size) {
         ListNBT containerItemTag = new ListNBT();
 

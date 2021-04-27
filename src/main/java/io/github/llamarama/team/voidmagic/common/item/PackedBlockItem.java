@@ -21,14 +21,23 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.BiConsumer;
 
+/**
+ * And there you were thinking that this was a block. Got'em!
+ *
+ * @author 0xJoeMama
+ * @since 2021
+ */
 public class PackedBlockItem extends BlockItem {
 
     public static final String CONTENT_KEY = "block.voidmagic.packed_block.contents";
@@ -48,51 +57,86 @@ public class PackedBlockItem extends BlockItem {
         PlayerEntity player = context.getPlayer();
         Hand hand = context.getHand();
         World world = context.getWorld();
+        // Put logic on the server.
         if (!world.isRemote()) {
             if (player == null)
                 return false;
+            // Get the packed stack that will later be used for extracting the tag information.
             ItemStack packedBlockStack = player.getHeldItem(hand);
 
-            boolean success = this.getBlockForPlacement(packedBlockStack, world, context.getPos());
+            // Place the block.
+            boolean success = this.placeBaseBlock(packedBlockStack, world, context.getPos());
 
+            // Get the tag and extract the inventory.
             CompoundNBT tag = packedBlockStack.getOrCreateTag();
             ListNBT inventoryTag = (ListNBT) tag.get(NBTConstants.INVENTORY);
 
-            if (inventoryTag != null) {
-                TileEntity tileEntity = world.getTileEntity(context.getPos());
-                if (tileEntity != null)
-                    this.insertItemToInventory(tileEntity, inventoryTag);
-            }
+            TileEntity tileEntity = world.getTileEntity(context.getPos());
+            // Insert all the items from the tag.
+            if (inventoryTag != null && tileEntity != null)
+                this.insertItemsToInventory(tileEntity, inventoryTag);
+
             return success;
         }
 
         return true;
     }
 
-    private void insertItemToInventory(TileEntity tileEntity, ListNBT inventoryTag) {
+    /**
+     * Using the list tag, it insert all the content back to the inventory.
+     *
+     * @param tileEntity   The inventory.
+     * @param inventoryTag The tah with all the contents.
+     */
+    private void insertItemsToInventory(TileEntity tileEntity, ListNBT inventoryTag) {
+        // Lambda magic to prevent checking 5 gjillion times.
+        BiConsumer<Integer, ItemStack> convertInsertItem;
+        if (tileEntity instanceof IInventory)
+            convertInsertItem = ((IInventory) tileEntity)::setInventorySlotContents;
+        else {
+            LazyOptional<IItemHandler> lazyHandler =
+                    tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
+
+            // Lambda to lambda. Lel?!
+            // At least it is not () -> () ->
+            convertInsertItem = (integer, itemStack) -> lazyHandler.ifPresent(
+                    (itemHandler) -> itemHandler.insertItem(integer, itemStack, false));
+        }
+
         for (int i = 0; i < inventoryTag.size(); i++) {
             INBT inbt = inventoryTag.get(i);
             ItemStack currentSlot = ItemStack.read((CompoundNBT) inbt);
 
-            if (tileEntity instanceof IInventory)
-                ((IInventory) tileEntity).setInventorySlotContents(i, currentSlot);
-            else {
-                int finalI = i;
-                tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-                        .ifPresent(itemHandler -> itemHandler.insertItem(finalI, currentSlot, false));
-            }
+            convertInsertItem.accept(i, currentSlot);
         }
     }
 
-    protected boolean getBlockForPlacement(ItemStack stack, World world, BlockPos pos) {
+    /**
+     * Using the tag that was saved to the block, it places the target block.
+     *
+     * @param stack The stack of {@link PackedBlockItem}
+     * @param world World the event happened in.
+     * @param pos   The position it happened in.
+     * @return Whether the block was placed successfully.
+     */
+    protected boolean placeBaseBlock(ItemStack stack, World world, BlockPos pos) {
         Optional<Block> blockFromTag = this.getBlockFromTag(stack.getOrCreateTag());
 
+        /*
+            I didn't want to use atomic reference here but whatever.
+         */
         final AtomicBoolean result = new AtomicBoolean();
         blockFromTag.ifPresent((block) -> result.set(world.setBlockState(pos, block.getDefaultState())));
 
         return result.get();
     }
 
+    /**
+     * Get a block from the {@link ForgeRegistries#BLOCKS} registry, using the provided tag.
+     *
+     * @param tag A tag that contains a block id.
+     * @return An {@link Optional} that may contain the block with the id from the provided tag.
+     */
     public Optional<Block> getBlockFromTag(CompoundNBT tag) {
         String blockIdString = tag.getString(NBTConstants.BLOCK_ID);
         Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockIdString));
@@ -114,6 +158,7 @@ public class PackedBlockItem extends BlockItem {
             /*
                 Get the amount of stacks that have items in the inventory.
                 This number was written in the nbt tag of the stack when it got created.
+                The only reason it was written is for this, so that we wont have to check every tick for the tooltip.
              */
             int filledStacks = stackTag.getInt(NBTConstants.FILLED_STACKS);
             tooltip.add(new TranslationTextComponent(CONTAINS_KEY,
