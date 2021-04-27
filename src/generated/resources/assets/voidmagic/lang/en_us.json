@@ -25,6 +25,7 @@
   "block.voidmagic.withered_stone_slab": "Withered Stone Slab ",
   "item.voidmagic.guide_book": "Guide Book ",
   "item.voidmagic.putiliam": "Putiliam ",
-  "item.voidmagic.spell_binding_cloth": "Spell Binding Cloth ",
+  "item.voidmagic.spellbinding_cloth": "Spellbinding Cloth ",
+  "item.voidmagic.spellbinding_cloth.shiny": "Shinny...",
   "itemGroup.voidmagic.group": "Void Magic"
 }

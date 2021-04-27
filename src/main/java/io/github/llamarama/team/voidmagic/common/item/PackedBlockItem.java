@@ -97,6 +97,7 @@ public class PackedBlockItem extends BlockItem {
         String blockIdString = tag.getString(NBTConstants.BLOCK_ID);
         Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockIdString));
 
+        // We have to use optional here because the block is nullable.
         return Optional.ofNullable(block);
     }
 
@@ -107,21 +108,16 @@ public class PackedBlockItem extends BlockItem {
         Optional<Block> fromTag = this.getBlockFromTag(stackTag);
 
         fromTag.ifPresent((block) -> {
+            // Get the name of the block in this stack amd put it in the tooltip.
             tooltip.add(new TranslationTextComponent(CONTENT_KEY, block.getTranslatedName()));
-            ListNBT inventory = ((ListNBT) stackTag.get(NBTConstants.INVENTORY));
-            if (inventory != null) {
-                int x = 0;
-                int filledStacks = 0;
-                while (x < inventory.size()) {
-                    INBT tag = inventory.get(x);
-                    if (!ItemStack.read((CompoundNBT) tag).isEmpty())
-                        filledStacks++;
-                    x++;
-                }
 
-                tooltip.add(new TranslationTextComponent(CONTAINS_KEY,
-                        new StringTextComponent(Integer.toString(filledStacks))));
-            }
+            /*
+                Get the amount of stacks that have items in the inventory.
+                This number was written in the nbt tag of the stack when it got created.
+             */
+            int filledStacks = stackTag.getInt(NBTConstants.FILLED_STACKS);
+            tooltip.add(new TranslationTextComponent(CONTAINS_KEY,
+                    new StringTextComponent(Integer.toString(filledStacks))));
         });
     }
 

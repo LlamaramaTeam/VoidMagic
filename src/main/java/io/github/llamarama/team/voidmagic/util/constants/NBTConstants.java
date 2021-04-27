@@ -10,5 +10,6 @@ public interface NBTConstants {
     String BLOCK_ID = "BlockId";
     String FLUID_STORAGE = "TankStorage";
     String ENERGY_STORAGE = "Battery";
+    String FILLED_STACKS = "FilledStacks";
 
 }
