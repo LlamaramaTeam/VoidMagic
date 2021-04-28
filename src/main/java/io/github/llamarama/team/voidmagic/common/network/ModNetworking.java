@@ -1,7 +1,8 @@
 package io.github.llamarama.team.voidmagic.common.network;
 
 import io.github.llamarama.team.voidmagic.common.network.packet.*;
-import io.github.llamarama.team.voidmagic.common.util.constants.StringConstants;
+import io.github.llamarama.team.voidmagic.common.util.IdBuilder;
+import io.github.llamarama.team.voidmagic.common.util.constants.ModConstants;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.world.server.ServerWorld;
@@ -54,10 +55,10 @@ public class ModNetworking {
     }
 
     public void initialize() {
-        CHANNEL = NetworkRegistry.newSimpleChannel(StringConstants.Network.CHANNEL_ID.getId(),
-                StringConstants.NETWORK_PROTOCOL_VERSION::get,
-                StringConstants.NETWORK_PROTOCOL_VERSION.get()::equals,
-                StringConstants.NETWORK_PROTOCOL_VERSION.get()::equals);
+        CHANNEL = NetworkRegistry.newSimpleChannel(IdBuilder.mod(ModConstants.CHANNEL_ID),
+                () -> ModConstants.NETWORK_PROTOCOL_VERSION,
+                ModConstants.NETWORK_PROTOCOL_VERSION::equals,
+                ModConstants.NETWORK_PROTOCOL_VERSION::equals);
         this.registerPackets();
     }
 

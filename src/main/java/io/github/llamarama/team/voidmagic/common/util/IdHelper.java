@@ -1,6 +1,6 @@
 package io.github.llamarama.team.voidmagic.common.util;
 
-import io.github.llamarama.team.voidmagic.common.util.constants.StringConstants;
+import io.github.llamarama.team.voidmagic.common.util.constants.ModConstants;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -16,7 +16,7 @@ public final class IdHelper {
             return loc.getPath();
         }
 
-        return StringConstants.EMPTY.get();
+        return ModConstants.EMPTY;
     }
 
     public static String getNonNullPath(Item item) {
@@ -25,7 +25,7 @@ public final class IdHelper {
             return loc.getPath();
         }
 
-        return StringConstants.EMPTY.get();
+        return ModConstants.EMPTY;
     }
 
 }
