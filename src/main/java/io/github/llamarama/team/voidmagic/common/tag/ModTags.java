@@ -1,6 +1,6 @@
 package io.github.llamarama.team.voidmagic.common.tag;
 
-import io.github.llamarama.team.voidmagic.util.IdBuilder;
+import io.github.llamarama.team.voidmagic.common.util.IdBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.tags.BlockTags;

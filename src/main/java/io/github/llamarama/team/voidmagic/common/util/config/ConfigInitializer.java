@@ -1,4 +1,4 @@
-package io.github.llamarama.team.voidmagic.util.config;
+package io.github.llamarama.team.voidmagic.common.util.config;
 
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;

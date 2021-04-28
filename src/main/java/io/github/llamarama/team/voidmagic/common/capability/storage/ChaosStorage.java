@@ -1,7 +1,7 @@
 package io.github.llamarama.team.voidmagic.common.capability.storage;
 
 import io.github.llamarama.team.voidmagic.api.capability.IChaosHandler;
-import io.github.llamarama.team.voidmagic.util.constants.NBTConstants;
+import io.github.llamarama.team.voidmagic.common.util.constants.NBTConstants;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;

@@ -1,6 +1,7 @@
 package io.github.llamarama.team.voidmagic.datagen;
 
 import io.github.llamarama.team.voidmagic.VoidMagic;
+import io.github.llamarama.team.voidmagic.common.util.constants.StringConstants;
 import io.github.llamarama.team.voidmagic.datagen.provider.assets.EnglishLanguageProvider;
 import io.github.llamarama.team.voidmagic.datagen.provider.assets.ModBlockProvider;
 import io.github.llamarama.team.voidmagic.datagen.provider.assets.ModItemModelProvider;
@@ -8,7 +9,6 @@ import io.github.llamarama.team.voidmagic.datagen.provider.data.ModLootTableProv
 import io.github.llamarama.team.voidmagic.datagen.provider.data.ModRecipeProvider;
 import io.github.llamarama.team.voidmagic.datagen.provider.data.tags.ModBlockTagsProvider;
 import io.github.llamarama.team.voidmagic.datagen.provider.data.tags.ModItemTagsProvider;
-import io.github.llamarama.team.voidmagic.util.constants.StringConstants;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

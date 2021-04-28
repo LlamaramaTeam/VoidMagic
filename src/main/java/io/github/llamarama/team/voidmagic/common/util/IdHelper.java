@@ -1,6 +1,6 @@
-package io.github.llamarama.team.voidmagic.util;
+package io.github.llamarama.team.voidmagic.common.util;
 
-import io.github.llamarama.team.voidmagic.util.constants.StringConstants;
+import io.github.llamarama.team.voidmagic.common.util.constants.StringConstants;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;

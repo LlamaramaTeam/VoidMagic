@@ -1,7 +1,7 @@
 package io.github.llamarama.team.voidmagic.common.tile;
 
 import io.github.llamarama.team.voidmagic.common.register.ModTileEntityTypes;
-import io.github.llamarama.team.voidmagic.util.constants.NBTConstants;
+import io.github.llamarama.team.voidmagic.common.util.constants.NBTConstants;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;

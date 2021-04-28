@@ -3,7 +3,7 @@ package io.github.llamarama.team.voidmagic.datagen.provider.data;
 import io.github.llamarama.team.voidmagic.common.block.PlateBlock;
 import io.github.llamarama.team.voidmagic.common.register.ModBlocks;
 import io.github.llamarama.team.voidmagic.common.tag.ModTags;
-import io.github.llamarama.team.voidmagic.util.IdBuilder;
+import io.github.llamarama.team.voidmagic.common.util.IdBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.data.*;

@@ -1,6 +1,6 @@
-package io.github.llamarama.team.voidmagic.util.constants;
+package io.github.llamarama.team.voidmagic.common.util.constants;
 
-import io.github.llamarama.team.voidmagic.util.IdBuilder;
+import io.github.llamarama.team.voidmagic.common.util.IdBuilder;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Lazy;
 

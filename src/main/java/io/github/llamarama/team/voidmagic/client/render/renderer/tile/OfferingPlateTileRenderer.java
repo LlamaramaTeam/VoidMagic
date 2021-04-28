@@ -3,7 +3,7 @@ package io.github.llamarama.team.voidmagic.client.render.renderer.tile;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import io.github.llamarama.team.voidmagic.client.VoidMagicClient;
 import io.github.llamarama.team.voidmagic.common.tile.OfferingPlateTileEntity;
-import io.github.llamarama.team.voidmagic.util.config.ClientConfig;
+import io.github.llamarama.team.voidmagic.common.util.config.ClientConfig;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
