@@ -1,4 +1,4 @@
-package io.github.llamarama.team.voidmagic.util;
+package io.github.llamarama.team.voidmagic.common.util;
 
 import io.github.llamarama.team.voidmagic.VoidMagic;
 import net.minecraft.util.ResourceLocation;

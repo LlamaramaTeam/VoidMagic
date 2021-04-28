@@ -1,7 +1,7 @@
 package io.github.llamarama.team.voidmagic.common.network;
 
 import io.github.llamarama.team.voidmagic.common.network.packet.*;
-import io.github.llamarama.team.voidmagic.util.constants.StringConstants;
+import io.github.llamarama.team.voidmagic.common.util.constants.StringConstants;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.world.server.ServerWorld;

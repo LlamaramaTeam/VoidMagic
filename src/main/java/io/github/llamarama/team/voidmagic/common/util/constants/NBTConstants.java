@@ -1,4 +1,4 @@
-package io.github.llamarama.team.voidmagic.util.constants;
+package io.github.llamarama.team.voidmagic.common.util.constants;
 
 public interface NBTConstants {
 

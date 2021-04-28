@@ -6,7 +6,7 @@ import io.github.llamarama.team.voidmagic.VoidMagic;
 import io.github.llamarama.team.voidmagic.common.capability.VoidMagicCaps;
 import io.github.llamarama.team.voidmagic.common.network.ModNetworking;
 import io.github.llamarama.team.voidmagic.common.network.packet.MassChunkUpdatePacket;
-import io.github.llamarama.team.voidmagic.util.constants.IntegerConstants;
+import io.github.llamarama.team.voidmagic.common.util.constants.IntegerConstants;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.math.ChunkPos;

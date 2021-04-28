@@ -6,7 +6,7 @@ import io.github.llamarama.team.voidmagic.common.network.ModNetworking;
 import io.github.llamarama.team.voidmagic.common.network.packet.IncreaseChaosPacket;
 import io.github.llamarama.team.voidmagic.common.network.packet.ReduceChaosPacket;
 import io.github.llamarama.team.voidmagic.common.register.ModRegistries;
-import io.github.llamarama.team.voidmagic.util.constants.CustomTranslations;
+import io.github.llamarama.team.voidmagic.common.util.constants.CustomTranslations;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.screen.Screen;

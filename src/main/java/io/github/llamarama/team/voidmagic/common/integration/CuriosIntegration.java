@@ -1,6 +1,6 @@
 package io.github.llamarama.team.voidmagic.common.integration;
 
-import io.github.llamarama.team.voidmagic.util.constants.StringConstants;
+import io.github.llamarama.team.voidmagic.common.util.constants.StringConstants;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import top.theillusivec4.curios.api.SlotTypeMessage;

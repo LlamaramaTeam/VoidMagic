@@ -2,7 +2,7 @@ package io.github.llamarama.team.voidmagic.common.register;
 
 import io.github.llamarama.team.voidmagic.common.block.*;
 import io.github.llamarama.team.voidmagic.common.block.util.ChalkType;
-import io.github.llamarama.team.voidmagic.util.ModItemGroup;
+import io.github.llamarama.team.voidmagic.common.util.ModItemGroup;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;

@@ -1,4 +1,4 @@
-package io.github.llamarama.team.voidmagic.util;
+package io.github.llamarama.team.voidmagic.common.util;
 
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3i;
