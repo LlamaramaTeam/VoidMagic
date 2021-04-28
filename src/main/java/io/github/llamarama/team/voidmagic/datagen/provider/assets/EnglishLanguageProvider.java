@@ -8,6 +8,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraftforge.fml.RegistryObject;
+import org.jetbrains.annotations.NotNull;
 
 public class EnglishLanguageProvider extends LanguageProvider {
 
@@ -29,6 +30,11 @@ public class EnglishLanguageProvider extends LanguageProvider {
     }
 
     private void getCamelCaseItemName(RegistryObject<Item> item) {
+        this.addItem(item, this.makeCorrectName(item));
+    }
+
+    @NotNull
+    private String makeCorrectName(RegistryObject<?> item) {
         String[] name = item.getId().getPath().split("_");
 
         StringBuilder builder = new StringBuilder();
@@ -39,23 +45,11 @@ public class EnglishLanguageProvider extends LanguageProvider {
             currentWord = s.replaceFirst(String.valueOf(firstChar), String.valueOf(Character.toUpperCase(firstChar)));
             builder.append(currentWord).append(" ");
         }
-
-        this.addItem(item, builder.toString());
+        return builder.toString();
     }
 
     private void getCamelCaseBlockName(RegistryObject<Block> block) {
-        String[] name = block.getId().getPath().split("_");
-
-        StringBuilder builder = new StringBuilder();
-        String currentWord;
-
-        for (String s : name) {
-            char firstChar = s.charAt(0);
-            currentWord = s.replaceFirst(String.valueOf(firstChar), String.valueOf(Character.toUpperCase(firstChar)));
-            builder.append(currentWord).append(" ");
-        }
-
-        this.addBlock(block, builder.toString());
+        this.addBlock(block, this.makeCorrectName(block));
     }
 
 }

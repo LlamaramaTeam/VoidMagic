@@ -121,7 +121,7 @@ public class ModRecipeProvider extends ForgeRecipeProvider {
         SingleItemRecipeBuilder
                 .stonecuttingRecipe(Ingredient.fromTag(tag), block, countOut)
                 .addCriterion(this.HAS_ITEM, RecipeProvider.hasItem(Items.STONECUTTER))
-                .build(this.consumer, IdBuilder.mod("stonecutting_to" + block.getRegistryName().getPath()));
+                .build(this.consumer, IdBuilder.mod("stonecutting_to_" + block.getRegistryName().getPath()));
     }
 
     private void createStairsRecipe(Block in, Block stairs) {

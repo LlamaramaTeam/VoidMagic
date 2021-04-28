@@ -33,13 +33,10 @@ public final class ModDataGeneration {
          */
 
         // Lang Providers
+        // Currently only english is supported and any other language will probably have to be added specifically.
         gen.addProvider(new EnglishLanguageProvider(gen, "en_us"));
         gen.addProvider(new EnglishLanguageProvider(gen, "en_gb"));
         gen.addProvider(new EnglishLanguageProvider(gen, "en_au"));
-        gen.addProvider(new EnglishLanguageProvider(gen, "en_ca"));
-        gen.addProvider(new EnglishLanguageProvider(gen, "en_nz"));
-        gen.addProvider(new EnglishLanguageProvider(gen, "en_za"));
-        gen.addProvider(new EnglishLanguageProvider(gen, "el_gr"));
 
         // Item Models
         gen.addProvider(new ModItemModelProvider(gen, helper));
