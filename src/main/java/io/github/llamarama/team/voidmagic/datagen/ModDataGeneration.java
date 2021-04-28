@@ -1,7 +1,7 @@
 package io.github.llamarama.team.voidmagic.datagen;
 
 import io.github.llamarama.team.voidmagic.VoidMagic;
-import io.github.llamarama.team.voidmagic.common.util.constants.StringConstants;
+import io.github.llamarama.team.voidmagic.common.util.constants.ModConstants;
 import io.github.llamarama.team.voidmagic.datagen.provider.assets.EnglishLanguageProvider;
 import io.github.llamarama.team.voidmagic.datagen.provider.assets.ModBlockProvider;
 import io.github.llamarama.team.voidmagic.datagen.provider.assets.ModItemModelProvider;
@@ -20,7 +20,7 @@ import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
  *
  * @author 0xJoeMama
  */
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, modid = StringConstants.MOD_ID_STR)
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, modid = ModConstants.MOD_ID)
 public final class ModDataGeneration {
 
     @SubscribeEvent
@@ -33,13 +33,10 @@ public final class ModDataGeneration {
          */
 
         // Lang Providers
+        // Currently only english is supported and any other language will probably have to be added specifically.
         gen.addProvider(new EnglishLanguageProvider(gen, "en_us"));
         gen.addProvider(new EnglishLanguageProvider(gen, "en_gb"));
         gen.addProvider(new EnglishLanguageProvider(gen, "en_au"));
-        gen.addProvider(new EnglishLanguageProvider(gen, "en_ca"));
-        gen.addProvider(new EnglishLanguageProvider(gen, "en_nz"));
-        gen.addProvider(new EnglishLanguageProvider(gen, "en_za"));
-        gen.addProvider(new EnglishLanguageProvider(gen, "el_gr"));
 
         // Item Models
         gen.addProvider(new ModItemModelProvider(gen, helper));

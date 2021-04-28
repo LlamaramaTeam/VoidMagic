@@ -4,8 +4,8 @@ import io.github.llamarama.team.voidmagic.VoidMagic;
 import io.github.llamarama.team.voidmagic.common.capability.VoidMagicCaps;
 import io.github.llamarama.team.voidmagic.common.integration.CuriosIntegration;
 import io.github.llamarama.team.voidmagic.common.network.ModNetworking;
-import io.github.llamarama.team.voidmagic.util.config.CommonConfig;
-import io.github.llamarama.team.voidmagic.util.constants.StringConstants;
+import io.github.llamarama.team.voidmagic.common.util.config.CommonConfig;
+import io.github.llamarama.team.voidmagic.common.util.constants.ModConstants;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -35,7 +35,7 @@ public final class LifecycleEventHandler implements IEventHandler {
 
     @SubscribeEvent
     public void enqueueIMC(final InterModEnqueueEvent event) {
-        boolean curiosLoaded = ModList.get().isLoaded(StringConstants.CURIOS_ID.get());
+        boolean curiosLoaded = ModList.get().isLoaded(ModConstants.CURIOS_ID);
         if (curiosLoaded && CommonConfig.CURIOS_ENABLED.get()) {
             CuriosIntegration.getInstance().enableSupport(event);
             VoidMagic.getLogger().info("Successfully added Curios integration.");
