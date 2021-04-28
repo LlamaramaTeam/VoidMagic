@@ -32,7 +32,7 @@ public final class IdHelper {
         ResourceLocation registryName = item.getRegistryName();
 
         if (registryName == null)
-            return StringConstants.EMPTY.get();
+            return ModConstants.EMPTY;
 
         return registryName.toString();
     }
@@ -41,7 +41,7 @@ public final class IdHelper {
         ResourceLocation registryName = block.getRegistryName();
 
         if (registryName == null)
-            return StringConstants.EMPTY.get();
+            return ModConstants.EMPTY;
 
         return registryName.toString();
     }

@@ -5,6 +5,7 @@
   "block.voidmagic.end_putiliam_ore": "End Putiliam Ore ",
   "block.voidmagic.offering_plate": "Offering Plate ",
   "block.voidmagic.overworld_putiliam_ore": "Overworld Putiliam Ore ",
+  "block.voidmagic.packed_block": "Packed Block",
   "block.voidmagic.packed_block.contains": "Contains %s stacks.",
   "block.voidmagic.packed_block.contents": "Contents: %s",
   "block.voidmagic.polished_withered_stone": "Polished Withered Stone ",

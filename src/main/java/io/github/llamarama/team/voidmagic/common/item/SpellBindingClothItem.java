@@ -1,8 +1,8 @@
 package io.github.llamarama.team.voidmagic.common.item;
 
 import io.github.llamarama.team.voidmagic.common.register.ModItems;
-import io.github.llamarama.team.voidmagic.util.IdHelper;
-import io.github.llamarama.team.voidmagic.util.constants.NBTConstants;
+import io.github.llamarama.team.voidmagic.common.util.IdHelper;
+import io.github.llamarama.team.voidmagic.common.util.constants.NBTConstants;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.ItemEntity;

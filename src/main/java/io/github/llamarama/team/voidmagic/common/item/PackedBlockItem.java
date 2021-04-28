@@ -1,6 +1,6 @@
 package io.github.llamarama.team.voidmagic.common.item;
 
-import io.github.llamarama.team.voidmagic.util.constants.NBTConstants;
+import io.github.llamarama.team.voidmagic.common.util.constants.NBTConstants;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -42,14 +42,15 @@ public class PackedBlockItem extends BlockItem {
 
     public static final String CONTENT_KEY = "block.voidmagic.packed_block.contents";
     public static final String CONTAINS_KEY = "block.voidmagic.packed_block.contains";
+    public static final String KEY = "block.voidmagic.packed_block";
 
     public PackedBlockItem(Properties properties) {
         super(Blocks.WHITE_WOOL, properties);
     }
 
     @Override
-    public String getTranslationKey() {
-        return new TranslationTextComponent("block.voidmagic.packed_block").getKey();
+    public String getTranslationKey(ItemStack stack) {
+        return new TranslationTextComponent(KEY).getString();
     }
 
     @Override
