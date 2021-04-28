@@ -112,13 +112,13 @@ public class SpellBindingClothItem extends Item {
             First we get the items from the inventory/
          */
         // Check if its a vanilla inventory.
-        if (tileEntity instanceof IInventory)
-            this.fillTag(((IInventory) tileEntity)::getStackInSlot,
-                    ((IInventory) tileEntity).getSizeInventory(), stackOut);
-
+        if (tileEntity instanceof IInventory) {
+            this.fillTag(((IInventory) tileEntity)::getStackInSlot, ((IInventory) tileEntity).getSizeInventory(), stackOut);
+        }
         // Use capabilities to get the items if it's a modded TE.
         tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(itemHandler ->
-                this.fillTag(itemHandler::getStackInSlot, itemHandler.getSlots(), stackOut));
+                this.fillTag(itemHandler::getStackInSlot, itemHandler.getSlots(), stackOut)
+        );
 
         /*
             Then we write the the id of the block that we recorded earlier.

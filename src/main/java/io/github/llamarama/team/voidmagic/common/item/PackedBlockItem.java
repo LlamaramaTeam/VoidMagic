@@ -1,5 +1,6 @@
 package io.github.llamarama.team.voidmagic.common.item;
 
+import io.github.llamarama.team.voidmagic.VoidMagic;
 import io.github.llamarama.team.voidmagic.common.util.constants.NBTConstants;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -11,7 +12,6 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Hand;
@@ -30,6 +30,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 
 /**
@@ -66,7 +67,7 @@ public class PackedBlockItem extends BlockItem {
             ItemStack packedBlockStack = player.getHeldItem(hand);
 
             // Place the block.
-            boolean success = this.placeBaseBlock(packedBlockStack, world, context.getPos());
+            boolean success = this.placeBaseBlock(packedBlockStack, world, context.getPos(), context);
 
             // Get the tag and extract the inventory.
             CompoundNBT tag = packedBlockStack.getOrCreateTag();
@@ -91,22 +92,28 @@ public class PackedBlockItem extends BlockItem {
      */
     private void insertItemsToInventory(TileEntity tileEntity, ListNBT inventoryTag) {
         // Lambda magic to prevent checking 5 gjillion times.
+        // Currently may cause AIOOB exception.
         BiConsumer<Integer, ItemStack> convertInsertItem;
-        if (tileEntity instanceof IInventory)
+        final AtomicInteger inventorySize = new AtomicInteger(0);
+        if (tileEntity instanceof IInventory) {
             convertInsertItem = ((IInventory) tileEntity)::setInventorySlotContents;
-        else {
+            inventorySize.set(((IInventory) tileEntity).getSizeInventory());
+        } else {
             LazyOptional<IItemHandler> lazyHandler =
                     tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
 
             // Lambda to lambda. Lel?!
             // At least it is not () -> () ->
-            convertInsertItem = (integer, itemStack) -> lazyHandler.ifPresent(
-                    (itemHandler) -> itemHandler.insertItem(integer, itemStack, false));
+            convertInsertItem = (integer, itemStack) -> lazyHandler.ifPresent((itemHandler) -> {
+                itemHandler.insertItem(integer, itemStack, false);
+                inventorySize.set(itemHandler.getSlots());
+            });
         }
 
-        for (int i = 0; i < inventoryTag.size(); i++) {
-            INBT inbt = inventoryTag.get(i);
-            ItemStack currentSlot = ItemStack.read((CompoundNBT) inbt);
+        VoidMagic.getLogger().debug(inventorySize.get());
+        for (int i = 0; i < inventorySize.get(); i++) {
+            CompoundNBT currentStack = inventoryTag.getCompound(i);
+            ItemStack currentSlot = ItemStack.read(currentStack);
 
             convertInsertItem.accept(i, currentSlot);
         }
@@ -115,19 +122,23 @@ public class PackedBlockItem extends BlockItem {
     /**
      * Using the tag that was saved to the block, it places the target block.
      *
-     * @param stack The stack of {@link PackedBlockItem}
-     * @param world World the event happened in.
-     * @param pos   The position it happened in.
+     * @param stack   The stack of {@link PackedBlockItem}
+     * @param world   World the event happened in.
+     * @param pos     The position it happened in.
+     * @param context The block placement context.
      * @return Whether the block was placed successfully.
      */
-    protected boolean placeBaseBlock(ItemStack stack, World world, BlockPos pos) {
+    protected boolean placeBaseBlock(ItemStack stack, World world, BlockPos pos, BlockItemUseContext context) {
         Optional<Block> blockFromTag = this.getBlockFromTag(stack.getOrCreateTag());
 
         /*
             I didn't want to use atomic reference here but whatever.
          */
         final AtomicBoolean result = new AtomicBoolean();
-        blockFromTag.ifPresent((block) -> result.set(world.setBlockState(pos, block.getDefaultState())));
+        blockFromTag.ifPresent((block) -> {
+            Optional<BlockState> state = Optional.ofNullable(block.getStateForPlacement(context));
+            result.set(world.setBlockState(pos, state.orElseGet(block::getDefaultState)));
+        });
 
         return result.get();
     }
