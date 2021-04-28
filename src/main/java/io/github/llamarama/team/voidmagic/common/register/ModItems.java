@@ -3,7 +3,7 @@ package io.github.llamarama.team.voidmagic.common.register;
 import io.github.llamarama.team.voidmagic.common.item.GuideBookItem;
 import io.github.llamarama.team.voidmagic.common.item.PackedBlockItem;
 import io.github.llamarama.team.voidmagic.common.item.SpellBindingClothItem;
-import io.github.llamarama.team.voidmagic.util.ModItemGroup;
+import io.github.llamarama.team.voidmagic.common.util.ModItemGroup;
 import net.minecraft.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
