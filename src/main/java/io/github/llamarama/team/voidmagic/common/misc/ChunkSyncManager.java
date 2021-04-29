@@ -69,6 +69,8 @@ public class ChunkSyncManager {
     }
 
     /**
+     * @param player   The player to pop.
+     * @param chunkPos The position of the target chunk.
      * @see ChunkSyncManager#pop(UUID, ChunkPos)
      */
     public void pop(PlayerEntity player, ChunkPos chunkPos) {
