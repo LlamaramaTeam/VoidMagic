@@ -4,7 +4,12 @@ import io.github.llamarama.team.voidmagic.common.util.constants.ModConstants;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
+
+@SuppressWarnings("unused")
 public final class IdHelper {
 
     private IdHelper() {
@@ -44,6 +49,28 @@ public final class IdHelper {
             return ModConstants.EMPTY;
 
         return registryName.toString();
+    }
+
+    public static Optional<Block> getBlockFromID(String id) {
+        ResourceLocation location = new ResourceLocation(id);
+        Block out = ForgeRegistries.BLOCKS.getValue(location);
+
+        return Optional.ofNullable(out);
+    }
+
+    public static Optional<Item> getItemFromID(String id) {
+        ResourceLocation location = new ResourceLocation(id);
+        Item out = ForgeRegistries.ITEMS.getValue(location);
+
+        return Optional.ofNullable(out);
+    }
+
+    public static String getFullIdString(Block block) {
+        Optional<ResourceLocation> id = Optional.ofNullable(block.getRegistryName());
+        final AtomicReference<String> out = new AtomicReference<>(ModConstants.EMPTY);
+        id.ifPresent((location) -> out.set(location.toString()));
+
+        return out.get();
     }
 
 }
