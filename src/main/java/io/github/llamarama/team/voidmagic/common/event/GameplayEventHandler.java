@@ -1,7 +1,7 @@
 package io.github.llamarama.team.voidmagic.common.event;
 
 import io.github.llamarama.team.voidmagic.common.capability.provider.ChaosChunkProvider;
-import io.github.llamarama.team.voidmagic.common.misc.ChunkSyncManager;
+import io.github.llamarama.team.voidmagic.common.lib.ChunkSyncManager;
 import io.github.llamarama.team.voidmagic.common.register.ModItems;
 import io.github.llamarama.team.voidmagic.common.util.IdBuilder;
 import io.github.llamarama.team.voidmagic.common.util.config.ServerConfig;

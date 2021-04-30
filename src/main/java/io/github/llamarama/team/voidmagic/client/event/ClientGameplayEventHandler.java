@@ -36,7 +36,7 @@ public class ClientGameplayEventHandler implements IEventHandler {
             final AtomicInteger integer = new AtomicInteger(0);
             LazyOptional<IChaosHandler> capability =
                     player.getEntityWorld().getChunkAt(position).getCapability(VoidMagicCaps.CHAOS);
-            capability.ifPresent((chaosHandler) -> integer.set(chaosHandler.getChaos()));
+            capability.map(IChaosHandler::getChaos).ifPresent(integer::set);
 
             player.sendStatusMessage(new StringTextComponent(Integer.toString(integer.get())), true);
         }

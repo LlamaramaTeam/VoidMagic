@@ -31,9 +31,9 @@ public final class ClientInitEventHandler implements IEventHandler {
 
     @SubscribeEvent
     public void clientInit(final FMLClientSetupEvent event) {
-        registerTileRenderer(ModTileEntityTypes.OFFERING_PLATE, OfferingPlateTileRenderer::new);
+        this.registerTileRenderer(ModTileEntityTypes.OFFERING_PLATE, OfferingPlateTileRenderer::new);
 
-        // Initialize custom type.
+        // Initialize custom render types.
         this.setupRenderTypes();
     }
 
