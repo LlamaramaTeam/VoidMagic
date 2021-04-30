@@ -1,6 +1,9 @@
 package io.github.llamarama.team.voidmagic.datagen.provider.assets;
 
 import io.github.llamarama.team.voidmagic.VoidMagic;
+import io.github.llamarama.team.voidmagic.common.item.PackedBlockItem;
+import io.github.llamarama.team.voidmagic.common.item.SpellBindingClothItem;
+import io.github.llamarama.team.voidmagic.common.register.ModItems;
 import io.github.llamarama.team.voidmagic.common.register.ModRegistries;
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
@@ -10,8 +13,11 @@ import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraftforge.fml.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashSet;
+
 public class EnglishLanguageProvider extends LanguageProvider {
 
+    private final HashSet<RegistryObject<?>> blacklist = new HashSet<>();
 
     public EnglishLanguageProvider(DataGenerator gen, String locale) {
         super(gen, VoidMagic.MOD_ID, locale);
@@ -19,12 +25,22 @@ public class EnglishLanguageProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
+        // Blacklist calls.
+        this.blacklist.add(ModItems.PACKED_BLOCK);
+
+        // Specific key definitions.
         this.add("itemGroup.voidmagic.group", "Void Magic");
+        this.add(PackedBlockItem.CONTENT_KEY, "Contents: %s");
+        this.add(PackedBlockItem.CONTAINS_KEY, "Contains %s stacks.");
+        this.add(SpellBindingClothItem.SHINY_KEY, "Shinny...");
+        this.add(PackedBlockItem.KEY, "Packed Block");
+
         ModRegistries.BLOCKS.getEntries().forEach(this::getCamelCaseBlockName);
 
         ModRegistries.ITEMS.getEntries().stream()
-                .filter((registryObject) -> !(registryObject.get() instanceof BlockItem)).
-                forEach(this::getCamelCaseItemName);
+                .filter((registryObject) -> !(registryObject.get() instanceof BlockItem))
+                .filter((registryObject) -> !this.blacklist.contains(registryObject))
+                .forEach(this::getCamelCaseItemName);
 
         VoidMagic.getLogger().info("Added english translations.");
     }

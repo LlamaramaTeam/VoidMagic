@@ -1,6 +1,5 @@
 package io.github.llamarama.team.voidmagic.common.network.packet;
 
-import io.github.llamarama.team.voidmagic.VoidMagic;
 import io.github.llamarama.team.voidmagic.client.VoidMagicClient;
 import io.github.llamarama.team.voidmagic.common.capability.CapUtils;
 import io.github.llamarama.team.voidmagic.common.capability.VoidMagicCaps;
@@ -47,7 +46,6 @@ public class ChunkChaosUpdatePacket extends GenericPacket {
         }
 
         this.chunk = world.getChunk(x, y);
-        VoidMagic.getLogger().debug("Received packet.");
     }
 
     @Override

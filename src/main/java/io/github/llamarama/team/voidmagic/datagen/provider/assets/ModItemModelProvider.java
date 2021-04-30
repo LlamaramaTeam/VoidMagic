@@ -40,6 +40,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 
         });
 
+        this.cubeAll(IdHelper.getNonNullPath(ModItems.PACKED_BLOCK.get()), IdBuilder.mod("block/packed_block"));
         this.registerNormalItem(ModBlocks.CHALK.get().asItem());
 
         VoidMagic.getLogger().info("Added all default item models.");

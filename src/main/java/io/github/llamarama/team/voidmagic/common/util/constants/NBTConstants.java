@@ -4,6 +4,16 @@ public interface NBTConstants {
 
     String INVENTORY = "Inventory";
     String CHAOS = "Chaos";
-    String MAX_CHAOS = "MaxChaos";
+    String ITEMSTACK_SIZE = "Size";
+    String ITEM_ID = "ItemId";
+    String EXTRA_NBT = "TileNBT";
+    String BLOCK_ID = "BlockId";
+    String FLUID_STORAGE = "TankStorage";
+    String ENERGY_STORAGE = "Battery";
+    String FILLED_STACKS = "FilledStacks";
+
+    String X = "x";
+    String Y = "y";
+    String Z = "z";
 
 }

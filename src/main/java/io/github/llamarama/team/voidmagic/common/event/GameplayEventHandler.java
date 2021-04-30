@@ -40,12 +40,6 @@ public class GameplayEventHandler implements IEventHandler {
     }
 
     @SubscribeEvent
-    public void onServerStart(final FMLServerStartingEvent event) {
-        // Create a chunk sync manager for the server.
-        ChunkSyncManager.INSTANCE = new ChunkSyncManager();
-    }
-
-    @SubscribeEvent
     public void chunkWatched(final ChunkWatchEvent.Watch event) {
         ChunkPos pos = event.getPos();
 
@@ -109,12 +103,6 @@ public class GameplayEventHandler implements IEventHandler {
     }
 
     @SubscribeEvent
-    public void onServerClose(final FMLServerStoppingEvent event) {
-        // Remove the chunk sync manager from memory to prevent unecessary garbage collection.
-        ChunkSyncManager.INSTANCE.popAll();
-    }
-
-    @SubscribeEvent
     public void onLivingHurt(final LivingHurtEvent event) {
         DamageSource source = event.getSource();
 
@@ -125,5 +113,19 @@ public class GameplayEventHandler implements IEventHandler {
             ChunkSyncManager.INSTANCE.sendStatus((ServerPlayerEntity) source.getTrueSource());
 
     }
+
+    @SubscribeEvent
+    public void onServerClose(final FMLServerStoppingEvent event) {
+        // Remove the chunk sync manager from memory to prevent unecessary garbage collection.
+        ChunkSyncManager.INSTANCE.popAll();
+    }
+
+
+    @SubscribeEvent
+    public void onServerStart(final FMLServerStartingEvent event) {
+        // Create a chunk sync manager for the server.
+        ChunkSyncManager.INSTANCE = new ChunkSyncManager();
+    }
+
 
 }

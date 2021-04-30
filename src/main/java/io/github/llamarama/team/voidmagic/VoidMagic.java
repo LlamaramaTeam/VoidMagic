@@ -1,8 +1,8 @@
 package io.github.llamarama.team.voidmagic;
 
 import io.github.llamarama.team.voidmagic.client.VoidMagicClient;
-import io.github.llamarama.team.voidmagic.common.event.CommonInitEventHandler;
 import io.github.llamarama.team.voidmagic.common.event.GameplayEventHandler;
+import io.github.llamarama.team.voidmagic.common.event.LifecycleEventHandler;
 import io.github.llamarama.team.voidmagic.common.event.WorldgenEventHandler;
 import io.github.llamarama.team.voidmagic.common.register.ModRegistries;
 import io.github.llamarama.team.voidmagic.common.util.config.ConfigInitializer;
@@ -30,7 +30,7 @@ public class VoidMagic {
         // Initialize the mod's configuration.
         ConfigInitializer.init(ModLoadingContext.get());
 
-        CommonInitEventHandler.getInstance().registerHandlers(modBus);
+        LifecycleEventHandler.getInstance().registerHandlers(modBus);
         GameplayEventHandler.getInstance().registerHandlers(forgeBus);
         WorldgenEventHandler.getInstance().registerHandlers(forgeBus);
         ModRegistries.initRegistries(modBus);

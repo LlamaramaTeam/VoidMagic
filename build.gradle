@@ -14,9 +14,9 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.0.0-SNAPSHOTS'
-group = 'io.llamarama.team.voidmagic'
-archivesBaseName = 'VoidMagic'
+version = project.mod_version
+group = project.default_package
+archivesBaseName = project.mod_name
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
