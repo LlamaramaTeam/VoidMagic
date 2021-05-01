@@ -1,7 +1,7 @@
 {
-  "variants": {
-    "": {
-      "model": "voidmagic:block/offering_plate"
+    "variants": {
+        "": {
+            "model": "voidmagic:block/offering_plate"
+        }
     }
-  }
 }

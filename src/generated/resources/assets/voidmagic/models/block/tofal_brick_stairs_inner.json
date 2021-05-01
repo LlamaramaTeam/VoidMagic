@@ -1,8 +1,8 @@
 {
-  "parent": "minecraft:block/inner_stairs",
-  "textures": {
-    "side": "voidmagic:block/tofal_bricks",
-    "bottom": "voidmagic:block/tofal_bricks",
-    "top": "voidmagic:block/tofal_bricks"
-  }
+    "parent": "minecraft:block/inner_stairs",
+    "textures": {
+        "side": "voidmagic:block/tofal_bricks",
+        "bottom": "voidmagic:block/tofal_bricks",
+        "top": "voidmagic:block/tofal_bricks"
+    }
 }

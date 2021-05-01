@@ -1,7 +1,7 @@
 {
-  "variants": {
-    "": {
-      "model": "voidmagic:block/withered_stone_plate"
+    "variants": {
+        "": {
+            "model": "voidmagic:block/withered_stone_plate"
+        }
     }
-  }
 }

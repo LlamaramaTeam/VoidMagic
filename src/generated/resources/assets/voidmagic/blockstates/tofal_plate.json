@@ -1,7 +1,7 @@
 {
-  "variants": {
-    "": {
-      "model": "voidmagic:block/tofal_plate"
+    "variants": {
+        "": {
+            "model": "voidmagic:block/tofal_plate"
+        }
     }
-  }
 }

@@ -39,6 +39,7 @@ public class ModBlockProvider extends BlockStateProvider {
         this.blacklist.add(ModBlocks.TOFAL_PLATE.get());
         this.blacklist.add(ModBlocks.OFFERING_PLATE.get());
         this.blacklist.add(ModBlocks.CHALK.get());
+        this.blacklist.add(ModBlocks.DECORATIVE_PACKED_BLOCK.get());
 
         ModRegistries.BLOCKS.getEntries().stream()
                 .filter((block) -> !this.blacklist.contains(block.get()))
@@ -53,6 +54,7 @@ public class ModBlockProvider extends BlockStateProvider {
         });
 
         this.plateBlockModel(ModBlocks.OFFERING_PLATE.get(), IdBuilder.mod("block/withered_stone"));
+        this.createSimpleBlockAndItem(ModBlocks.DECORATIVE_PACKED_BLOCK.get(), IdBuilder.mod("block/packed_block"));
 
         VoidMagic.getLogger().info("Added all default block models.");
     }
@@ -141,6 +143,17 @@ public class ModBlockProvider extends BlockStateProvider {
             this.simpleBlock(actualBlock);
             this.simpleBlockItem(actualBlock, this.cubeAll(actualBlock));
         }
+    }
+
+    private <B extends Block> void createSimpleBlockAndItem(B block, ResourceLocation texture) {
+        BlockModelBuilder builder = this.models().getBuilder(IdHelper.getNonNullPath(block));
+
+        builder.parent(new ModelFile.ExistingModelFile(IdBuilder.mc("block/cube_all"),
+                this.models().existingFileHelper)).texture("all", texture).texture("particle", texture);
+
+        this.getVariantBuilder(block).forAllStates((state) -> ConfiguredModel.builder().modelFile(builder).build());
+
+        this.simpleBlockItem(block, builder);
     }
 
     private void pillarBlockAndItem(Block block) {

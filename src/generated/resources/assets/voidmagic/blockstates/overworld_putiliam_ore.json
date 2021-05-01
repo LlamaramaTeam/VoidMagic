@@ -1,7 +1,7 @@
 {
-  "variants": {
-    "": {
-      "model": "voidmagic:block/overworld_putiliam_ore"
+    "variants": {
+        "": {
+            "model": "voidmagic:block/overworld_putiliam_ore"
+        }
     }
-  }
 }

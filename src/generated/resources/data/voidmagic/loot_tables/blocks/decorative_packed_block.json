@@ -6,7 +6,7 @@
             "entries": [
                 {
                     "type": "minecraft:item",
-                    "name": "voidmagic:tofal_brick_stairs"
+                    "name": "voidmagic:decorative_packed_block"
                 }
             ],
             "conditions": [

@@ -6,6 +6,8 @@ import io.github.llamarama.team.voidmagic.common.util.config.ServerConfig;
 import io.github.llamarama.team.voidmagic.common.util.constants.NBTConstants;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.SoundType;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -15,6 +17,9 @@ import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -23,6 +28,8 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Fancy shiny item, and stuff.
@@ -33,6 +40,11 @@ import java.util.List;
 public class SpellBindingClothItem extends Item {
 
     public static final String SHINY_KEY = "item.voidmagic.spellbinding_cloth.shiny";
+    public static final Set<Block> CLOTH_BLACKLIST =
+            ServerConfig.SPELLBINDING_CLOTH_BLACKLIST.get().stream()
+                    .map(IdHelper::getBlockFromID)
+                    .map((optionalBlock) -> optionalBlock.orElse(Blocks.AIR))
+                    .collect(Collectors.toSet());
 
     public SpellBindingClothItem(Properties properties) {
         super(properties);
@@ -48,10 +60,9 @@ public class SpellBindingClothItem extends Item {
         if (playerEntity == null || !playerEntity.isSneaking())
             return ActionResultType.PASS;
         Block block = state.getBlock();
-        boolean isBlacklisted =
-                ServerConfig.BLACKLISTED_BLOCKS_FOR_SPELLBINDING_CLOTH.get().contains(IdHelper.getFullIdString(block));
+
         // Make sure we are on the server for logic.
-        if (!world.isRemote() || !isBlacklisted) {
+        if (!world.isRemote() && !CLOTH_BLACKLIST.contains(block)) {
             TileEntity tileEntity = world.getTileEntity(pos);
             if (tileEntity == null)
                 return ActionResultType.PASS;
@@ -69,8 +80,10 @@ public class SpellBindingClothItem extends Item {
                 if (heldItem instanceof SpellBindingClothItem)
                     activeStack.shrink(1);
             }
+
+            return ActionResultType.SUCCESS;
         }
-        return ActionResultType.SUCCESS;
+        return ActionResultType.PASS;
     }
 
     protected void breakWithNoItemDrops(BlockPos pos, World world) {

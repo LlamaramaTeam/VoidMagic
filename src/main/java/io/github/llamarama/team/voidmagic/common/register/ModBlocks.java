@@ -98,7 +98,7 @@ public final class ModBlocks {
             () -> new PillarBlock(WITHERED_STONE_PROPS.get()));
     public static final RegistryObject<ChalkBlock> CHALK = register("chalk",
             () -> new ChalkBlock(CHALK_PROPS.get()));
-    public static final RegistryObject<Block> PACKED_BLOCK = register("packed_block",
+    public static final RegistryObject<Block> DECORATIVE_PACKED_BLOCK = register("decorative_packed_block",
             () -> new Block(COPY.apply(Blocks.WHITE_WOOL)));
 
     private ModBlocks() {
@@ -107,7 +107,10 @@ public final class ModBlocks {
     @NotNull
     private static <B extends Block> RegistryObject<B> register(String id, Supplier<B> block) {
         RegistryObject<B> out = registerNoItem(id, block);
-        ModRegistries.ITEMS.register(out.getId().getPath(), () -> new BlockItem(out.get(), new Item.Properties().group(ItemGroup.MISC).group(ModItemGroup.get())));
+        ModRegistries.ITEMS.
+                register(out.getId().getPath(),
+                        () -> new BlockItem(out.get(),
+                                new Item.Properties().group(ItemGroup.MISC).group(ModItemGroup.get())));
         return out;
     }
 

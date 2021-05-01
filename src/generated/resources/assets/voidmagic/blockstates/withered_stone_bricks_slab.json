@@ -1,13 +1,13 @@
 {
-  "variants": {
-    "type=top": {
-      "model": "voidmagic:block/withered_stone_bricks_slab_top"
-    },
-    "type=bottom": {
-      "model": "voidmagic:block/withered_stone_bricks_slab"
-    },
-    "type=double": {
-      "model": "voidmagic:block/withered_stone_bricks"
+    "variants": {
+        "type=top": {
+            "model": "voidmagic:block/withered_stone_bricks_slab_top"
+        },
+        "type=bottom": {
+            "model": "voidmagic:block/withered_stone_bricks_slab"
+        },
+        "type=double": {
+            "model": "voidmagic:block/withered_stone_bricks"
+        }
     }
-  }
 }
