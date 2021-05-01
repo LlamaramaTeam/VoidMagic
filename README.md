@@ -1,5 +1,5 @@
 # VoidMagic
-A random magic mod. Most people would not like it. Just saying.
+A random magic mod. Most people would like it. Just saying.
 
 ## Concept
 * Make use of the available magic in the world, with spellbinding circles.
