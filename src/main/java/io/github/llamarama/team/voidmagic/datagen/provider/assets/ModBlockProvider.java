@@ -40,6 +40,7 @@ public class ModBlockProvider extends BlockStateProvider {
         this.blacklist.add(ModBlocks.OFFERING_PLATE.get());
         this.blacklist.add(ModBlocks.CHALK.get());
         this.blacklist.add(ModBlocks.DECORATIVE_PACKED_BLOCK.get());
+        this.blacklist.add(ModBlocks.SCROLL.get());
 
         ModRegistries.BLOCKS.getEntries().stream()
                 .filter((block) -> !this.blacklist.contains(block.get()))

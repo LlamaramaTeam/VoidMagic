@@ -100,6 +100,8 @@ public final class ModBlocks {
             () -> new ChalkBlock(CHALK_PROPS.get()));
     public static final RegistryObject<Block> DECORATIVE_PACKED_BLOCK = register("decorative_packed_block",
             () -> new Block(COPY.apply(Blocks.WHITE_WOOL)));
+    public static final RegistryObject<ScrollBlock> SCROLL = register("scroll",
+            () -> new ScrollBlock(COPY.apply(Blocks.WHITE_WOOL).doesNotBlockMovement().hardnessAndResistance(0.6f)));
 
     private ModBlocks() {
     }
