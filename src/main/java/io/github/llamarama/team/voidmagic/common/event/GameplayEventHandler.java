@@ -57,7 +57,7 @@ public class GameplayEventHandler implements IEventHandler {
 
     @SubscribeEvent
     public void attachCustomCaps(final AttachCapabilitiesEvent<Chunk> event) {
-        // TODO: Finish this because it's dangerous.
+        // Not dangerous anymore.
         Chunk object = event.getObject();
         ChaosChunkProvider provider = new ChaosChunkProvider(object);
         event.addCapability(IdBuilder.mod(NBTConstants.CHAOS), provider);
@@ -111,7 +111,6 @@ public class GameplayEventHandler implements IEventHandler {
 
         if (source.getTrueSource() instanceof PlayerEntity)
             ChunkSyncManager.INSTANCE.sendStatus((ServerPlayerEntity) source.getTrueSource());
-
     }
 
     @SubscribeEvent
