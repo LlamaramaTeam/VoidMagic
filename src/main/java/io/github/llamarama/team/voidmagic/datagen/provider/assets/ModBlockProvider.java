@@ -2,14 +2,17 @@ package io.github.llamarama.team.voidmagic.datagen.provider.assets;
 
 import com.google.common.collect.Sets;
 import io.github.llamarama.team.voidmagic.VoidMagic;
+import io.github.llamarama.team.voidmagic.api.block.properties.ModBlockProperties;
 import io.github.llamarama.team.voidmagic.common.block.PillarBlock;
 import io.github.llamarama.team.voidmagic.common.block.PlateBlock;
+import io.github.llamarama.team.voidmagic.common.block.ScrollBlock;
 import io.github.llamarama.team.voidmagic.common.register.ModBlocks;
 import io.github.llamarama.team.voidmagic.common.register.ModRegistries;
 import io.github.llamarama.team.voidmagic.common.util.IdBuilder;
 import io.github.llamarama.team.voidmagic.common.util.IdHelper;
 import io.github.llamarama.team.voidmagic.common.util.VectorHelper;
 import net.minecraft.block.Block;
+import net.minecraft.block.HorizontalBlock;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.StairsBlock;
 import net.minecraft.data.DataGenerator;
@@ -56,8 +59,57 @@ public class ModBlockProvider extends BlockStateProvider {
 
         this.plateBlockModel(ModBlocks.OFFERING_PLATE.get(), IdBuilder.mod("block/withered_stone"));
         this.createSimpleBlockAndItem(ModBlocks.DECORATIVE_PACKED_BLOCK.get(), IdBuilder.mod("block/packed_block"));
+        this.scrollBlock(ModBlocks.SCROLL.get());
 
         VoidMagic.getLogger().info("Added all default block models.");
+    }
+
+    private void scrollBlock(ScrollBlock scrollBlock) {
+        MultiPartBlockStateBuilder builder = this.getMultipartBuilder(scrollBlock);
+
+        // Getting the existing models.
+        ModelFile.ExistingModelFile closedScroll =
+                new ModelFile.ExistingModelFile(IdBuilder.mod("block/scroll/closed_scroll"),
+                        this.models().existingFileHelper);
+        ModelFile.ExistingModelFile openScroll =
+                new ModelFile.ExistingModelFile(IdBuilder.mod("block/scroll/open_scroll"),
+                        this.models().existingFileHelper);
+
+        // Closed scroll stuff.
+        builder.part().modelFile(closedScroll).rotationY(90).addModel()
+                .condition(ModBlockProperties.OPEN, false)
+                .condition(HorizontalBlock.HORIZONTAL_FACING, Direction.NORTH)
+                .end();
+        builder.part().modelFile(closedScroll).rotationY(180).addModel()
+                .condition(ModBlockProperties.OPEN, false)
+                .condition(HorizontalBlock.HORIZONTAL_FACING, Direction.EAST)
+                .end();
+        builder.part().modelFile(closedScroll).rotationY(270).addModel()
+                .condition(ModBlockProperties.OPEN, false)
+                .condition(HorizontalBlock.HORIZONTAL_FACING, Direction.SOUTH)
+                .end();
+        builder.part().modelFile(closedScroll).addModel()
+                .condition(ModBlockProperties.OPEN, false)
+                .condition(HorizontalBlock.HORIZONTAL_FACING, Direction.WEST)
+                .end();
+
+        // Open scroll stuff
+        builder.part().modelFile(openScroll).rotationY(90).addModel()
+                .condition(ModBlockProperties.OPEN, true)
+                .condition(HorizontalBlock.HORIZONTAL_FACING, Direction.NORTH)
+                .end();
+        builder.part().modelFile(openScroll).rotationY(180).addModel()
+                .condition(ModBlockProperties.OPEN, true)
+                .condition(HorizontalBlock.HORIZONTAL_FACING, Direction.EAST)
+                .end();
+        builder.part().modelFile(openScroll).rotationY(270).addModel()
+                .condition(ModBlockProperties.OPEN, true)
+                .condition(HorizontalBlock.HORIZONTAL_FACING, Direction.SOUTH)
+                .end();
+        builder.part().modelFile(openScroll).addModel()
+                .condition(ModBlockProperties.OPEN, true)
+                .condition(HorizontalBlock.HORIZONTAL_FACING, Direction.WEST)
+                .end();
     }
 
     private void plateBlockModel(Block block) {

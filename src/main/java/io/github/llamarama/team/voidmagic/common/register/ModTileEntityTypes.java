@@ -1,6 +1,7 @@
 package io.github.llamarama.team.voidmagic.common.register;
 
 import io.github.llamarama.team.voidmagic.common.tile.OfferingPlateTileEntity;
+import io.github.llamarama.team.voidmagic.common.tile.ScrollTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -14,6 +15,9 @@ public final class ModTileEntityTypes {
     public static final RegistryObject<TileEntityType<OfferingPlateTileEntity>> OFFERING_PLATE =
             register("offering_plate", () -> TileEntityType.Builder
                     .create(OfferingPlateTileEntity::new, ModBlocks.OFFERING_PLATE.get()).build(null));
+    public static final RegistryObject<TileEntityType<ScrollTileEntity>> SCROLL =
+            register("scroll", () -> TileEntityType.Builder
+                    .create(ScrollTileEntity::new, ModBlocks.SCROLL.get()).build(null));
 
     private ModTileEntityTypes() {
     }

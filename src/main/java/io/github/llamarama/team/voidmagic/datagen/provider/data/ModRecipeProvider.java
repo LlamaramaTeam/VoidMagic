@@ -2,6 +2,7 @@ package io.github.llamarama.team.voidmagic.datagen.provider.data;
 
 import io.github.llamarama.team.voidmagic.common.block.PlateBlock;
 import io.github.llamarama.team.voidmagic.common.register.ModBlocks;
+import io.github.llamarama.team.voidmagic.common.register.ModItems;
 import io.github.llamarama.team.voidmagic.common.tag.ModTags;
 import io.github.llamarama.team.voidmagic.common.util.IdBuilder;
 import net.minecraft.block.Block;
@@ -11,18 +12,18 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.tags.ITag;
+import net.minecraft.tags.ItemTags;
 import net.minecraftforge.common.data.ForgeRecipeProvider;
 
 import java.util.function.Consumer;
 
 public class ModRecipeProvider extends ForgeRecipeProvider {
 
-    private final String HAS_ITEM;
+    private static final String HAS_ITEM = "has_item";
     private Consumer<IFinishedRecipe> consumer;
 
     public ModRecipeProvider(DataGenerator generatorIn) {
         super(generatorIn);
-        this.HAS_ITEM = "has_item";
     }
 
     @Override
@@ -33,7 +34,15 @@ public class ModRecipeProvider extends ForgeRecipeProvider {
                 .key('#', ModBlocks.WITHERED_STONE_BRICK_SLAB.get())
                 .patternLine("#")
                 .patternLine("#")
-                .addCriterion(this.HAS_ITEM, RecipeProvider.hasItem(ModBlocks.WITHERED_STONE_BRICKS.get()))
+                .addCriterion(HAS_ITEM, hasItem(ModBlocks.WITHERED_STONE_BRICKS.get()))
+                .build(consumer);
+        ShapedRecipeBuilder.shapedRecipe(ModBlocks.DECORATIVE_PACKED_BLOCK.get(), 2)
+                .key('#', ModItems.SPELLBINDING_CLOTH.get())
+                .key('$', ItemTags.WOOL)
+                .patternLine(" # ") // null cloth null
+                .patternLine("#$#") // cloth wool cloth
+                .patternLine(" # ") // null cloth null
+                .addCriterion(HAS_ITEM, hasItem(ModItems.SPELLBINDING_CLOTH.get()))
                 .build(consumer);
         this.createBrickRecipe(ModBlocks.WITHERED_STONE_BRICKS.get(), ModBlocks.WITHERED_STONE.get());
         this.createBrickRecipe(ModBlocks.TOFAL.get(), ModBlocks.TOFAL_BRICKS.get());
@@ -48,7 +57,7 @@ public class ModRecipeProvider extends ForgeRecipeProvider {
         CookingRecipeBuilder.smeltingRecipe(
                 Ingredient.fromItems(ModBlocks.WITHERED_STONE_BRICKS.get()),
                 ModBlocks.CRACKED_WITHER_STONE_BRICKS.get(), 0.2f, 200)
-                .addCriterion(this.HAS_ITEM, RecipeProvider.hasItem(ModBlocks.WITHERED_STONE_BRICKS.get()))
+                .addCriterion(HAS_ITEM, hasItem(ModBlocks.WITHERED_STONE_BRICKS.get()))
                 .build(consumer);
 
         // Stonecutter
@@ -75,7 +84,7 @@ public class ModRecipeProvider extends ForgeRecipeProvider {
                 .key('#', original)
                 .patternLine("##")
                 .patternLine("##")
-                .addCriterion(this.HAS_ITEM, RecipeProvider.hasItem(original))
+                .addCriterion(HAS_ITEM, hasItem(original))
                 .build(this.consumer);
     }
 
@@ -83,7 +92,7 @@ public class ModRecipeProvider extends ForgeRecipeProvider {
         ShapedRecipeBuilder.shapedRecipe(slab, 6)
                 .key('b', original)
                 .patternLine("bbb")
-                .addCriterion(this.HAS_ITEM, RecipeProvider.hasItem(original))
+                .addCriterion(HAS_ITEM, hasItem(original))
                 .build(this.consumer);
     }
 
@@ -103,7 +112,7 @@ public class ModRecipeProvider extends ForgeRecipeProvider {
 
         SingleItemRecipeBuilder
                 .stonecuttingRecipe(Ingredient.fromItems(blockIn), blockOut, countOut)
-                .addCriterion(this.HAS_ITEM, RecipeProvider.hasItem(blockIn))
+                .addCriterion(HAS_ITEM, hasItem(blockIn))
                 .build(this.consumer, IdBuilder.mod(blockIn.getRegistryName().getPath() + "_to_" + blockOut.getRegistryName().getPath()));
     }
 
@@ -120,7 +129,7 @@ public class ModRecipeProvider extends ForgeRecipeProvider {
 
         SingleItemRecipeBuilder
                 .stonecuttingRecipe(Ingredient.fromTag(tag), block, countOut)
-                .addCriterion(this.HAS_ITEM, RecipeProvider.hasItem(Items.STONECUTTER))
+                .addCriterion(HAS_ITEM, hasItem(Items.STONECUTTER))
                 .build(this.consumer, IdBuilder.mod("stonecutting_to_" + block.getRegistryName().getPath()));
     }
 
@@ -130,7 +139,7 @@ public class ModRecipeProvider extends ForgeRecipeProvider {
                 .patternLine("  #")
                 .patternLine(" ##")
                 .patternLine("###")
-                .addCriterion(this.HAS_ITEM, RecipeProvider.hasItem(in))
+                .addCriterion(HAS_ITEM, hasItem(in))
                 .build(this.consumer);
     }
 

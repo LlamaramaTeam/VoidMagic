@@ -91,8 +91,8 @@ public class OfferingPlateTileEntity extends TileEntity {
     }
 
     @Override
-    public void remove() {
-        super.remove();
+    protected void invalidateCaps() {
+        super.invalidateCaps();
         itemOptional.invalidate();
     }
 

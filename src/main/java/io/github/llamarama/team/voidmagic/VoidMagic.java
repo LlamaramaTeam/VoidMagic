@@ -27,6 +27,8 @@ public class VoidMagic {
         final IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         final IEventBus forgeBus = MinecraftForge.EVENT_BUS;
 
+        // Initialize the client side of the mod.
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> VoidMagicClient::new);
         // Initialize the mod's configuration.
         ConfigInitializer.init(ModLoadingContext.get());
 
@@ -34,9 +36,6 @@ public class VoidMagic {
         GameplayEventHandler.getInstance().registerHandlers(forgeBus);
         WorldgenEventHandler.getInstance().registerHandlers(forgeBus);
         ModRegistries.initRegistries(modBus);
-
-        // Initialize the client side of the mod.
-        DistExecutor.safeCallWhenOn(Dist.CLIENT, () -> VoidMagicClient::new);
     }
 
     public static Logger getLogger() {

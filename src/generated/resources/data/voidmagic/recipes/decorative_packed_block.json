@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " # ",
+        "#$#",
+        " # "
+    ],
+    "key": {
+        "#": {
+            "item": "voidmagic:spellbinding_cloth"
+        },
+        "$": {
+            "tag": "minecraft:wool"
+        }
+    },
+    "result": {
+        "item": "voidmagic:decorative_packed_block",
+        "count": 2
+    }
+}
