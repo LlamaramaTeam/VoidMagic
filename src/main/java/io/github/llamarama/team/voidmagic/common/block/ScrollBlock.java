@@ -2,7 +2,10 @@ package io.github.llamarama.team.voidmagic.common.block;
 
 import io.github.llamarama.team.voidmagic.api.block.properties.ModBlockProperties;
 import io.github.llamarama.team.voidmagic.common.tile.ScrollTileEntity;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.HorizontalBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.StateContainer;
@@ -95,10 +98,9 @@ public class ScrollBlock extends HorizontalBlock {
     @SuppressWarnings("deprecation")
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        if (!worldIn.isRemote) {
-            worldIn.setBlockState(pos, state.with(OPEN,
-                    !state.get(OPEN) && this.isValidPosition(state, worldIn, pos))
-            );
+        BlockState newState = state.with(OPEN, !state.get(OPEN));
+        if (!worldIn.isRemote && newState.isValidPosition(worldIn, pos)) {
+            worldIn.setBlockState(pos, newState);
         }
 
         return ActionResultType.SUCCESS;
@@ -129,12 +131,6 @@ public class ScrollBlock extends HorizontalBlock {
 
     @SuppressWarnings("deprecation")
     @Override
-    public BlockRenderType getRenderType(BlockState state) {
-        return state.get(OPEN) ? BlockRenderType.ENTITYBLOCK_ANIMATED : BlockRenderType.MODEL;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
     public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
         if (state.get(ModBlockProperties.OPEN)) {
             Direction direction = state.get(HorizontalBlock.HORIZONTAL_FACING);
@@ -145,9 +141,9 @@ public class ScrollBlock extends HorizontalBlock {
             boolean isRightFull = worldIn.getBlockState(right).isSolidSide(worldIn, right, Direction.UP);
             boolean positionDown = worldIn.getBlockState(pos.down()).isSolidSide(worldIn, pos, Direction.UP);
 
-            return !isLeftFull || !isRightFull && !positionDown;
+            return isLeftFull && isRightFull && positionDown;
         } else
-            return super.isValidPosition(state, worldIn, pos);
+            return worldIn.getBlockState(pos.down()).isSolidSide(worldIn, pos.down(), Direction.UP);
     }
 
     @SuppressWarnings("deprecation")

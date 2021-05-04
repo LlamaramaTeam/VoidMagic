@@ -28,11 +28,12 @@ public class ScrollTileEntity extends TileEntity implements ITickableTileEntity 
         if (!this.world.isRemote()) {
             // Server logic
             BlockState currentState = this.getBlockState();
-            if (currentState.get(ModBlockProperties.OPEN) && currentState.isValidPosition(this.world, this.getPos()))
+            if (currentState.get(ModBlockProperties.OPEN) && !currentState.isValidPosition(this.world, this.getPos()))
                 this.world.destroyBlock(this.getPos(), true);
-        } else {
-            // Maybe some client logic
         }
+
+        // Maybe some client logic
+
     }
 
     @Override
