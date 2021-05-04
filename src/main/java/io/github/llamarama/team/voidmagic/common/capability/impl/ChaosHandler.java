@@ -1,7 +1,7 @@
 package io.github.llamarama.team.voidmagic.common.capability.impl;
 
-import io.github.llamarama.team.voidmagic.common.capability.VoidMagicCaps;
 import io.github.llamarama.team.voidmagic.api.capability.IChaosHandler;
+import io.github.llamarama.team.voidmagic.common.capability.VoidMagicCaps;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.INBTSerializable;
 

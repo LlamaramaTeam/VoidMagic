@@ -76,23 +76,23 @@ public class ScrollBlock extends HorizontalBlock {
         Direction direction = state.get(HORIZONTAL_FACING);
         boolean isOpen = state.get(OPEN);
 
-        Pair<VoxelShape, VoxelShape> openAndClosed;
+        Pair<VoxelShape, VoxelShape> closedAndOpen;
         switch (direction) {
             case EAST:
-                openAndClosed = Pair.of(SCROLL_EAST_OPEN, SCROLL_EAST);
+                closedAndOpen = Pair.of(SCROLL_EAST, SCROLL_EAST_OPEN);
                 break;
             case SOUTH:
-                openAndClosed = Pair.of(SCROLL_SOUTH_OPEN, SCROLL_SOUTH);
+                closedAndOpen = Pair.of(SCROLL_SOUTH, SCROLL_SOUTH_OPEN);
                 break;
             case WEST:
-                openAndClosed = Pair.of(SCROLL_WEST_OPEN, SCROLL_WEST);
+                closedAndOpen = Pair.of(SCROLL_WEST, SCROLL_WEST_OPEN);
                 break;
             default:
-                openAndClosed = Pair.of(SCROLL_NORTH_OPEN, SCROLL_NORTH);
+                closedAndOpen = Pair.of(SCROLL_NORTH, SCROLL_NORTH_OPEN);
                 break;
         }
 
-        return isOpen ? openAndClosed.getLeft() : openAndClosed.getRight();
+        return isOpen ? closedAndOpen.getRight() : closedAndOpen.getLeft();
     }
 
     @SuppressWarnings("deprecation")
