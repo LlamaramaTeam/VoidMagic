@@ -29,6 +29,9 @@ import java.util.stream.Stream;
 public class ModBlockProvider extends BlockStateProvider {
 
     private final Set<Block> blacklist;
+    private final ModelFile.ExistingModelFile ITEN_GENERATED = new ModelFile.ExistingModelFile(
+            IdBuilder.mc("item/generated"),
+            this.itemModels().existingFileHelper);
 
     public ModBlockProvider(DataGenerator gen, ExistingFileHelper exFileHelper) {
         super(gen, VoidMagic.MOD_ID, exFileHelper);
@@ -110,6 +113,10 @@ public class ModBlockProvider extends BlockStateProvider {
                 .condition(ModBlockProperties.OPEN, true)
                 .condition(HorizontalBlock.HORIZONTAL_FACING, Direction.WEST)
                 .end();
+
+        this.itemModels().getBuilder("item/scroll")
+                .parent(ITEN_GENERATED)
+                .texture("layer0", "item/scroll");
     }
 
     private void plateBlockModel(Block block) {

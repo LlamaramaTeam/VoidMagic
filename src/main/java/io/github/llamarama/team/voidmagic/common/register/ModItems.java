@@ -14,8 +14,8 @@ import java.util.function.Supplier;
 public final class ModItems {
 
     // Used to get item properties instead of methods. It's just easier.
-    public static final Supplier<Item.Properties> DEFAULT = () -> new Item.Properties().group(ModItemGroup.get());
-    public static final Supplier<Item.Properties> UNSTACKABLE = () -> DEFAULT.get().maxStackSize(1);
+    static final Supplier<Item.Properties> DEFAULT = () -> new Item.Properties().group(ModItemGroup.get());
+    static final Supplier<Item.Properties> UNSTACKABLE = () -> DEFAULT.get().maxStackSize(1);
 
     // Items
     public static final RegistryObject<Item> PUTILIAM = register("putiliam",

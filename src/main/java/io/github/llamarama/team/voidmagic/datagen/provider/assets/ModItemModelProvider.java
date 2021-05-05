@@ -20,6 +20,8 @@ import java.util.Set;
 public class ModItemModelProvider extends ItemModelProvider {
 
     private final Set<Item> blacklist;
+    private final ModelFile.ExistingModelFile itemGenerated =
+            new ModelFile.ExistingModelFile(mcLoc("item/generated"), this.existingFileHelper);
 
     public ModItemModelProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
         super(generator, VoidMagic.MOD_ID, existingFileHelper);
@@ -54,8 +56,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 
     private <I extends Item> void registerNormalItem(I item) {
         String path = IdHelper.getNonNullPath(item);
-        ModelFile model = new ModelFile.ExistingModelFile(mcLoc("item/generated"), this.existingFileHelper);
-        this.getBuilder(path).parent(model).texture("layer0", IdBuilder.mod("item/" + path));
+        this.getBuilder(path).parent(itemGenerated).texture("layer0", IdBuilder.mod("item/" + path));
     }
 
 }

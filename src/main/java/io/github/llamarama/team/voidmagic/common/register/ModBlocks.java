@@ -1,15 +1,12 @@
 package io.github.llamarama.team.voidmagic.common.register;
 
+import io.github.llamarama.team.voidmagic.api.block.properties.ChalkType;
 import io.github.llamarama.team.voidmagic.common.block.*;
-import io.github.llamarama.team.voidmagic.common.block.util.ChalkType;
-import io.github.llamarama.team.voidmagic.common.util.ModItemGroup;
 import io.github.llamarama.team.voidmagic.common.util.misc.PropertiesSupplier;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
@@ -109,10 +106,7 @@ public final class ModBlocks {
     @NotNull
     private static <B extends Block> RegistryObject<B> register(String id, Supplier<B> block) {
         RegistryObject<B> out = registerNoItem(id, block);
-        ModRegistries.ITEMS.
-                register(out.getId().getPath(),
-                        () -> new BlockItem(out.get(),
-                                new Item.Properties().group(ItemGroup.MISC).group(ModItemGroup.get())));
+        ModRegistries.ITEMS.register(out.getId().getPath(), () -> new BlockItem(out.get(), ModItems.DEFAULT.get()));
         return out;
     }
 

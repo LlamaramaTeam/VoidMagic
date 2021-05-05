@@ -1,6 +1,6 @@
 package io.github.llamarama.team.voidmagic.common.block;
 
-import io.github.llamarama.team.voidmagic.common.block.util.ChalkType;
+import io.github.llamarama.team.voidmagic.api.block.properties.ChalkType;
 import io.github.llamarama.team.voidmagic.common.register.ModBlocks;
 import io.github.llamarama.team.voidmagic.common.register.ModItems;
 import net.minecraft.block.Block;

@@ -1,4 +1,4 @@
-package io.github.llamarama.team.voidmagic.common.block.util;
+package io.github.llamarama.team.voidmagic.api.block.properties;
 
 import net.minecraft.util.IStringSerializable;
 import org.jetbrains.annotations.NotNull;
