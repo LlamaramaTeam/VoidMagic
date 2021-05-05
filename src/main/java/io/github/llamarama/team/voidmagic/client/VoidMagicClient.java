@@ -4,13 +4,10 @@ import io.github.llamarama.team.voidmagic.VoidMagic;
 import io.github.llamarama.team.voidmagic.client.event.ClientGameplayEventHandler;
 import io.github.llamarama.team.voidmagic.client.event.ClientInitEventHandler;
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-@OnlyIn(Dist.CLIENT)
 public class VoidMagicClient {
 
     private static final Minecraft game = Minecraft.getInstance();
