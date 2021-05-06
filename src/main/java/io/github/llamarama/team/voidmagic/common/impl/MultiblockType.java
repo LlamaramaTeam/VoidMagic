@@ -1,5 +1,6 @@
 package io.github.llamarama.team.voidmagic.common.impl;
 
+import io.github.llamarama.team.voidmagic.VoidMagic;
 import io.github.llamarama.team.voidmagic.api.multiblock.BlockPredicate;
 import io.github.llamarama.team.voidmagic.api.multiblock.IMultiblock;
 import io.github.llamarama.team.voidmagic.api.multiblock.IMultiblockType;
@@ -14,52 +15,17 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T> {
 
-    public static final Map<ResourceLocation, MultiblockType<?>> REGISTRY = new ConcurrentHashMap<>();
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
+    private static final Map<ResourceLocation, MultiblockType<?>> REGISTRY = new ConcurrentHashMap<>();
 
     private final Map<BlockPos, BlockPredicate> keys;
-    private final Vector3i size;
 
-
-    /*{
-        {
-            "xxxxxxx",
-            "xxxxxxx",
-            "xxxxxxx",
-            "xxxxxxx",
-            "xxxxxxx",
-            "xxxxxxx",
-            "xxxxxxx"
-        },
-        {
-            "       ",
-            "       ",
-            "       ",
-            "   x   ",
-            "       ",
-            "       ",
-            "       "
-        }
-      }
-
-      'x', DefaultPredicates.matches(Blocks.BRICKS)
-     */
-    public MultiblockType(Map<BlockPos, BlockPredicate> keys, Vector3i size) {
+    public MultiblockType(Map<BlockPos, BlockPredicate> keys) {
         this.keys = keys;
-        this.size = size;
     }
 
-    @Override
-    public boolean existsAt(BlockPos pos, World world) {
-        boolean result = true;
-        for (BlockPos currentPos : this.keys.keySet()) {
-            BlockPredicate currentPredicate = this.keys.get(currentPos);
-            if (!currentPredicate.test(world, pos.add(currentPos))) {
-                result = false;
-                break;
-            }
-        }
-
-        return result;
+    public static void register(ResourceLocation id, MultiblockType<?> type) {
+        REGISTRY.put(id, type);
     }
 
     @Override
@@ -67,18 +33,42 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
         return null;
     }
 
-    public static class Builder<MLB extends IMultiblock> {
-
-        private Vector3i size;
-        private Map<Character, BlockPredicate> definitions;
-        private Map<BlockPos, Character> pattern;
-
-        private Builder() {
-
+    @Override
+    public boolean existsAt(BlockPos pos, World world) {
+        boolean result = false;
+        if (!world.isRemote()) {
+            result = true;
+            for (BlockPos currentPos : this.keys.keySet()) {
+                BlockPredicate currentPredicate = this.keys.get(currentPos);
+                BlockPos actualPos = pos.add(currentPos);
+                if (!currentPredicate.test(world, actualPos)) {
+                    VoidMagic.getLogger().debug(
+                            String.format("Block at %s is not the expected state!", currentPos.add(pos))
+                    );
+                    result = false;
+                    break;
+                }
+                VoidMagic.getLogger().debug("Successfully found block at " + actualPos);
+            }
         }
 
-        private static <MBL extends IMultiblock> Builder<MBL> create() {
-            return new Builder<>();
+        return result;
+    }
+
+    public static class Builder<MLB extends IMultiblock> {
+
+        private final Map<Character, BlockPredicate> definitions;
+        private final ResourceLocation id;
+        private Vector3i size;
+        private Map<BlockPos, Character> pattern;
+
+        private Builder(ResourceLocation id) {
+            this.definitions = new ConcurrentHashMap<>();
+            this.id = id;
+        }
+
+        public static <MBL extends IMultiblock> Builder<MBL> create(ResourceLocation id) {
+            return new Builder<>(id);
         }
 
         public Builder<MLB> withSize(int x, int y, int z) {
@@ -94,36 +84,48 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
             return this;
         }
 
-        public void pattern(String[][] pattern) {
-            if (pattern.length != this.size.getX()) {
-                String message = "Cannot parse multiblock. The size of the pattern is bigger than the defined one.";
+        public Builder<MLB> pattern(String[][] pattern) {
+            if (pattern.length != this.size.getY()) {
+                String message = "Cannot parse multiblock. The size of the pattern is bigger than defined.";
                 throw new RuntimeException(message);
             }
 
             for (int i = 0; i < pattern.length; i++) {
+
+                if (pattern[i].length != this.size.getZ())
+                    throw new IllegalStateException("Wrong size for multiblock type " + this);
+
                 for (int j = 0; j < pattern[i].length; j++) {
+
                     String currentString = pattern[i][j];
+
                     for (int k = 0; k < currentString.length(); k++) {
+
+                        if (currentString.length() != this.size.getX()) {
+                            throw new RuntimeException("Cannot parse multiblock");
+                        }
+
                         char charAt = currentString.charAt(i);
+                        if (charAt == ' ')
+                            continue;
 
                         if (!this.definitions.containsKey(charAt)) {
                             throw new RuntimeException("Cannot find current characted in the definition list.");
                         }
 
-                        BlockPos currentPos = new BlockPos(i, j, k);
-
+                        VoidMagic.getLogger().debug(this.definitions.get(charAt));
+                        BlockPos currentPos = new BlockPos(j, i, k);
+                        VoidMagic.getLogger().debug(currentPos);
                         this.pattern.put(currentPos, charAt);
                     }
                 }
             }
+
+            return this;
         }
 
-        public MultiblockType<MLB> build(ResourceLocation id) {
-            if (this.pattern == null
-                    || this.pattern.size() == 0
-                    || this.size == null
-                    || this.definitions == null
-                    || this.definitions.size() == 0) {
+        public MultiblockType<MLB> build() {
+            if (this.pattern == null || this.pattern.size() == 0 || this.size == null || this.definitions.size() == 0) {
                 throw new RuntimeException("Found problems while attempting to build multiblock");
             }
 
@@ -133,9 +135,14 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
                 decoded.put(pos, predicate);
             }
 
-            MultiblockType<MLB> out = new MultiblockType<>(decoded, this.size);
-            REGISTRY.put(id, out);
+            MultiblockType<MLB> out = new MultiblockType<>(decoded);
+            REGISTRY.put(this.id, out);
             return out;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("MultiblockType{ %s, with size %s", this.id, this.size.toString());
         }
 
     }

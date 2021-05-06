@@ -12,7 +12,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public final class DefaultPredicates {
+public class DefaultPredicates {
 
     private DefaultPredicates() {
     }
