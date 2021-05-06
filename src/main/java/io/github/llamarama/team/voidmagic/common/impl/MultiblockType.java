@@ -4,6 +4,8 @@ import io.github.llamarama.team.voidmagic.VoidMagic;
 import io.github.llamarama.team.voidmagic.api.multiblock.BlockPredicate;
 import io.github.llamarama.team.voidmagic.api.multiblock.IMultiblock;
 import io.github.llamarama.team.voidmagic.api.multiblock.IMultiblockType;
+import io.github.llamarama.team.voidmagic.common.multiblock.DefaultPredicates;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3i;
@@ -61,14 +63,16 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
         private final ResourceLocation id;
         private Vector3i size;
         private Map<BlockPos, Character> pattern;
+        private final boolean isAbsolute;
 
-        private Builder(ResourceLocation id) {
+        private Builder(ResourceLocation id, boolean isAbsolute) {
+            this.isAbsolute = isAbsolute;
             this.definitions = new ConcurrentHashMap<>();
             this.id = id;
         }
 
-        public static <MBL extends IMultiblock> Builder<MBL> create(ResourceLocation id) {
-            return new Builder<>(id);
+        public static <MBL extends IMultiblock> Builder<MBL> create(ResourceLocation id, boolean isAbsolute) {
+            return new Builder<>(id, isAbsolute);
         }
 
         public Builder<MLB> withSize(int x, int y, int z) {
@@ -105,12 +109,12 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
                             throw new RuntimeException("Cannot parse multiblock");
                         }
 
-                        char charAt = currentString.charAt(i);
-                        if (charAt == ' ')
+                        char charAt = currentString.charAt(k);
+                        if (charAt == ' ' && !this.isAbsolute)
                             continue;
 
-                        if (!this.definitions.containsKey(charAt)) {
-                            throw new RuntimeException("Cannot find current characted in the definition list.");
+                        if (!this.definitions.containsKey(charAt) && charAt != ' ') {
+                            throw new RuntimeException("Cannot find current character in the definition list.");
                         }
 
                         VoidMagic.getLogger().debug(this.definitions.get(charAt));
@@ -131,12 +135,20 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
 
             HashMap<BlockPos, BlockPredicate> decoded = new HashMap<>();
             for (BlockPos pos : this.pattern.keySet()) {
-                BlockPredicate predicate = this.definitions.get(this.pattern.get(pos));
+                char currentKey = this.pattern.get(pos);
+                BlockPredicate predicate;
+
+                if (currentKey == ' ' && isAbsolute) {
+                    predicate = DefaultPredicates.match(Blocks.AIR);
+                } else
+                    predicate = this.definitions.get(currentKey);
+
+
                 decoded.put(pos, predicate);
             }
 
             MultiblockType<MLB> out = new MultiblockType<>(decoded);
-            REGISTRY.put(this.id, out);
+            register(this.id, out);
             return out;
         }
 
