@@ -21,9 +21,13 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
     private static final Map<ResourceLocation, MultiblockType<?>> REGISTRY = new ConcurrentHashMap<>();
 
     private final Map<BlockPos, BlockPredicate> keys;
+    private final Vector3i size;
+    private final Vector3i offset;
 
-    public MultiblockType(Map<BlockPos, BlockPredicate> keys) {
+    public MultiblockType(Map<BlockPos, BlockPredicate> keys, Vector3i size, Vector3i offset) {
         this.keys = keys;
+        this.size = size;
+        this.offset = offset;
     }
 
     public static void register(ResourceLocation id, MultiblockType<?> type) {
@@ -42,10 +46,10 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
             result = true;
             for (BlockPos currentPos : this.keys.keySet()) {
                 BlockPredicate currentPredicate = this.keys.get(currentPos);
-                BlockPos actualPos = pos.add(currentPos);
+                BlockPos actualPos = pos.add(currentPos).add(this.offset);
                 if (!currentPredicate.test(world, actualPos)) {
                     VoidMagic.getLogger().debug(
-                            String.format("Block at %s is not the expected state!", currentPos.add(pos))
+                            String.format("Block at %s is not the expected state!", actualPos)
                     );
                     result = false;
                     break;
@@ -64,6 +68,7 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
         private Vector3i size;
         private Map<BlockPos, Character> pattern;
         private final boolean isAbsolute;
+        private Vector3i offset;
 
         private Builder(ResourceLocation id, boolean isAbsolute) {
             this.isAbsolute = isAbsolute;
@@ -78,12 +83,19 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
         public Builder<MLB> withSize(int x, int y, int z) {
             this.size = new Vector3i(x, y, z);
             this.pattern = new ConcurrentHashMap<>(x * y * z);
+            this.offset = new Vector3i(-x / 2, -y / 2, -z / 2);
 
             return this;
         }
 
         public Builder<MLB> define(char character, BlockPredicate predicate) {
             this.definitions.put(character, predicate);
+
+            return this;
+        }
+
+        public Builder<MLB> withPlacementOffset(int x, int y, int z) {
+            this.offset = new Vector3i(x, y, z);
 
             return this;
         }
@@ -118,7 +130,7 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
                         }
 
                         VoidMagic.getLogger().debug(this.definitions.get(charAt));
-                        BlockPos currentPos = new BlockPos(j, i, k);
+                        BlockPos currentPos = new BlockPos(k, i, j);
                         VoidMagic.getLogger().debug(currentPos);
                         this.pattern.put(currentPos, charAt);
                     }
@@ -147,7 +159,8 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
                 decoded.put(pos, predicate);
             }
 
-            MultiblockType<MLB> out = new MultiblockType<>(decoded);
+
+            MultiblockType<MLB> out = new MultiblockType<>(decoded, this.size, this.offset);
             register(this.id, out);
             return out;
         }
