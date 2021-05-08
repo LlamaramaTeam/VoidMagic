@@ -5,8 +5,11 @@ import io.github.llamarama.team.voidmagic.api.multiblock.BlockPredicate;
 import io.github.llamarama.team.voidmagic.api.multiblock.IMultiblock;
 import io.github.llamarama.team.voidmagic.api.multiblock.IMultiblockType;
 import io.github.llamarama.team.voidmagic.common.multiblock.DefaultPredicates;
+import io.github.llamarama.team.voidmagic.common.util.constants.NBTConstants;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3i;
@@ -14,12 +17,13 @@ import net.minecraft.world.World;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T> {
 
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-    private static final Map<ResourceLocation, MultiblockType<?>> REGISTRY = new ConcurrentHashMap<>();
+    private static final Map<MultiblockType<?>, ResourceLocation> REGISTRY = new ConcurrentHashMap<>();
 
     private final Map<BlockPos, BlockPredicate> keys;
     private final Vector3i size;
@@ -32,7 +36,7 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
     }
 
     public static void register(ResourceLocation id, MultiblockType<?> type) {
-        REGISTRY.put(id, type);
+        REGISTRY.putIfAbsent(type, id);
     }
 
     @Override
@@ -62,12 +66,40 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
         return result;
     }
 
+    public static Optional<MultiblockType<?>> fromTag(CompoundNBT tag) {
+        StringNBT typeIdNBT = (StringNBT) tag.get(NBTConstants.MULTIBLOCK_TYPE_ID);
+
+        if (typeIdNBT != null) {
+            MultiblockType<?> out = null;
+            ResourceLocation typeId = new ResourceLocation(typeIdNBT.getString());
+            for (MultiblockType<?> type : REGISTRY.keySet()) {
+                ResourceLocation currentId = REGISTRY.get(type);
+                if (currentId.equals(typeId)) {
+                    out = type;
+                    break;
+                }
+            }
+
+            return Optional.ofNullable(out);
+
+        }
+
+        return Optional.empty();
+    }
+
+    @Override
     public Vector3i getSize() {
         return this.size;
     }
 
+    @Override
+    public void toTag(CompoundNBT tag) {
+        tag.putString(NBTConstants.MULTIBLOCK_TYPE_ID, REGISTRY.get(this).toString());
+    }
+
+    @Override
     public Map<BlockPos, BlockPredicate> getKeys() {
-        return keys;
+        return this.keys;
     }
 
     public static class Builder<MLB extends IMultiblock> {

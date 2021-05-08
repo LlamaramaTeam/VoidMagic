@@ -15,5 +15,8 @@ public interface NBTConstants {
     String X = "x";
     String Y = "y";
     String Z = "z";
+    String BLOCK_POS = "BlockPos";
+
+    String MULTIBLOCK_TYPE_ID = "MultiblockType";
 
 }
