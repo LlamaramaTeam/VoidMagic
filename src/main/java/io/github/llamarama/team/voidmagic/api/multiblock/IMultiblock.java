@@ -8,6 +8,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -15,9 +16,9 @@ public interface IMultiblock {
 
     boolean existsInLocation(BlockPos pos, World world);
 
-    MultiblockType<?> getType();
+    IMultiblockType<?> getType();
 
-    void setType(MultiblockType<?> type);
+    void setType(IMultiblockType<?> type);
 
     BlockPos getPos();
 
@@ -28,7 +29,7 @@ public interface IMultiblock {
     }
 
     @NotNull
-    default Iterable<BlockPos> positions() {
+    default Collection<BlockPos> positions() {
         return this.getType().getKeys().keySet().stream()
                 .map(this.getPos()::add)
                 .collect(Collectors.toSet());
@@ -45,7 +46,7 @@ public interface IMultiblock {
     default void deserialize(CompoundNBT tag) {
         this.setPos(NBTUtil.readBlockPos(tag.getCompound(NBTConstants.BLOCK_POS)));
 
-        Optional<MultiblockType<?>> type = MultiblockType.fromTag(tag);
+        Optional<IMultiblockType<?>> type = MultiblockType.fromTag(tag);
         if (!type.isPresent())
             throw new RuntimeException("Cannot find the target multiblock type from tag: " + tag);
         else
