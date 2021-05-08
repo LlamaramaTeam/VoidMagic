@@ -1,31 +1,31 @@
 {
-  "variants": {
-    "type=none": {
-      "model": "voidmagic:block/chalk/chalk_none"
-    },
-    "type=light": {
-      "model": "voidmagic:block/chalk/chalk_light"
-    },
-    "type=dark": {
-      "model": "voidmagic:block/chalk/chalk_dark"
-    },
-    "type=balanced": {
-      "model": "voidmagic:block/chalk/chalk_balanced"
-    },
-    "type=unstable": {
-      "model": "voidmagic:block/chalk/chalk_unstable"
-    },
-    "type=water": {
-      "model": "voidmagic:block/chalk/chalk_water"
-    },
-    "type=fire": {
-      "model": "voidmagic:block/chalk/chalk_fire"
-    },
-    "type=earth": {
-      "model": "voidmagic:block/chalk/chalk_earth"
-    },
-    "type=air": {
-      "model": "voidmagic:block/chalk/chalk_air"
+    "variants": {
+        "type=none": {
+            "model": "voidmagic:block/chalk/chalk_none"
+        },
+        "type=light": {
+            "model": "voidmagic:block/chalk/chalk_light"
+        },
+        "type=dark": {
+            "model": "voidmagic:block/chalk/chalk_dark"
+        },
+        "type=balanced": {
+            "model": "voidmagic:block/chalk/chalk_balanced"
+        },
+        "type=unstable": {
+            "model": "voidmagic:block/chalk/chalk_unstable"
+        },
+        "type=water": {
+            "model": "voidmagic:block/chalk/chalk_water"
+        },
+        "type=fire": {
+            "model": "voidmagic:block/chalk/chalk_fire"
+        },
+        "type=earth": {
+            "model": "voidmagic:block/chalk/chalk_earth"
+        },
+        "type=air": {
+            "model": "voidmagic:block/chalk/chalk_air"
+        }
     }
-  }
 }

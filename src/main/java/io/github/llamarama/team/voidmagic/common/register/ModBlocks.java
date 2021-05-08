@@ -24,7 +24,7 @@ public final class ModBlocks {
     // Properties
     private static final PropertiesSupplier WITHERED_STONE_PROPS = () -> {
         // Special for withered stone.
-         return AbstractBlock.Properties.create(Material.ROCK, MaterialColor.GRAY)
+        return AbstractBlock.Properties.create(Material.ROCK, MaterialColor.GRAY)
                 .harvestLevel(3)
                 .harvestTool(ToolType.PICKAXE)
                 .hardnessAndResistance(3.0f)

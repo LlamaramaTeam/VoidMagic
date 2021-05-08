@@ -19,13 +19,13 @@ public interface IMultiblock {
 
     void setType(MultiblockType<?> type);
 
-    default boolean existsAt(BlockPos pos, World world) {
-        return this.getType().existsAt(pos, world);
-    }
-
     BlockPos getPos();
 
     void setPos(BlockPos pos);
+
+    default boolean existsAt(BlockPos pos, World world) {
+        return this.getType().existsAt(pos, world);
+    }
 
     @NotNull
     default Iterable<BlockPos> positions() {
@@ -46,9 +46,10 @@ public interface IMultiblock {
         this.setPos(NBTUtil.readBlockPos(tag.getCompound(NBTConstants.BLOCK_POS)));
 
         Optional<MultiblockType<?>> type = MultiblockType.fromTag(tag);
-        type.ifPresent(this::setType);
         if (!type.isPresent())
             throw new RuntimeException("Cannot find the target multiblock type from tag: " + tag);
+        else
+            type.ifPresent(this::setType);
     }
 
 }
