@@ -1,28 +1,32 @@
 package io.github.llamarama.team.voidmagic.common.multiblock;
 
-import io.github.llamarama.team.voidmagic.common.impl.MultiblockType;
+import io.github.llamarama.team.voidmagic.common.block.ChalkBlock;
+import io.github.llamarama.team.voidmagic.common.block.util.ChalkType;
+import io.github.llamarama.team.voidmagic.common.multiblock.impl.MultiblockType;
+import io.github.llamarama.team.voidmagic.common.register.ModBlocks;
 import io.github.llamarama.team.voidmagic.common.util.IdBuilder;
-import net.minecraft.block.Blocks;
-import net.minecraft.tags.BlockTags;
 
 public final class ModMultiblocks {
 
-    public static final MultiblockType<?> TYPE = MultiblockType.Builder
-            .create(IdBuilder.mod("test"), true)
-            .withSize(7, 1, 7)
-            .define('X', DefaultPredicates.isInTag(BlockTags.WOOL))
-            .define('C', DefaultPredicates.match(Blocks.COAL_BLOCK))
-            .withPlacementOffset(-3, -1, -3)
+    public static final MultiblockType<?> FANCY = MultiblockType.Builder
+            .create(IdBuilder.mod("fancy"), 7, 1, 7, true)
+            .define('A', DefaultPredicates.any())
+            .define('P', DefaultPredicates.match(ModBlocks.OFFERING_PLATE.get()))
+            .define('C',
+                    DefaultPredicates.match(ModBlocks.CHALK.get().getDefaultState()
+                            .with(ChalkBlock.TYPE, ChalkType.AIR)))
+            .define('&', DefaultPredicates.match(ModBlocks.WITHERED_STONE_PILLAR.get()))
             .pattern(new String[][]{
                     {
-                            "XXXXXXX",
-                            "XXXXXXX",
-                            "XXXXXXX",
-                            "XXXCXXX",
-                            "XXXXXXX",
-                            "XXXXXXX",
-                            "XXXXXXX"
+                            "&PCCCP&",
+                            "PC   CP",
+                            "C     C",
+                            "P  A  P",
+                            "C     C",
+                            "PC   CP",
+                            "&PCCCP&"
                     }
-            }).build();
+            })
+            .build();
 
 }

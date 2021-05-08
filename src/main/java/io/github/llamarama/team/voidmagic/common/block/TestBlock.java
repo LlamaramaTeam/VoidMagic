@@ -20,7 +20,7 @@ public class TestBlock extends Block {
     @SuppressWarnings("deprecation")
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        if (ModMultiblocks.TYPE.existsAt(pos, worldIn)) {
+        if (ModMultiblocks.FANCY.existsAt(pos, worldIn)) {
             worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
         }
 

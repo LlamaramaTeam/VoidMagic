@@ -1,10 +1,11 @@
-package io.github.llamarama.team.voidmagic.common.impl;
+package io.github.llamarama.team.voidmagic.common.multiblock.impl;
 
 import io.github.llamarama.team.voidmagic.VoidMagic;
 import io.github.llamarama.team.voidmagic.api.multiblock.BlockPredicate;
 import io.github.llamarama.team.voidmagic.api.multiblock.IMultiblock;
 import io.github.llamarama.team.voidmagic.api.multiblock.IMultiblockType;
 import io.github.llamarama.team.voidmagic.common.multiblock.DefaultPredicates;
+import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -61,37 +62,45 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
         return result;
     }
 
+    public Vector3i getSize() {
+        return this.size;
+    }
+
+    public Map<BlockPos, BlockPredicate> getKeys() {
+        return keys;
+    }
+
     public static class Builder<MLB extends IMultiblock> {
 
         private final Map<Character, BlockPredicate> definitions;
         private final ResourceLocation id;
-        private Vector3i size;
-        private Map<BlockPos, Character> pattern;
+        private final Vector3i size;
+        private final Map<BlockPos, Character> pattern;
         private final boolean isAbsolute;
         private Vector3i offset;
 
-        private Builder(ResourceLocation id, boolean isAbsolute) {
+        private Builder(ResourceLocation id, int x, int y, int z, boolean isAbsolute) {
             this.isAbsolute = isAbsolute;
             this.definitions = new ConcurrentHashMap<>();
             this.id = id;
-        }
 
-        public static <MBL extends IMultiblock> Builder<MBL> create(ResourceLocation id, boolean isAbsolute) {
-            return new Builder<>(id, isAbsolute);
-        }
-
-        public Builder<MLB> withSize(int x, int y, int z) {
             this.size = new Vector3i(x, y, z);
-            this.pattern = new ConcurrentHashMap<>(x * y * z);
+            this.pattern = new HashMap<>(x * y * z);
             this.offset = new Vector3i(-x / 2, -y / 2, -z / 2);
+        }
 
-            return this;
+        public static <MBL extends IMultiblock> Builder<MBL> create(ResourceLocation id, int x, int y, int z, boolean isAbsolute) {
+            return new Builder<>(id, x, y, z, isAbsolute);
         }
 
         public Builder<MLB> define(char character, BlockPredicate predicate) {
             this.definitions.put(character, predicate);
 
             return this;
+        }
+
+        public Builder<MLB> define(char character, Block block) {
+            return this.define(character, DefaultPredicates.match(block));
         }
 
         public Builder<MLB> withPlacementOffset(int x, int y, int z) {
@@ -141,7 +150,7 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
         }
 
         public MultiblockType<MLB> build() {
-            if (this.pattern == null || this.pattern.size() == 0 || this.size == null || this.definitions.size() == 0) {
+            if (this.pattern.size() == 0 || this.definitions.size() == 0) {
                 throw new RuntimeException("Found problems while attempting to build multiblock");
             }
 
@@ -167,7 +176,7 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
 
         @Override
         public String toString() {
-            return String.format("MultiblockType{ %s, with size %s", this.id, this.size.toString());
+            return String.format("MultiblockType{%s, with size %s", this.id, this.size);
         }
 
     }

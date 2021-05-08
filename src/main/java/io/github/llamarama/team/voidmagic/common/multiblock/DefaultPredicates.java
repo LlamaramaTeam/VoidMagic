@@ -1,6 +1,8 @@
 package io.github.llamarama.team.voidmagic.common.multiblock;
 
 import io.github.llamarama.team.voidmagic.api.multiblock.BlockPredicate;
+import io.github.llamarama.team.voidmagic.common.multiblock.predicates.BlockStatePredicate;
+import io.github.llamarama.team.voidmagic.common.multiblock.predicates.BlockTagPredicate;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.inventory.IInventory;
@@ -18,11 +20,11 @@ public class DefaultPredicates {
     }
 
     public static BlockPredicate match(Block block) {
-        return match(block.getDefaultState());
+        return (world, pos) -> world.getBlockState(pos).getBlock() == block;
     }
 
     public static BlockPredicate match(BlockState state) {
-        return (world, pos) -> world.getBlockState(pos).equals(state);
+        return new BlockStatePredicate(state);
     }
 
     public static BlockPredicate contains(ItemStack stack) {
@@ -30,11 +32,7 @@ public class DefaultPredicates {
     }
 
     public static BlockPredicate isInTag(ITag<Block> tag) {
-        return (world, pos) -> {
-            BlockState state = world.getBlockState(pos);
-
-            return state.getBlock().isIn(tag);
-        };
+        return new BlockTagPredicate(tag);
     }
 
     public static BlockPredicate contains(ItemStack stack, Optional<BlockState> state) {
@@ -75,6 +73,10 @@ public class DefaultPredicates {
 
             return ret.get();
         };
+    }
+
+    public static BlockPredicate any() {
+        return (world, pos) -> true;
     }
 
 }
