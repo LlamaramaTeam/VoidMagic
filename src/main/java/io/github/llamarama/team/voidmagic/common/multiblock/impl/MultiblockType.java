@@ -65,11 +65,12 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
     @Override
     public boolean existsAt(BlockPos pos, World world) {
         boolean result = false;
+        BlockPos posAppliedOffset = pos.add(this.offset);
         if (!world.isRemote()) {
             result = true;
             for (BlockPos currentPos : this.keys.keySet()) {
                 BlockPredicate currentPredicate = this.keys.get(currentPos);
-                BlockPos actualPos = pos.add(currentPos).add(this.offset);
+                BlockPos actualPos = posAppliedOffset.add(currentPos);
                 if (!currentPredicate.test(world, actualPos)) {
                     VoidMagic.getLogger().debug(
                             String.format("Block at %s is not the expected state!", actualPos)
