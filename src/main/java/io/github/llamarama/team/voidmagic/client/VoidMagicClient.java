@@ -3,6 +3,7 @@ package io.github.llamarama.team.voidmagic.client;
 import io.github.llamarama.team.voidmagic.VoidMagic;
 import io.github.llamarama.team.voidmagic.client.event.ClientGameplayEventHandler;
 import io.github.llamarama.team.voidmagic.client.event.ClientInitEventHandler;
+import io.github.llamarama.team.voidmagic.client.render.multiblock.MultiblockRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -20,6 +21,7 @@ public class VoidMagicClient {
         // Initialize all client event handlers.
         ClientInitEventHandler.getInstance().registerHandlers(modEventBus);
         ClientGameplayEventHandler.getInstance().registerHandlers(forgeBus);
+        forgeBus.addListener(MultiblockRenderer::addCustomRenders);
 
         VoidMagic.getLogger().info("Loaded client side of VoidMagic");
     }

@@ -27,6 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author 0xJoeMama
  * @since 2021
  */
+@SuppressWarnings("unused")
 public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T> {
 
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
