@@ -58,34 +58,6 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
         return type;
     }
 
-    @Override
-    public T create(BlockPos pos, World world) {
-        return null;
-    }
-
-    @Override
-    public boolean existsAt(BlockPos pos, World world) {
-        boolean result = false;
-        BlockPos posAppliedOffset = pos.add(this.offset);
-        if (!world.isRemote()) {
-            result = true;
-            for (BlockPos currentPos : this.keys.keySet()) {
-                BlockPredicate currentPredicate = this.keys.get(currentPos);
-                BlockPos actualPos = posAppliedOffset.add(currentPos);
-                if (!currentPredicate.test(world, actualPos)) {
-                    VoidMagic.getLogger().debug(
-                            String.format("Block at %s is not the expected state!", actualPos)
-                    );
-                    result = false;
-                    break;
-                }
-                VoidMagic.getLogger().debug("Successfully found block at " + actualPos);
-            }
-        }
-
-        return result;
-    }
-
     /**
      * Deserializes a {@link CompoundNBT} tag to an {@link IMultiblockType}.
      *
@@ -111,6 +83,34 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
 
         // If the NBT is never written we just throw an exception as said above.
         return Optional.empty();
+    }
+
+    @Override
+    public T create(BlockPos pos, World world) {
+        return null;
+    }
+
+    @Override
+    public boolean existsAt(BlockPos center, World world) {
+        boolean result = false;
+        BlockPos posAppliedOffset = center.add(this.offset);
+        if (!world.isRemote()) {
+            result = true;
+            for (BlockPos currentPos : this.keys.keySet()) {
+                BlockPredicate currentPredicate = this.keys.get(currentPos);
+                BlockPos actualPos = posAppliedOffset.add(currentPos);
+                if (!currentPredicate.test(world, actualPos)) {
+                    VoidMagic.getLogger().debug(
+                            String.format("Block at %s is not the expected state!", actualPos)
+                    );
+                    result = false;
+                    break;
+                }
+                VoidMagic.getLogger().debug("Successfully found block at " + actualPos);
+            }
+        }
+
+        return result;
     }
 
     @Override

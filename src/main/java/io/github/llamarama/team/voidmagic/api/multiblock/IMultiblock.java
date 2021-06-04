@@ -14,8 +14,6 @@ import java.util.stream.Collectors;
 
 public interface IMultiblock {
 
-    boolean existsInLocation(BlockPos pos, World world);
-
     IMultiblockType<?> getType();
 
     void setType(IMultiblockType<?> type);
@@ -35,18 +33,20 @@ public interface IMultiblock {
                 .collect(Collectors.toSet());
     }
 
-    default CompoundNBT serialize(CompoundNBT tag) {
+    default void serialize(CompoundNBT tag) {
+        CompoundNBT multiblockTag = new CompoundNBT();
         CompoundNBT posTag = NBTUtil.writeBlockPos(this.getPos());
-        tag.put(NBTConstants.BLOCK_POS, posTag);
+        multiblockTag.put(NBTConstants.BLOCK_POS, posTag);
 
-        this.getType().toTag(tag);
-        return tag;
+        this.getType().toTag(multiblockTag);
+        tag.put(NBTConstants.MULTIBLOCK_SERIAL_TAG, multiblockTag);
     }
 
     default void deserialize(CompoundNBT tag) {
-        this.setPos(NBTUtil.readBlockPos(tag.getCompound(NBTConstants.BLOCK_POS)));
+        CompoundNBT multiblockTag = tag.getCompound(NBTConstants.MULTIBLOCK_SERIAL_TAG);
+        this.setPos(NBTUtil.readBlockPos(multiblockTag.getCompound(NBTConstants.BLOCK_POS)));
 
-        Optional<IMultiblockType<?>> type = MultiblockType.fromTag(tag);
+        Optional<IMultiblockType<?>> type = MultiblockType.fromTag(multiblockTag);
         if (!type.isPresent())
             throw new RuntimeException("Cannot find the target multiblock type from tag: " + tag);
         else

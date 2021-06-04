@@ -1,9 +1,7 @@
 package io.github.llamarama.team.voidmagic.client.render.renderer.tile;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
 import io.github.llamarama.team.voidmagic.client.VoidMagicClient;
-import io.github.llamarama.team.voidmagic.client.render.CustomRenderType;
 import io.github.llamarama.team.voidmagic.common.tile.OfferingPlateTileEntity;
 import io.github.llamarama.team.voidmagic.common.util.config.ClientConfig;
 import net.minecraft.block.Blocks;
@@ -14,11 +12,9 @@ import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.util.Direction;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -37,8 +33,10 @@ public class OfferingPlateTileRenderer extends TileEntityRenderer<OfferingPlateT
             matrixStackIn.push();
 
             final AtomicReference<ItemStack> stack = new AtomicReference<>();
+
             tileEntityIn.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(
                     (itemHandler) -> stack.set(itemHandler.getStackInSlot(0)));
+
             if (!stack.get().isEmpty()) {
                 matrixStackIn.translate(0.5f, 0.5f, 0.5f);
                 matrixStackIn.rotate(Vector3f.YP.rotationDegrees(
@@ -55,26 +53,15 @@ public class OfferingPlateTileRenderer extends TileEntityRenderer<OfferingPlateT
                             ItemCameraTransforms.TransformType.GROUND,
                             combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn);
                 }
+
                 if (tileEntityIn.rotationTick <= 0) {
                     tileEntityIn.rotationTick += 360;
                 }
             }
-            matrixStackIn.push();
-            matrixStackIn.translate(0, 1, 0);
-
-            IVertexBuilder buffer = bufferIn.getBuffer(CustomRenderType.GHOST_RENDER);
-
-            VoidMagicClient.getGame().getBlockRendererDispatcher().renderModel(
-                    Blocks.PUMPKIN.getDefaultState(),
-                    tileEntityIn.getPos().offset(Direction.UP),
-                    VoidMagicClient.getGame().world,
-                    matrixStackIn, buffer, true, tileEntityIn.getWorld().rand, EmptyModelData.INSTANCE
-            );
 
             matrixStackIn.pop();
-            matrixStackIn.pop();
-
         }
+
     }
 
 }

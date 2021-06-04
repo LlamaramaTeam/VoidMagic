@@ -23,11 +23,11 @@ public interface IMultiblockType<MLTB extends IMultiblock> {
     /**
      * Used to check whether this {@link IMultiblockType} exists at the specified position.
      *
-     * @param pos   The position.
-     * @param world The world to check in.
+     * @param center The position.
+     * @param world  The world to check in.
      * @return Whether the {@link IMultiblock} is fully formed at the specified position.
      */
-    boolean existsAt(BlockPos pos, World world);
+    boolean existsAt(BlockPos center, World world);
 
     /**
      * TODO: May or may not be implemented,

@@ -18,5 +18,6 @@ public interface NBTConstants {
     String BLOCK_POS = "BlockPos";
 
     String MULTIBLOCK_TYPE_ID = "MultiblockType";
+    String MULTIBLOCK_SERIAL_TAG = "Multiblock";
 
 }
