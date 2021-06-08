@@ -1,9 +1,12 @@
 package io.github.llamarama.team.voidmagic.common.multiblock.impl;
 
+import com.google.common.collect.Multimaps;
+import com.google.common.collect.SetMultimap;
 import io.github.llamarama.team.voidmagic.VoidMagic;
 import io.github.llamarama.team.voidmagic.api.multiblock.BlockPredicate;
 import io.github.llamarama.team.voidmagic.api.multiblock.IMultiblock;
 import io.github.llamarama.team.voidmagic.api.multiblock.IMultiblockType;
+import io.github.llamarama.team.voidmagic.api.multiblock.MultiblockRotation;
 import io.github.llamarama.team.voidmagic.common.multiblock.DefaultPredicates;
 import io.github.llamarama.team.voidmagic.common.util.constants.NBTConstants;
 import net.minecraft.block.Block;
@@ -14,10 +17,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.World;
+import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -33,14 +35,27 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private static final Map<MultiblockType<?>, ResourceLocation> REGISTRY = new ConcurrentHashMap<>();
 
-    private final Map<BlockPos, BlockPredicate> keys;
+    private final SetMultimap<MultiblockRotation, Pair<BlockPos, BlockPredicate>> keys;
     private final Vector3i size;
     private final Vector3i offset;
 
-    public MultiblockType(Map<BlockPos, BlockPredicate> keys, Vector3i size, Vector3i offset) {
-        this.keys = keys;
+    private MultiblockType(Map<BlockPos, BlockPredicate> decoded,
+                           Vector3i size, Vector3i offset) {
+        this.keys = Multimaps.newSetMultimap(new EnumMap<>(MultiblockRotation.class), HashSet::new);
         this.size = size;
         this.offset = offset;
+
+        this.initiateWithRotations(decoded);
+    }
+
+    private void initiateWithRotations(Map<BlockPos, BlockPredicate> decoded) {
+        for (MultiblockRotation rotation : MultiblockRotation.values()) {
+            decoded.forEach((pos, predicate) -> {
+                BlockPos transformedPos = rotation.transform(pos);
+                VoidMagic.getLogger().debug(transformedPos);
+                this.keys.put(rotation, Pair.of(transformedPos, predicate));
+            });
+        }
     }
 
     /**
@@ -92,23 +107,28 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
 
     @Override
     public boolean existsAt(BlockPos center, World world) {
-        boolean result = false;
-        BlockPos posAppliedOffset = center.add(this.offset);
-        if (!world.isRemote()) {
-            result = true;
-            for (BlockPos currentPos : this.keys.keySet()) {
-                BlockPredicate currentPredicate = this.keys.get(currentPos);
-                BlockPos actualPos = posAppliedOffset.add(currentPos);
-                if (!currentPredicate.test(world, actualPos)) {
-                    VoidMagic.getLogger().debug(
-                            String.format("Block at %s is not the expected state!", actualPos)
-                    );
+        boolean result = true;
+
+        if (world.isRemote) {return false;}
+        for (MultiblockRotation rotation : MultiblockRotation.values()) {
+            VoidMagic.getLogger().debug(rotation);
+            BlockPos actualPos = center.add(rotation.transform(new BlockPos(this.offset)));
+            for (Pair<BlockPos, BlockPredicate> pair : this.keys.get(rotation)) {
+                BlockPos finalPos = actualPos.add(pair.getKey());
+                BlockPredicate predicate = pair.getValue();
+
+                VoidMagic.getLogger().debug(finalPos);
+                if (!predicate.test(world, finalPos)) {
+                    VoidMagic.getLogger().debug(String.format("Failed at %s", finalPos));
                     result = false;
                     break;
                 }
-                VoidMagic.getLogger().debug("Successfully found block at " + actualPos);
             }
+
+            if (result)
+                break;
         }
+
 
         return result;
     }
@@ -124,7 +144,7 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
     }
 
     @Override
-    public Map<BlockPos, BlockPredicate> getKeys() {
+    public SetMultimap<MultiblockRotation, Pair<BlockPos, BlockPredicate>> getKeys() {
         return this.keys;
     }
 
@@ -317,6 +337,7 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
 
             // Return a new multiblock type after we register it. This means that you don't have to register the type
             // yourself.
+
             MultiblockType<MLB> out = new MultiblockType<>(decoded, this.size, this.offset);
 
             // Register.

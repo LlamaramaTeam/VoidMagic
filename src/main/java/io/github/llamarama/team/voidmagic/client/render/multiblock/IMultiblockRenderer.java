@@ -2,8 +2,10 @@ package io.github.llamarama.team.voidmagic.client.render.multiblock;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import io.github.llamarama.team.voidmagic.api.multiblock.BlockPredicate;
 import io.github.llamarama.team.voidmagic.api.multiblock.IMultiblockProvider;
 import io.github.llamarama.team.voidmagic.api.multiblock.IMultiblockType;
+import io.github.llamarama.team.voidmagic.api.multiblock.MultiblockRotation;
 import io.github.llamarama.team.voidmagic.client.VoidMagicClient;
 import io.github.llamarama.team.voidmagic.client.render.CustomRenderType;
 import io.github.llamarama.team.voidmagic.common.multiblock.predicates.BlockStatePredicate;
@@ -18,7 +20,9 @@ public interface IMultiblockRenderer<T extends IMultiblockProvider> {
     default void renderStructure(IMultiblockType<?> type, MatrixStack stack, IRenderTypeBuffer buffer, BlockPos center,
                                  int overlay) {
         IVertexBuilder vertexBuilder = buffer.getBuffer(CustomRenderType.GHOST_RENDER);
-        type.getKeys().forEach((pos, predicate) -> {
+        type.getKeys().get(MultiblockRotation.ZERO).forEach((pair) -> {
+            BlockPos pos = pair.getKey();
+            BlockPredicate predicate = pair.getValue();
             if (predicate instanceof BlockStatePredicate) {
                 BlockState state = ((BlockStatePredicate) predicate).getState();
                 renderBlock(state, pos, stack, vertexBuilder, overlay);

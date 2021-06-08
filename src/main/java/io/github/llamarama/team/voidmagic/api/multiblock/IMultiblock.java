@@ -6,6 +6,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -28,8 +29,9 @@ public interface IMultiblock {
 
     @NotNull
     default Collection<BlockPos> positions() {
-        return this.getType().getKeys().keySet().stream()
-                .map(this.getPos()::add)
+        return this.getType().getKeys().get(MultiblockRotation.ZERO)
+                .stream()
+                .map(Pair::getKey)
                 .collect(Collectors.toSet());
     }
 

@@ -1,11 +1,11 @@
 package io.github.llamarama.team.voidmagic.api.multiblock;
 
+import com.google.common.collect.SetMultimap;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.World;
-
-import java.util.Map;
+import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * Represents all the {@link IMultiblock}s so that they can be registered.
@@ -39,7 +39,7 @@ public interface IMultiblockType<MLTB extends IMultiblock> {
      *
      * @return The pattern.
      */
-    Map<BlockPos, BlockPredicate> getKeys();
+    SetMultimap<MultiblockRotation, Pair<BlockPos, BlockPredicate>> getKeys();
 
     /**
      * @return The size of the {@link IMultiblock}.
