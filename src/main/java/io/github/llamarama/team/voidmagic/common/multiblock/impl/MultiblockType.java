@@ -39,25 +39,6 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
     private final Vector3i size;
     private final Vector3i offset;
 
-    private MultiblockType(Map<BlockPos, BlockPredicate> decoded,
-                           Vector3i size, Vector3i offset) {
-        this.keys = Multimaps.newSetMultimap(new EnumMap<>(MultiblockRotation.class), HashSet::new);
-        this.size = size;
-        this.offset = offset;
-
-        this.initiateWithRotations(decoded);
-    }
-
-    private void initiateWithRotations(Map<BlockPos, BlockPredicate> decoded) {
-        for (MultiblockRotation rotation : MultiblockRotation.values()) {
-            decoded.forEach((pos, predicate) -> {
-                BlockPos transformedPos = rotation.transform(pos);
-                VoidMagic.getLogger().debug(transformedPos);
-                this.keys.put(rotation, Pair.of(transformedPos, predicate));
-            });
-        }
-    }
-
     /**
      * <i><b>There currently is no reason to use this outside of this class but I will leave it public.</b></i>
      * Registers the provided {@link MultiblockType}. I may consider switching to storing the interface for
@@ -100,6 +81,27 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
         return Optional.empty();
     }
 
+    private MultiblockType(Map<BlockPos, BlockPredicate> decoded,
+                           Vector3i size, Vector3i offset) {
+        this.keys = Multimaps.newSetMultimap(new EnumMap<>(MultiblockRotation.class), HashSet::new);
+        this.size = size;
+        this.offset = offset;
+
+        this.initiateWithRotations(decoded);
+    }
+
+    private void initiateWithRotations(Map<BlockPos, BlockPredicate> decoded) {
+        for (MultiblockRotation rotation : MultiblockRotation.values()) {
+            decoded.forEach((pos, predicate) -> {
+                BlockPos transformedPos = rotation.transform(pos);
+                VoidMagic.getLogger().debug(transformedPos);
+                this.keys.put(rotation, Pair.of(transformedPos, predicate));
+            });
+        }
+
+        VoidMagic.getLogger().debug("succccccccccc");
+    }
+
     @Override
     public T create(BlockPos pos, World world) {
         return null;
@@ -109,8 +111,8 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
     public boolean existsAt(BlockPos center, World world) {
         boolean result = true;
 
-        if (world.isRemote) {return false;}
         for (MultiblockRotation rotation : MultiblockRotation.values()) {
+            result = true;
             VoidMagic.getLogger().debug(rotation);
             BlockPos actualPos = center.add(rotation.transform(new BlockPos(this.offset)));
             for (Pair<BlockPos, BlockPredicate> pair : this.keys.get(rotation)) {
@@ -128,7 +130,6 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
             if (result)
                 break;
         }
-
 
         return result;
     }
@@ -337,7 +338,6 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
 
             // Return a new multiblock type after we register it. This means that you don't have to register the type
             // yourself.
-
             MultiblockType<MLB> out = new MultiblockType<>(decoded, this.size, this.offset);
 
             // Register.

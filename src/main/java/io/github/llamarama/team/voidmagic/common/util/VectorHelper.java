@@ -22,4 +22,8 @@ public final class VectorHelper {
         return multiplyPos(pos, mult.getX(), mult.getY(), mult.getZ());
     }
 
+    public static BlockPos invert(BlockPos initial) {
+        return new BlockPos(initial.getZ(), initial.getY(), initial.getX());
+    }
+
 }

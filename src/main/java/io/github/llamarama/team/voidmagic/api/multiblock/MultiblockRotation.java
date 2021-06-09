@@ -19,7 +19,16 @@ public enum MultiblockRotation {
     }
 
     public BlockPos transform(BlockPos initial) {
-        return VectorHelper.multiplyPos(initial, this.xMult, 1, this.zMult);
+        switch (this) {
+            case ZERO:
+            case ONE_EIGHTY:
+                return VectorHelper.multiplyPos(initial, this.xMult, 1, this.zMult);
+            case NINETY:
+            case TWO_SEVENTY:
+                return VectorHelper.multiplyPos(VectorHelper.invert(initial), this.xMult, 1, this.zMult);
+            default:
+                return ZERO.transform(initial);
+        }
     }
 
 }
