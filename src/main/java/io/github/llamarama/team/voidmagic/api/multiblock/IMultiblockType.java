@@ -32,11 +32,6 @@ public interface IMultiblockType<MLTB extends IMultiblock> {
     boolean existsAt(BlockPos center, World world);
 
     /**
-     * TODO: May or may not be implemented,
-     */
-    MLTB create(BlockPos pos, World world);
-
-    /**
      * Returnes the pattern of the {@link IMultiblock}..
      *
      * @return The pattern.

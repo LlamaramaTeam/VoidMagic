@@ -98,11 +98,6 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
     }
 
     @Override
-    public T create(BlockPos pos, World world) {
-        return null;
-    }
-
-    @Override
     public boolean existsAt(BlockPos center, World world) {
         boolean result = true;
 
