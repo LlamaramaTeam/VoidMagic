@@ -9,6 +9,7 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
 public class TestBlock extends Block {
@@ -22,6 +23,8 @@ public class TestBlock extends Block {
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         if (ModMultiblocks.FANCY.existsAt(pos, worldIn)) {
             worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
+            worldIn.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(),
+                    4, false, Explosion.Mode.BREAK);
         }
 
         return ActionResultType.SUCCESS;

@@ -6,21 +6,21 @@ import net.minecraft.util.math.BlockPos;
 
 public class Multiblock implements IMultiblock {
 
-    private IMultiblockType<?> type;
+    private IMultiblockType type;
     private BlockPos center;
 
-    public Multiblock(IMultiblockType<?> type, BlockPos center) {
+    public Multiblock(IMultiblockType type, BlockPos center) {
         this.type = type;
         this.center = center;
     }
 
     @Override
-    public IMultiblockType<?> getType() {
+    public IMultiblockType getType() {
         return this.type;
     }
 
     @Override
-    public void setType(IMultiblockType<?> type) {
+    public void setType(IMultiblockType type) {
         this.type = type;
     }
 

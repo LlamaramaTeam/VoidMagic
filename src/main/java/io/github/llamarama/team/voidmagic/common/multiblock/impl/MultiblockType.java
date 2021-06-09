@@ -30,7 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @since 2021
  */
 @SuppressWarnings("unused")
-public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T> {
+public class MultiblockType<T extends IMultiblock> implements IMultiblockType {
 
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private static final Map<MultiblockType<?>, ResourceLocation> REGISTRY = new ConcurrentHashMap<>();
@@ -60,7 +60,7 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
      * @param tag The tag that contains the {@link ResourceLocation} that points to this type.
      * @return It is an {@link Optional}. Make sure you throw an {@link RuntimeException} if !{@link Optional#isPresent}.
      */
-    public static Optional<IMultiblockType<?>> fromTag(CompoundNBT tag) {
+    public static Optional<IMultiblockType> fromTag(CompoundNBT tag) {
         StringNBT typeIdNBT = (StringNBT) tag.get(NBTConstants.MULTIBLOCK_TYPE_ID);
 
         if (typeIdNBT != null) {

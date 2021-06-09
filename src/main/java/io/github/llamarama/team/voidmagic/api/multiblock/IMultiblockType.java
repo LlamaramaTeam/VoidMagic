@@ -16,11 +16,10 @@ import java.util.Map;
  * This class also contains the {@link IMultiblockType#getKeys} which is the pattern representing the
  * {@link IMultiblock}.
  *
- * @param <MLTB> The {@link IMultiblock} this class represents.
  * @author 0xJoeMama
  * @since 2021
  */
-public interface IMultiblockType<MLTB extends IMultiblock> {
+public interface IMultiblockType {
 
     /**
      * Used to check whether this {@link IMultiblockType} exists at the specified position.

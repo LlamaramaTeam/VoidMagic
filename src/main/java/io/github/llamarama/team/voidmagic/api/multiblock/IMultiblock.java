@@ -15,9 +15,9 @@ import java.util.stream.Collectors;
 
 public interface IMultiblock {
 
-    IMultiblockType<?> getType();
+    IMultiblockType getType();
 
-    void setType(IMultiblockType<?> type);
+    void setType(IMultiblockType type);
 
     BlockPos getPos();
 
@@ -48,7 +48,7 @@ public interface IMultiblock {
         CompoundNBT multiblockTag = tag.getCompound(NBTConstants.MULTIBLOCK_SERIAL_TAG);
         this.setPos(NBTUtil.readBlockPos(multiblockTag.getCompound(NBTConstants.BLOCK_POS)));
 
-        Optional<IMultiblockType<?>> type = MultiblockType.fromTag(multiblockTag);
+        Optional<IMultiblockType> type = MultiblockType.fromTag(multiblockTag);
         if (!type.isPresent())
             throw new RuntimeException("Cannot find the target multiblock type from tag: " + tag);
         else
