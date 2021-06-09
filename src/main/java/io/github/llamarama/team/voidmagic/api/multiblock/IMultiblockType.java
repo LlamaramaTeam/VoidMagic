@@ -7,6 +7,8 @@ import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.Map;
+
 /**
  * Represents all the {@link IMultiblock}s so that they can be registered.
  * Allows for checking for not bound {@link IMultiblock}s, meaning that you can check whether a multiblock exists at
@@ -40,6 +42,10 @@ public interface IMultiblockType<MLTB extends IMultiblock> {
      * @return The pattern.
      */
     SetMultimap<MultiblockRotation, Pair<BlockPos, BlockPredicate>> getKeys();
+
+    Map<BlockPos, BlockPredicate> getKeysFor(MultiblockRotation rotation);
+
+    Map<BlockPos, BlockPredicate> getDefaultKeys();
 
     /**
      * @return The size of the {@link IMultiblock}.

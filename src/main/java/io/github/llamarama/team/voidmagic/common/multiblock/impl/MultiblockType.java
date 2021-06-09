@@ -92,14 +92,9 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
 
     private void initiateWithRotations(Map<BlockPos, BlockPredicate> decoded) {
         for (MultiblockRotation rotation : MultiblockRotation.values()) {
-            decoded.forEach((pos, predicate) -> {
-                BlockPos transformedPos = rotation.transform(pos);
-                VoidMagic.getLogger().debug(transformedPos);
-                this.keys.put(rotation, Pair.of(transformedPos, predicate));
-            });
+            decoded.forEach((pos, predicate) ->
+                    this.keys.put(rotation, Pair.of(rotation.transform(pos), predicate)));
         }
-
-        VoidMagic.getLogger().debug("succccccccccc");
     }
 
     @Override
@@ -112,16 +107,14 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
         boolean result = true;
 
         for (MultiblockRotation rotation : MultiblockRotation.values()) {
-            result = true;
-            VoidMagic.getLogger().debug(rotation);
             BlockPos actualPos = center.add(rotation.transform(new BlockPos(this.offset)));
+            result = true;
+
             for (Pair<BlockPos, BlockPredicate> pair : this.keys.get(rotation)) {
                 BlockPos finalPos = actualPos.add(pair.getKey());
                 BlockPredicate predicate = pair.getValue();
 
-                VoidMagic.getLogger().debug(finalPos);
                 if (!predicate.test(world, finalPos)) {
-                    VoidMagic.getLogger().debug(String.format("Failed at %s", finalPos));
                     result = false;
                     break;
                 }
@@ -147,6 +140,18 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType<T>
     @Override
     public SetMultimap<MultiblockRotation, Pair<BlockPos, BlockPredicate>> getKeys() {
         return this.keys;
+    }
+
+    @Override
+    public Map<BlockPos, BlockPredicate> getKeysFor(MultiblockRotation rotation) {
+        Map<BlockPos, BlockPredicate> out = new HashMap<>();
+        this.keys.get(rotation).forEach(pair -> out.put(pair.getKey(), pair.getValue()));
+        return out;
+    }
+
+    @Override
+    public Map<BlockPos, BlockPredicate> getDefaultKeys() {
+        return this.getKeysFor(MultiblockRotation.ZERO);
     }
 
     /**
