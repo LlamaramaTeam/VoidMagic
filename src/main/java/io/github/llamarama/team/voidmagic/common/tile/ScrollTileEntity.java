@@ -1,6 +1,10 @@
 package io.github.llamarama.team.voidmagic.common.tile;
 
 import io.github.llamarama.team.voidmagic.api.block.properties.ModBlockProperties;
+import io.github.llamarama.team.voidmagic.api.multiblock.IMultiblock;
+import io.github.llamarama.team.voidmagic.api.multiblock.IMultiblockProvider;
+import io.github.llamarama.team.voidmagic.common.multiblock.ModMultiblocks;
+import io.github.llamarama.team.voidmagic.common.multiblock.impl.Multiblock;
 import io.github.llamarama.team.voidmagic.common.register.ModTileEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
@@ -14,10 +18,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public class ScrollTileEntity extends TileEntity implements ITickableTileEntity {
+public class ScrollTileEntity extends TileEntity implements ITickableTileEntity, IMultiblockProvider {
+
+    private final IMultiblock multiblock;
 
     public ScrollTileEntity() {
         super(ModTileEntityTypes.SCROLL.get());
+        this.multiblock = new Multiblock(ModMultiblocks.FANCY, this.getPos());
     }
 
     @Override
@@ -27,23 +34,34 @@ public class ScrollTileEntity extends TileEntity implements ITickableTileEntity 
 
         if (!this.world.isRemote()) {
             // Server logic
+
+            // Check for correct position.
             BlockState currentState = this.getBlockState();
             if (currentState.get(ModBlockProperties.OPEN) && !currentState.isValidPosition(this.world, this.getPos()))
                 this.world.destroyBlock(this.getPos(), true);
+
+//            VoidMagic.getLogger().debug(this.multiblock.getPos());
+            // Start the circle logic.
+            if (this.multiblock.exists(this.world)) {
+                this.multiblock.positions().forEach(pos -> this.world.removeBlock(pos, false));
+            }
         }
 
         // Maybe some client logic
-
     }
 
     @Override
     public void read(BlockState state, CompoundNBT nbt) {
         super.read(state, nbt);
+        this.multiblock.deserialize(nbt);
     }
 
     @Override
     public CompoundNBT write(CompoundNBT compound) {
-        return super.write(compound);
+        CompoundNBT tag = super.write(compound);
+        this.multiblock.serialize(tag);
+        this.multiblock.setPos(this.getPos());
+        return tag;
     }
 
     @Override
@@ -75,6 +93,11 @@ public class ScrollTileEntity extends TileEntity implements ITickableTileEntity 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
         return new AxisAlignedBB(this.getPos().add(-1, 0, -1), this.getPos().add(1, 1, 1));
+    }
+
+    @Override
+    public IMultiblock getMultiblock() {
+        return this.multiblock;
     }
 
 }

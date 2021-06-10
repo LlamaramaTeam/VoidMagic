@@ -23,15 +23,17 @@ public interface IMultiblock {
 
     void setPos(BlockPos pos);
 
-    default boolean existsAt(BlockPos pos, World world) {
-        return this.getType().existsAt(pos, world);
+    default boolean exists(World world) {
+        return this.getType().existsAt(this.getPos(), world);
     }
 
     @NotNull
     default Collection<BlockPos> positions() {
+        // TODO: Joe is stupid so he needs to fix this.
         return this.getType().getKeys().get(MultiblockRotation.ZERO)
                 .stream()
                 .map(Pair::getKey)
+                .map(this.getPos()::add)
                 .collect(Collectors.toSet());
     }
 
