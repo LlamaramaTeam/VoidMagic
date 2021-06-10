@@ -17,6 +17,12 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * Hallo.
+ *
+ * @author 0xJoeMama
+ * @since 2021
+ */
 @Mod(ModConstants.MOD_ID)
 public class VoidMagic {
 
@@ -24,20 +30,26 @@ public class VoidMagic {
     private static final Logger LOGGER = LogManager.getLogger("VoidMagic");
 
     public VoidMagic() {
+        // Use these.
         final IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         final IEventBus forgeBus = MinecraftForge.EVENT_BUS;
 
-        // Initialize the client side of the mod.
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> VoidMagicClient::new);
         // Initialize the mod's configuration.
         ConfigInitializer.init(ModLoadingContext.get());
 
+        // Initialize all Deferred Registries of the mod.
+        ModRegistries.initRegistries(modBus);
+
+        // Register all of the mods event handlers.
         LifecycleEventHandler.getInstance().registerHandlers(modBus);
         GameplayEventHandler.getInstance().registerHandlers(forgeBus);
         WorldgenEventHandler.getInstance().registerHandlers(forgeBus);
-        ModRegistries.initRegistries(modBus);
+
+        // Initialize the client side of the mod.
+        DistExecutor.safeCallWhenOn(Dist.CLIENT, () -> VoidMagicClient::new);
     }
 
+    // Please don't System.out. Use this instead it's just better in every single way.
     public static Logger getLogger() {
         return LOGGER;
     }

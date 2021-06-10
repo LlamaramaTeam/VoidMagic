@@ -4,20 +4,18 @@ import io.github.llamarama.team.voidmagic.VoidMagic;
 import io.github.llamarama.team.voidmagic.client.event.ClientGameplayEventHandler;
 import io.github.llamarama.team.voidmagic.client.event.ClientLifecycleEventHandler;
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-@OnlyIn(Dist.CLIENT)
 public class VoidMagicClient {
 
     private static final Minecraft GAME = Minecraft.getInstance();
 
     public VoidMagicClient() {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        IEventBus forgeBus = MinecraftForge.EVENT_BUS;
+        // Use these.
+        final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        final IEventBus forgeBus = MinecraftForge.EVENT_BUS;
 
         // Initialize all client event handlers.
         ClientLifecycleEventHandler.getInstance().registerHandlers(modEventBus);
@@ -26,6 +24,7 @@ public class VoidMagicClient {
         VoidMagic.getLogger().info("Loaded client side of VoidMagic");
     }
 
+    // I don't know why but you should use this.
     public static Minecraft getGame() {
         return GAME;
     }

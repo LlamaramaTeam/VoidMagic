@@ -33,8 +33,10 @@ public class OfferingPlateTileRenderer extends TileEntityRenderer<OfferingPlateT
             matrixStackIn.push();
 
             final AtomicReference<ItemStack> stack = new AtomicReference<>();
+
             tileEntityIn.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(
                     (itemHandler) -> stack.set(itemHandler.getStackInSlot(0)));
+
             if (!stack.get().isEmpty()) {
                 matrixStackIn.translate(0.5f, 0.5f, 0.5f);
                 matrixStackIn.rotate(Vector3f.YP.rotationDegrees(
@@ -51,6 +53,7 @@ public class OfferingPlateTileRenderer extends TileEntityRenderer<OfferingPlateT
                             ItemCameraTransforms.TransformType.GROUND,
                             combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn);
                 }
+
                 if (tileEntityIn.rotationTick <= 0) {
                     tileEntityIn.rotationTick += 360;
                 }
@@ -58,6 +61,7 @@ public class OfferingPlateTileRenderer extends TileEntityRenderer<OfferingPlateT
 
             matrixStackIn.pop();
         }
+
     }
 
 }

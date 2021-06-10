@@ -104,9 +104,7 @@ public class OfferingPlateTileEntity extends TileEntity {
 
     @Override
     public CompoundNBT getUpdateTag() {
-        CompoundNBT updateTag = super.getUpdateTag();
-        updateTag.put(NBTConstants.INVENTORY, this.items.serializeNBT());
-        return updateTag;
+        return this.write(new CompoundNBT());
     }
 
     @Override
