@@ -7,7 +7,6 @@ import io.github.llamarama.team.voidmagic.common.network.ModNetworking;
 import io.github.llamarama.team.voidmagic.common.util.config.CommonConfig;
 import io.github.llamarama.team.voidmagic.common.util.constants.ModConstants;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;

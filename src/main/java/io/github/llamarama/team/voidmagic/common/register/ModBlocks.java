@@ -24,7 +24,7 @@ public final class ModBlocks {
     // Properties
     private static final PropertiesSupplier WITHERED_STONE_PROPS = () -> {
         // Special for withered stone.
-         return AbstractBlock.Properties.create(Material.ROCK, MaterialColor.GRAY)
+        return AbstractBlock.Properties.create(Material.ROCK, MaterialColor.GRAY)
                 .harvestLevel(3)
                 .harvestTool(ToolType.PICKAXE)
                 .hardnessAndResistance(3.0f)
@@ -100,6 +100,8 @@ public final class ModBlocks {
             () -> new ChalkBlock(CHALK_PROPS.get()));
     public static final RegistryObject<Block> DECORATIVE_PACKED_BLOCK = register("decorative_packed_block",
             () -> new Block(COPY.apply(Blocks.WHITE_WOOL)));
+    public static final RegistryObject<TestBlock> TEST_BLOCK = register("test_block",
+            () -> new TestBlock(COPY.apply(Blocks.STONE)));
 
     private ModBlocks() {
     }
