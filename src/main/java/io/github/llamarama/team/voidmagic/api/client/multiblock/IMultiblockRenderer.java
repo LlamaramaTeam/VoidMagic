@@ -6,7 +6,7 @@ import io.github.llamarama.team.voidmagic.api.multiblock.IMultiblockProvider;
 import io.github.llamarama.team.voidmagic.api.multiblock.IMultiblockType;
 import io.github.llamarama.team.voidmagic.client.VoidMagicClient;
 import io.github.llamarama.team.voidmagic.client.render.CustomRenderType;
-import io.github.llamarama.team.voidmagic.common.multiblock.predicates.BlockStatePredicate;
+import io.github.llamarama.team.voidmagic.common.lib.multiblock.predicates.BlockStatePredicate;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.world.ClientWorld;
@@ -26,6 +26,7 @@ public interface IMultiblockRenderer<T extends IMultiblockProvider> {
         });
     }
 
+    @SuppressWarnings("ConstantConditions")
     default void renderBlock(BlockState state, BlockPos pos, MatrixStack stack, IVertexBuilder builder) {
         stack.push();
         stack.translate(pos.getX(), pos.getY(), pos.getZ());

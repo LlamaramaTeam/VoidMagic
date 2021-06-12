@@ -3,8 +3,11 @@ package io.github.llamarama.team.voidmagic.common.tile;
 import io.github.llamarama.team.voidmagic.api.block.properties.ModBlockProperties;
 import io.github.llamarama.team.voidmagic.api.multiblock.IMultiblock;
 import io.github.llamarama.team.voidmagic.api.multiblock.IMultiblockProvider;
-import io.github.llamarama.team.voidmagic.common.multiblock.ModMultiblocks;
-import io.github.llamarama.team.voidmagic.common.multiblock.impl.Multiblock;
+import io.github.llamarama.team.voidmagic.api.multiblock.IMultiblockType;
+import io.github.llamarama.team.voidmagic.api.spellbinding.ISpellbindingCircle;
+import io.github.llamarama.team.voidmagic.common.lib.multiblock.ModMultiblocks;
+import io.github.llamarama.team.voidmagic.common.lib.multiblock.impl.Multiblock;
+import io.github.llamarama.team.voidmagic.common.lib.multiblock.impl.MultiblockType;
 import io.github.llamarama.team.voidmagic.common.register.ModTileEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
@@ -14,13 +17,20 @@ import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3i;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
+import java.util.Set;
+import java.util.function.BooleanSupplier;
+import java.util.stream.Collectors;
 
 public class ScrollTileEntity extends TileEntity implements ITickableTileEntity, IMultiblockProvider {
 
     private final IMultiblock multiblock;
+    private int craftingTick;
+    private boolean isCrafting;
+    private ISpellbindingCircle currentCircle;
 
     public ScrollTileEntity() {
         super(ModTileEntityTypes.SCROLL.get());
@@ -40,10 +50,36 @@ public class ScrollTileEntity extends TileEntity implements ITickableTileEntity,
             if (currentState.get(ModBlockProperties.OPEN) && !currentState.isValidPosition(this.world, this.getPos()))
                 this.world.destroyBlock(this.getPos(), true);
 
-//            VoidMagic.getLogger().debug(this.multiblock.getPos());
             // Start the circle logic.
             if (this.multiblock.exists(this.world)) {
                 this.multiblock.positions().forEach(pos -> this.world.removeBlock(pos, false));
+            }
+
+            if (this.craftingTick == 0 && this.currentCircle == null) {
+                Set<IMultiblockType> possibleTypes = MultiblockType.REGISTRY.keySet().stream()
+                        .filter((type) -> type.existsAt(this.pos, this.world))
+                        .collect(Collectors.toSet());
+
+                Optional<IMultiblockType> finalType = possibleTypes.stream().reduce((type1, type2) -> {
+                    Vector3i size1 = type1.getSize();
+                    Vector3i size2 = type2.getSize();
+
+                    boolean isXLarger = size1.getX() > size2.getX();
+                    boolean isYLarger = size1.getY() > size2.getY();
+                    boolean isZLarger = size1.getZ() > size2.getZ();
+
+                    return isXLarger && isYLarger && isZLarger ? type1 :
+                            !isXLarger && !isYLarger && !isZLarger ? type2 :
+                                    ((BooleanSupplier) () -> {
+                                        if (isXLarger && isZLarger)
+                                            return true;
+                                        else if (size1 == size2)
+                                            return true;
+                                        else if (isXLarger && isYLarger)
+                                            return true;
+                                        else return !isYLarger || isZLarger;
+                                    }).getAsBoolean() ? type1 : type2;
+                });
             }
         }
 

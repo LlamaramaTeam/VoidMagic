@@ -1,13 +1,12 @@
-package io.github.llamarama.team.voidmagic.common.multiblock.impl;
+package io.github.llamarama.team.voidmagic.common.lib.multiblock.impl;
 
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
-import io.github.llamarama.team.voidmagic.VoidMagic;
 import io.github.llamarama.team.voidmagic.api.multiblock.BlockPredicate;
 import io.github.llamarama.team.voidmagic.api.multiblock.IMultiblock;
 import io.github.llamarama.team.voidmagic.api.multiblock.IMultiblockType;
 import io.github.llamarama.team.voidmagic.api.multiblock.MultiblockRotation;
-import io.github.llamarama.team.voidmagic.common.multiblock.DefaultPredicates;
+import io.github.llamarama.team.voidmagic.common.lib.multiblock.DefaultPredicates;
 import io.github.llamarama.team.voidmagic.common.util.constants.NBTConstants;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -33,7 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MultiblockType<T extends IMultiblock> implements IMultiblockType {
 
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-    private static final Map<MultiblockType<?>, ResourceLocation> REGISTRY = new ConcurrentHashMap<>();
+    public static final Map<MultiblockType<?>, ResourceLocation> REGISTRY = new ConcurrentHashMap<>();
 
     private final SetMultimap<MultiblockRotation, Pair<BlockPos, BlockPredicate>> keys;
     private final Vector3i size;
@@ -142,6 +141,10 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType {
         Map<BlockPos, BlockPredicate> out = new HashMap<>();
         this.keys.get(rotation).forEach(pair -> out.put(pair.getKey(), pair.getValue()));
         return out;
+    }
+
+    public Vector3i getOffset() {
+        return offset;
     }
 
     @Override
@@ -296,11 +299,8 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType {
                             throw new RuntimeException("Cannot find current character in the definition list.");
                         }
 
-                        // Just debugging.
-                        VoidMagic.getLogger().debug(this.definitions.get(charAt));
                         // Make a position using the loop's position.
                         BlockPos currentPos = new BlockPos(k, i, j);
-                        VoidMagic.getLogger().debug(currentPos);
                         // Add the current position to the pattern.
                         this.pattern.put(currentPos, charAt);
                     }

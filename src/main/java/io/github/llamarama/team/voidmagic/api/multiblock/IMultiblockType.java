@@ -1,6 +1,7 @@
 package io.github.llamarama.team.voidmagic.api.multiblock;
 
 import com.google.common.collect.SetMultimap;
+import io.github.llamarama.team.voidmagic.common.lib.multiblock.impl.MultiblockType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3i;
@@ -45,6 +46,13 @@ public interface IMultiblockType {
      * @return The size of the {@link IMultiblock}.
      */
     Vector3i getSize();
+
+    /**
+     * Returns the default offset of the multiblock.
+     *
+     * @see MultiblockType#getOffset
+     */
+    Vector3i getOffset();
 
     /**
      * Used fpr serialization of this type.

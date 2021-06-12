@@ -1,8 +1,8 @@
-package io.github.llamarama.team.voidmagic.common.multiblock;
+package io.github.llamarama.team.voidmagic.common.lib.multiblock;
 
 import io.github.llamarama.team.voidmagic.api.multiblock.BlockPredicate;
-import io.github.llamarama.team.voidmagic.common.multiblock.predicates.BlockStatePredicate;
-import io.github.llamarama.team.voidmagic.common.multiblock.predicates.BlockTagPredicate;
+import io.github.llamarama.team.voidmagic.common.lib.multiblock.predicates.BlockStatePredicate;
+import io.github.llamarama.team.voidmagic.common.lib.multiblock.predicates.BlockTagPredicate;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.inventory.IInventory;

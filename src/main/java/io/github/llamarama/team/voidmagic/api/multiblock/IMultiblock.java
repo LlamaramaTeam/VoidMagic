@@ -1,6 +1,6 @@
 package io.github.llamarama.team.voidmagic.api.multiblock;
 
-import io.github.llamarama.team.voidmagic.common.multiblock.impl.MultiblockType;
+import io.github.llamarama.team.voidmagic.common.lib.multiblock.impl.MultiblockType;
 import io.github.llamarama.team.voidmagic.common.util.constants.NBTConstants;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
@@ -29,11 +29,12 @@ public interface IMultiblock {
 
     @NotNull
     default Collection<BlockPos> positions() {
-        // TODO: Joe is stupid so he needs to fix this.
+        // Joe fixed this lol.
         return this.getType().getKeys().get(MultiblockRotation.ZERO)
                 .stream()
                 .map(Pair::getKey)
                 .map(this.getPos()::add)
+                .map((worldOffsetPos) -> worldOffsetPos.add(this.getType().getOffset()))
                 .collect(Collectors.toSet());
     }
 

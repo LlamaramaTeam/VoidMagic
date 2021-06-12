@@ -1,4 +1,4 @@
-package io.github.llamarama.team.voidmagic.common.multiblock.predicates;
+package io.github.llamarama.team.voidmagic.common.lib.multiblock.predicates;
 
 import io.github.llamarama.team.voidmagic.api.multiblock.BlockPredicate;
 import net.minecraft.block.Block;

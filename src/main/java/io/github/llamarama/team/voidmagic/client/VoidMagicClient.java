@@ -8,6 +8,12 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
+/**
+ * Hallo again.
+ *
+ * @author JoeMama
+ * @since 2021
+ */
 public class VoidMagicClient {
 
     private static final Minecraft GAME = Minecraft.getInstance();

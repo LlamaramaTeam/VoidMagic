@@ -1,6 +1,6 @@
-package io.github.llamarama.team.voidmagic.common.multiblock;
+package io.github.llamarama.team.voidmagic.common.lib.multiblock;
 
-import io.github.llamarama.team.voidmagic.common.multiblock.impl.MultiblockType;
+import io.github.llamarama.team.voidmagic.common.lib.multiblock.impl.MultiblockType;
 import io.github.llamarama.team.voidmagic.common.register.ModBlocks;
 import io.github.llamarama.team.voidmagic.common.util.IdBuilder;
 

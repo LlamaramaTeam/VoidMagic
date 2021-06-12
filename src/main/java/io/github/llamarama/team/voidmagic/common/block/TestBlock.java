@@ -1,6 +1,6 @@
 package io.github.llamarama.team.voidmagic.common.block;
 
-import io.github.llamarama.team.voidmagic.common.multiblock.ModMultiblocks;
+import io.github.llamarama.team.voidmagic.common.lib.multiblock.ModMultiblocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;

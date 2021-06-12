@@ -1,4 +1,4 @@
-package io.github.llamarama.team.voidmagic.common.multiblock.impl;
+package io.github.llamarama.team.voidmagic.common.lib.multiblock.impl;
 
 import io.github.llamarama.team.voidmagic.api.multiblock.IMultiblock;
 import io.github.llamarama.team.voidmagic.api.multiblock.IMultiblockType;
