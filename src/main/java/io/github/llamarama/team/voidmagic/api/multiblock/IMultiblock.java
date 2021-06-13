@@ -23,6 +23,10 @@ public interface IMultiblock {
 
     void setPos(BlockPos pos);
 
+    MultiblockRotation getRotation();
+
+    void setRotation(MultiblockRotation rotation);
+
     default boolean exists(World world) {
         return this.getType().existsAt(this.getPos(), world);
     }
@@ -30,7 +34,7 @@ public interface IMultiblock {
     @NotNull
     default Collection<BlockPos> positions() {
         // Joe fixed this lol.
-        return this.getType().getKeys().get(MultiblockRotation.ZERO)
+        return this.getType().getKeys().get(this.getRotation())
                 .stream()
                 .map(Pair::getKey)
                 .map(this.getPos()::add)
@@ -43,6 +47,7 @@ public interface IMultiblock {
         CompoundNBT posTag = NBTUtil.writeBlockPos(this.getPos());
         multiblockTag.put(NBTConstants.BLOCK_POS, posTag);
 
+        this.getRotation().serialize(multiblockTag);
         this.getType().toTag(multiblockTag);
         tag.put(NBTConstants.MULTIBLOCK_SERIAL_TAG, multiblockTag);
     }
@@ -56,6 +61,8 @@ public interface IMultiblock {
             throw new RuntimeException("Cannot find the target multiblock type from tag: " + tag);
         else
             type.ifPresent(this::setType);
+
+        this.setRotation(MultiblockRotation.deserialize(multiblockTag).orElse(MultiblockRotation.ZERO));
     }
 
 }

@@ -1,10 +1,12 @@
 package io.github.llamarama.team.voidmagic.common.lib.spellbinding;
 
+import com.google.common.collect.ImmutableMap;
 import io.github.llamarama.team.voidmagic.api.spellbinding.ISpellbindingCircle;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 
 /**
  * @author 0xJoeMama
@@ -12,10 +14,13 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class CircleRegistry {
 
-    public static final Map<? super ISpellbindingCircle, ResourceLocation> REGISTRY = new ConcurrentHashMap<>();
+    private static final Map<ISpellbindingCircle, ResourceLocation> INTERNAL_REGISTRY = new ConcurrentHashMap<>();
+    public static final Map<ISpellbindingCircle, ResourceLocation> REGISTRY = ImmutableMap.copyOf(INTERNAL_REGISTRY);
 
-    public static void register(ISpellbindingCircle circle, ResourceLocation id) {
-        REGISTRY.put(circle, id);
+    public static ISpellbindingCircle register(Supplier<ISpellbindingCircle> circle, ResourceLocation id) {
+        INTERNAL_REGISTRY.put(circle.get(), id);
+
+        return circle.get();
     }
 
 }

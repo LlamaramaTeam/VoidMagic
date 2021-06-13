@@ -6,6 +6,8 @@ public interface ISpellbindingCircle {
 
     IMultiblockType multiblock();
 
-    ISpellBindable getResult();
+    ISpellbindable getResult();
+
+    int getCraftingTime();
 
 }

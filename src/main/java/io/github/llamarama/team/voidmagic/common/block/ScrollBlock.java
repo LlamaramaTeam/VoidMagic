@@ -1,7 +1,7 @@
 package io.github.llamarama.team.voidmagic.common.block;
 
 import io.github.llamarama.team.voidmagic.api.block.properties.ModBlockProperties;
-import io.github.llamarama.team.voidmagic.api.spellbinding.ISpellBindable;
+import io.github.llamarama.team.voidmagic.api.spellbinding.ISpellbindable;
 import io.github.llamarama.team.voidmagic.common.register.ModBlocks;
 import io.github.llamarama.team.voidmagic.common.tile.ScrollTileEntity;
 import net.minecraft.block.Block;
@@ -30,7 +30,7 @@ import org.jetbrains.annotations.Nullable;
 
 import static io.github.llamarama.team.voidmagic.api.block.properties.ModBlockProperties.OPEN;
 
-public class ScrollBlock extends HorizontalBlock implements ISpellBindable {
+public class ScrollBlock extends HorizontalBlock implements ISpellbindable {
 
     public static final VoxelShape SCROLL_WEST = VoxelShapes.combineAndSimplify(
             Block.makeCuboidShape(4, 0, 0, 9, 5, 16),

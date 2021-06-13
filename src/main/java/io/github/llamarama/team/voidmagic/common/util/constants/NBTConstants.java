@@ -8,6 +8,7 @@ public interface NBTConstants {
     String ITEM_ID = "ItemId";
     String EXTRA_NBT = "TileNBT";
     String BLOCK_ID = "BlockId";
+
     String FLUID_STORAGE = "TankStorage";
     String ENERGY_STORAGE = "Battery";
     String FILLED_STACKS = "FilledStacks";
@@ -19,5 +20,7 @@ public interface NBTConstants {
 
     String MULTIBLOCK_TYPE_ID = "MultiblockType";
     String MULTIBLOCK_SERIAL_TAG = "Multiblock";
+
+    String MULTIBLOCK_ROTATION = "MultRotation";
 
 }

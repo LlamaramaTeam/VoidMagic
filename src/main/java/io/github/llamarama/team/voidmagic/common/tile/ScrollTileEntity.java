@@ -1,13 +1,9 @@
 package io.github.llamarama.team.voidmagic.common.tile;
 
 import io.github.llamarama.team.voidmagic.api.block.properties.ModBlockProperties;
-import io.github.llamarama.team.voidmagic.api.multiblock.IMultiblock;
-import io.github.llamarama.team.voidmagic.api.multiblock.IMultiblockProvider;
-import io.github.llamarama.team.voidmagic.api.multiblock.IMultiblockType;
+import io.github.llamarama.team.voidmagic.api.spellbinding.ICircleCaster;
 import io.github.llamarama.team.voidmagic.api.spellbinding.ISpellbindingCircle;
-import io.github.llamarama.team.voidmagic.common.lib.multiblock.ModMultiblocks;
-import io.github.llamarama.team.voidmagic.common.lib.multiblock.impl.Multiblock;
-import io.github.llamarama.team.voidmagic.common.lib.multiblock.impl.MultiblockType;
+import io.github.llamarama.team.voidmagic.common.lib.spellbinding.CircleRegistry;
 import io.github.llamarama.team.voidmagic.common.register.ModTileEntityTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
@@ -25,16 +21,14 @@ import java.util.Set;
 import java.util.function.BooleanSupplier;
 import java.util.stream.Collectors;
 
-public class ScrollTileEntity extends TileEntity implements ITickableTileEntity, IMultiblockProvider {
+public class ScrollTileEntity extends TileEntity implements ITickableTileEntity, ICircleCaster {
 
-    private final IMultiblock multiblock;
     private int craftingTick;
-    private boolean isCrafting;
     private ISpellbindingCircle currentCircle;
 
     public ScrollTileEntity() {
         super(ModTileEntityTypes.SCROLL.get());
-        this.multiblock = new Multiblock(ModMultiblocks.FANCY, this.getPos());
+        this.craftingTick = 0;
     }
 
     @Override
@@ -42,34 +36,46 @@ public class ScrollTileEntity extends TileEntity implements ITickableTileEntity,
         if (this.world == null)
             return;
 
-        if (!this.world.isRemote()) {
-            // Server logic
+        if (world.isRemote) {
+            /*
+               Maybe client logic.
+             */
+        }
 
-            // Check for correct position.
-            BlockState currentState = this.getBlockState();
-            if (currentState.get(ModBlockProperties.OPEN) && !currentState.isValidPosition(this.world, this.getPos()))
-                this.world.destroyBlock(this.getPos(), true);
+            /*
+                Start the server logic.
+             */
+        // Check for correct position.
+        BlockState currentState = this.getBlockState();
+        if (currentState.get(ModBlockProperties.OPEN) && !currentState.isValidPosition(this.world, this.getPos()))
+            this.world.destroyBlock(this.getPos(), true);
 
-            // Start the circle logic.
-            if (this.multiblock.exists(this.world)) {
-                this.multiblock.positions().forEach(pos -> this.world.removeBlock(pos, false));
-            }
+        // Circle logic.
+        if (!this.isCrafting() && this.currentCircle == null) {
+            this.validateCurrentCircle();
+        } else if (!this.isCrafting()) {
+            this.finishCrafting();
+        } else {
+            this.progressCrafting();
+        }
+    }
 
-            if (this.craftingTick == 0 && this.currentCircle == null) {
-                Set<IMultiblockType> possibleTypes = MultiblockType.REGISTRY.keySet().stream()
-                        .filter((type) -> type.existsAt(this.pos, this.world))
-                        .collect(Collectors.toSet());
+    private void validateCurrentCircle() {
+        Set<ISpellbindingCircle> possibleCircles = CircleRegistry.REGISTRY.keySet().stream()
+                .filter(iSpellbindingCircle -> iSpellbindingCircle.multiblock().existsAt(this.pos, this.world))
+                .collect(Collectors.toSet());
 
-                Optional<IMultiblockType> finalType = possibleTypes.stream().reduce((type1, type2) -> {
-                    Vector3i size1 = type1.getSize();
-                    Vector3i size2 = type2.getSize();
+        Optional<ISpellbindingCircle> finalType = possibleCircles.stream()
+                .reduce((circle1, circle2) -> {
+                    Vector3i size1 = circle1.multiblock().getSize();
+                    Vector3i size2 = circle2.multiblock().getSize();
 
                     boolean isXLarger = size1.getX() > size2.getX();
                     boolean isYLarger = size1.getY() > size2.getY();
                     boolean isZLarger = size1.getZ() > size2.getZ();
 
-                    return isXLarger && isYLarger && isZLarger ? type1 :
-                            !isXLarger && !isYLarger && !isZLarger ? type2 :
+                    return isXLarger && isYLarger && isZLarger ? circle1 :
+                            !isXLarger && !isYLarger && !isZLarger ? circle2 :
                                     ((BooleanSupplier) () -> {
                                         if (isXLarger && isZLarger)
                                             return true;
@@ -78,26 +84,37 @@ public class ScrollTileEntity extends TileEntity implements ITickableTileEntity,
                                         else if (isXLarger && isYLarger)
                                             return true;
                                         else return !isYLarger || isZLarger;
-                                    }).getAsBoolean() ? type1 : type2;
+                                    }).getAsBoolean() ? circle1 : circle2;
                 });
-            }
-        }
 
-        // Maybe some client logic
+        finalType.ifPresent(this::initiateCircle);
+    }
+
+    private void initiateCircle(ISpellbindingCircle iSpellbindingCircle) {
+        this.craftingTick = iSpellbindingCircle.getCraftingTime();
+        this.setCircle(iSpellbindingCircle);
+    }
+
+    private void finishCrafting() {
+
+    }
+
+    private void progressCrafting() {
+
+    }
+
+    private boolean isCrafting() {
+        return this.craftingTick > 0;
     }
 
     @Override
     public void read(BlockState state, CompoundNBT nbt) {
         super.read(state, nbt);
-        this.multiblock.deserialize(nbt);
     }
 
     @Override
     public CompoundNBT write(CompoundNBT compound) {
-        CompoundNBT tag = super.write(compound);
-        this.multiblock.serialize(tag);
-        this.multiblock.setPos(this.getPos());
-        return tag;
+        return super.write(compound);
     }
 
     @Override
@@ -132,8 +149,13 @@ public class ScrollTileEntity extends TileEntity implements ITickableTileEntity,
     }
 
     @Override
-    public IMultiblock getMultiblock() {
-        return this.multiblock;
+    public ISpellbindingCircle getCircle() {
+        return this.currentCircle;
+    }
+
+    @Override
+    public void setCircle(ISpellbindingCircle circle) {
+        this.currentCircle = circle;
     }
 
 }

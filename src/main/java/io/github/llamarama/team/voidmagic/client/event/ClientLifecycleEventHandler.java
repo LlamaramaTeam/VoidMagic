@@ -44,7 +44,7 @@ public final class ClientLifecycleEventHandler implements IEventHandler {
      *
      * @see RenderTypeLookup
      */
-    public void setupRenderTypes() {
+    private void setupRenderTypes() {
         RenderTypeLookup.setRenderLayer(ModBlocks.CHALK.get(), RenderType.getCutoutMipped());
     }
 

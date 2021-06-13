@@ -2,16 +2,19 @@ package io.github.llamarama.team.voidmagic.common.lib.multiblock.impl;
 
 import io.github.llamarama.team.voidmagic.api.multiblock.IMultiblock;
 import io.github.llamarama.team.voidmagic.api.multiblock.IMultiblockType;
+import io.github.llamarama.team.voidmagic.api.multiblock.MultiblockRotation;
 import net.minecraft.util.math.BlockPos;
 
 public class Multiblock implements IMultiblock {
 
-    private IMultiblockType type;
-    private BlockPos center;
+    protected IMultiblockType type;
+    protected BlockPos center;
+    private MultiblockRotation rotation;
 
-    public Multiblock(IMultiblockType type, BlockPos center) {
+    public Multiblock(IMultiblockType type, BlockPos center, MultiblockRotation rotation) {
         this.type = type;
         this.center = center;
+        this.rotation = rotation;
     }
 
     @Override
@@ -32,6 +35,16 @@ public class Multiblock implements IMultiblock {
     @Override
     public void setPos(BlockPos pos) {
         this.center = pos;
+    }
+
+    @Override
+    public MultiblockRotation getRotation() {
+        return rotation;
+    }
+
+    @Override
+    public void setRotation(MultiblockRotation rotation) {
+        this.rotation = rotation;
     }
 
 }

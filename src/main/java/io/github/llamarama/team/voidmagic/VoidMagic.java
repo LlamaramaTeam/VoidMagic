@@ -45,9 +45,9 @@ public class VoidMagic {
         GameplayEventHandler.getInstance().registerHandlers(forgeBus);
         WorldgenEventHandler.getInstance().registerHandlers(forgeBus);
 
+
         // Initialize the client side of the mod.
         DistExecutor.safeCallWhenOn(Dist.CLIENT, () -> VoidMagicClient::new);
-
     }
 
     // Please don't System.out. Use this instead it's just better in every single way.

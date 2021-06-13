@@ -1,7 +1,12 @@
 package io.github.llamarama.team.voidmagic.api.multiblock;
 
 import io.github.llamarama.team.voidmagic.common.util.VectorHelper;
+import io.github.llamarama.team.voidmagic.common.util.constants.NBTConstants;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
+
+import java.util.Arrays;
+import java.util.Optional;
 
 public enum MultiblockRotation {
 
@@ -18,6 +23,14 @@ public enum MultiblockRotation {
         this.zMult = zMult;
     }
 
+    public static Optional<MultiblockRotation> deserialize(CompoundNBT tag) {
+        String name = tag.getString(NBTConstants.MULTIBLOCK_ROTATION);
+
+        return Arrays.stream(MultiblockRotation.values())
+                .filter((rotation) -> rotation.name().equals(name))
+                .findAny();
+    }
+
     public BlockPos transform(BlockPos initial) {
         switch (this) {
             case ZERO:
@@ -31,4 +44,7 @@ public enum MultiblockRotation {
         }
     }
 
+    public void serialize(CompoundNBT tag) {
+        tag.putString(NBTConstants.MULTIBLOCK_ROTATION, this.toString());
+    }
 }
