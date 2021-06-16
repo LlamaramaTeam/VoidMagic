@@ -24,15 +24,14 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Default implementation of the {@link IMultiblockType} interface.
  *
- * @param <T> The {@link IMultiblock} this class is a wrapper of.
  * @author 0xJoeMama
  * @since 2021
  */
 @SuppressWarnings("unused")
-public class MultiblockType<T extends IMultiblock> implements IMultiblockType {
+public class MultiblockType implements IMultiblockType {
 
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-    public static final Map<MultiblockType<?>, ResourceLocation> REGISTRY = new ConcurrentHashMap<>();
+    public static final Map<MultiblockType, ResourceLocation> REGISTRY = new ConcurrentHashMap<>();
 
     private final SetMultimap<MultiblockRotation, Pair<BlockPos, BlockPredicate>> keys;
     private final Vector3i size;
@@ -47,7 +46,7 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType {
      * @param id   The {@link ResourceLocation} to register this {@link MultiblockType} with.
      * @param type The type to be registered.
      */
-    public static <T extends IMultiblock> MultiblockType<T> register(ResourceLocation id, MultiblockType<T> type) {
+    public static MultiblockType register(ResourceLocation id, MultiblockType type) {
         // We don't want to have duplicate types registered so we are using putIfAbsent.
         REGISTRY.putIfAbsent(type, id);
         return type;
@@ -63,9 +62,9 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType {
         StringNBT typeIdNBT = (StringNBT) tag.get(NBTConstants.MULTIBLOCK_TYPE_ID);
 
         if (typeIdNBT != null) {
-            MultiblockType<?> out = null;
+            MultiblockType out = null;
             ResourceLocation typeId = new ResourceLocation(typeIdNBT.getString());
-            for (MultiblockType<?> type : REGISTRY.keySet()) {
+            for (MultiblockType type : REGISTRY.keySet()) {
                 ResourceLocation currentId = REGISTRY.get(type);
                 if (currentId.equals(typeId)) {
                     out = type;
@@ -101,21 +100,43 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType {
         boolean result = true;
 
         for (MultiblockRotation rotation : MultiblockRotation.values()) {
-            BlockPos actualPos = center.add(rotation.transform(new BlockPos(this.offset)));
-            result = true;
-
-            for (Pair<BlockPos, BlockPredicate> pair : this.keys.get(rotation)) {
-                BlockPos finalPos = actualPos.add(pair.getKey());
-                BlockPredicate predicate = pair.getValue();
-
-                if (!predicate.test(world, finalPos)) {
-                    result = false;
-                    break;
-                }
-            }
+            result = validateRotationAt(center, world, rotation);
 
             if (result)
                 break;
+        }
+
+        return result;
+    }
+
+    @Override
+    public Optional<MultiblockRotation> findRotationAt(BlockPos center, World world) {
+        boolean result;
+        MultiblockRotation out = null;
+
+        for (MultiblockRotation rotation : MultiblockRotation.values()) {
+            result = validateRotationAt(center, world, rotation);
+
+            if (result) {
+                return Optional.of(rotation);
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    private boolean validateRotationAt(BlockPos center, World world, MultiblockRotation rotation) {
+        boolean result = true;
+        BlockPos actualPos = center.add(rotation.transform(new BlockPos(this.offset)));
+
+        for (Pair<BlockPos, BlockPredicate> pair : this.keys.get(rotation)) {
+            BlockPos finalPos = actualPos.add(pair.getKey());
+            BlockPredicate predicate = pair.getValue();
+
+            if (!predicate.test(world, finalPos)) {
+                result = false;
+                break;
+            }
         }
 
         return result;
@@ -143,6 +164,7 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType {
         return out;
     }
 
+    @Override
     public Vector3i getOffset() {
         return offset;
     }
@@ -315,7 +337,7 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType {
          *
          * @return A new {@link MultiblockType}.
          */
-        public MultiblockType<MLB> build() {
+        public MultiblockType build() {
             // Check if both a pattern and at least 1 definitions are defined.
             if (this.pattern.size() == 0 || this.definitions.size() == 0) {
                 throw new RuntimeException("Found problems while attempting to build multiblock");
@@ -338,7 +360,7 @@ public class MultiblockType<T extends IMultiblock> implements IMultiblockType {
 
             // Return a new multiblock type after we register it. This means that you don't have to register the type
             // yourself.
-            MultiblockType<MLB> out = new MultiblockType<>(decoded, this.size, this.offset);
+            MultiblockType out = new MultiblockType(decoded, this.size, this.offset);
 
             // Register.
             return register(this.id, out);

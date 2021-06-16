@@ -9,6 +9,7 @@ import net.minecraft.world.World;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Represents all the {@link IMultiblock}s so that they can be registered.
@@ -30,6 +31,8 @@ public interface IMultiblockType {
      * @return Whether the {@link IMultiblock} is fully formed at the specified position.
      */
     boolean existsAt(BlockPos center, World world);
+
+    Optional<MultiblockRotation> findRotationAt(BlockPos center, World world);
 
     /**
      * Returnes the pattern of the {@link IMultiblock}..

@@ -4,6 +4,8 @@ import io.github.llamarama.team.voidmagic.VoidMagic;
 import io.github.llamarama.team.voidmagic.common.capability.VoidMagicCaps;
 import io.github.llamarama.team.voidmagic.common.integration.CuriosIntegration;
 import io.github.llamarama.team.voidmagic.common.network.ModNetworking;
+import io.github.llamarama.team.voidmagic.common.register.ModMultiblocks;
+import io.github.llamarama.team.voidmagic.common.register.ModSpellbindingCircles;
 import io.github.llamarama.team.voidmagic.common.util.config.CommonConfig;
 import io.github.llamarama.team.voidmagic.common.util.constants.ModConstants;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -31,6 +33,8 @@ public final class LifecycleEventHandler implements IEventHandler {
     public void commotInit(final FMLCommonSetupEvent event) {
         ModNetworking.get().initialize();
         VoidMagicCaps.register();
+        ModMultiblocks.init();
+        ModSpellbindingCircles.init();
     }
 
     @SubscribeEvent

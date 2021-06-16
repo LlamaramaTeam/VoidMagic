@@ -14,13 +14,16 @@ import java.util.function.Supplier;
  */
 public final class CircleRegistry {
 
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private static final Map<ISpellbindingCircle, ResourceLocation> INTERNAL_REGISTRY = new ConcurrentHashMap<>();
-    public static final Map<ISpellbindingCircle, ResourceLocation> REGISTRY = ImmutableMap.copyOf(INTERNAL_REGISTRY);
 
     public static ISpellbindingCircle register(Supplier<ISpellbindingCircle> circle, ResourceLocation id) {
         INTERNAL_REGISTRY.put(circle.get(), id);
-
         return circle.get();
+    }
+
+    public static ImmutableMap<ISpellbindingCircle, ResourceLocation> getRegistry() {
+        return ImmutableMap.copyOf(INTERNAL_REGISTRY);
     }
 
 }

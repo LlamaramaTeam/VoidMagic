@@ -2,6 +2,7 @@ package io.github.llamarama.team.voidmagic.common.block;
 
 import io.github.llamarama.team.voidmagic.api.block.properties.ModBlockProperties;
 import io.github.llamarama.team.voidmagic.api.spellbinding.ISpellbindable;
+import io.github.llamarama.team.voidmagic.common.lib.multiblock.impl.CircleMultiblock;
 import io.github.llamarama.team.voidmagic.common.register.ModBlocks;
 import io.github.llamarama.team.voidmagic.common.tile.ScrollTileEntity;
 import net.minecraft.block.Block;
@@ -157,7 +158,7 @@ public class ScrollBlock extends HorizontalBlock implements ISpellbindable {
     }
 
     @Override
-    public void circleFormed(World world, BlockPos pos, BlockState state) {
+    public void circleFormed(World world, BlockPos pos, BlockState state, CircleMultiblock circleMultiblock) {
         if (world.isRemote)
             return;
 

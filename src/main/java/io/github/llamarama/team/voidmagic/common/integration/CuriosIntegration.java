@@ -7,14 +7,14 @@ import top.theillusivec4.curios.api.SlotTypeMessage;
 
 public class CuriosIntegration implements IIntegrator {
 
-    private static CuriosIntegration instance;
+    private static CuriosIntegration INSTANCE;
 
     public static CuriosIntegration getInstance() {
-        if (instance == null) {
-            instance = new CuriosIntegration();
+        if (INSTANCE == null) {
+            INSTANCE = new CuriosIntegration();
         }
 
-        return instance;
+        return INSTANCE;
     }
 
     @Override

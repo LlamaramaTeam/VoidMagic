@@ -1,8 +1,10 @@
 package io.github.llamarama.team.voidmagic.common.tile;
 
+import io.github.llamarama.team.voidmagic.VoidMagic;
 import io.github.llamarama.team.voidmagic.api.block.properties.ModBlockProperties;
 import io.github.llamarama.team.voidmagic.api.spellbinding.ICircleCaster;
 import io.github.llamarama.team.voidmagic.api.spellbinding.ISpellbindingCircle;
+import io.github.llamarama.team.voidmagic.common.lib.multiblock.impl.CircleMultiblock;
 import io.github.llamarama.team.voidmagic.common.lib.spellbinding.CircleRegistry;
 import io.github.llamarama.team.voidmagic.common.register.ModTileEntityTypes;
 import net.minecraft.block.BlockState;
@@ -18,7 +20,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.BooleanSupplier;
 import java.util.stream.Collectors;
 
 public class ScrollTileEntity extends TileEntity implements ITickableTileEntity, ICircleCaster {
@@ -36,6 +37,7 @@ public class ScrollTileEntity extends TileEntity implements ITickableTileEntity,
         if (this.world == null)
             return;
 
+        //noinspection StatementWithEmptyBody
         if (world.isRemote) {
             /*
                Maybe client logic.
@@ -53,15 +55,15 @@ public class ScrollTileEntity extends TileEntity implements ITickableTileEntity,
         // Circle logic.
         if (!this.isCrafting() && this.currentCircle == null) {
             this.validateCurrentCircle();
-        } else if (!this.isCrafting()) {
+        } else if (this.craftingTick == 0) {
             this.finishCrafting();
-        } else {
+        } else if (this.currentCircle.multiblock().existsAt(this.pos, this.world)) {
             this.progressCrafting();
         }
     }
 
     private void validateCurrentCircle() {
-        Set<ISpellbindingCircle> possibleCircles = CircleRegistry.REGISTRY.keySet().stream()
+        Set<ISpellbindingCircle> possibleCircles = CircleRegistry.getRegistry().keySet().stream()
                 .filter(iSpellbindingCircle -> iSpellbindingCircle.multiblock().existsAt(this.pos, this.world))
                 .collect(Collectors.toSet());
 
@@ -75,32 +77,29 @@ public class ScrollTileEntity extends TileEntity implements ITickableTileEntity,
                     boolean isZLarger = size1.getZ() > size2.getZ();
 
                     return isXLarger && isYLarger && isZLarger ? circle1 :
-                            !isXLarger && !isYLarger && !isZLarger ? circle2 :
-                                    ((BooleanSupplier) () -> {
-                                        if (isXLarger && isZLarger)
-                                            return true;
-                                        else if (size1 == size2)
-                                            return true;
-                                        else if (isXLarger && isYLarger)
-                                            return true;
-                                        else return !isYLarger || isZLarger;
-                                    }).getAsBoolean() ? circle1 : circle2;
+                            !isXLarger && !isYLarger && !isZLarger ? circle2 : circle1;
                 });
 
         finalType.ifPresent(this::initiateCircle);
+        finalType.ifPresent(VoidMagic.getLogger()::debug);
+        VoidMagic.getLogger().debug("I found smth...");
     }
 
-    private void initiateCircle(ISpellbindingCircle iSpellbindingCircle) {
-        this.craftingTick = iSpellbindingCircle.getCraftingTime();
-        this.setCircle(iSpellbindingCircle);
+    private void initiateCircle(ISpellbindingCircle circle) {
+        this.craftingTick = circle.getCraftingTime();
+        this.setCircle(circle);
     }
 
     private void finishCrafting() {
-
+        this.currentCircle.getResult()
+                .circleFormed(this.world, this.pos, this.getBlockState(),
+                        new CircleMultiblock(this.currentCircle.multiblock(), this.pos, this.world));
+        this.currentCircle = null;
     }
 
     private void progressCrafting() {
-
+        this.craftingTick--;
+        VoidMagic.getLogger().debug("Tick");
     }
 
     private boolean isCrafting() {

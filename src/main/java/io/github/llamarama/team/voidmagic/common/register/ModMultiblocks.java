@@ -6,17 +6,19 @@ import io.github.llamarama.team.voidmagic.common.util.IdBuilder;
 
 public final class ModMultiblocks {
 
-    public static final MultiblockType<?> FANCY = MultiblockType.Builder
-            .create(IdBuilder.mod("fancy"), 3, 1, 3, true)
-            .define('A', DefaultPredicates.any())
+    public static final MultiblockType FANCY = MultiblockType.Builder
+            .create(IdBuilder.mod("fancy"), 3, 1, 3, false)
             .define('C', DefaultPredicates.match(ModBlocks.TOFAL.get()))
             .pattern(new String[][]{
                     {
                             "CCC",
-                            "CAC",
+                            "C C",
                             "CCC"
                     }
             })
             .build();
+
+    public static void init() {
+    }
 
 }

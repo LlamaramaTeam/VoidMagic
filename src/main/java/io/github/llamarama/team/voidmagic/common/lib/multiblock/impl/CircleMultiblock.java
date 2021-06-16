@@ -9,19 +9,22 @@ import net.minecraft.world.World;
 
 public class CircleMultiblock extends Multiblock implements ISpellbindable {
 
-    public CircleMultiblock(IMultiblockType type, BlockPos center, MultiblockRotation rotation) {
-        super(type, center, rotation);
-    }
+    public CircleMultiblock(IMultiblockType type, BlockPos center, World world) {
+        super(type, center, MultiblockRotation.ZERO);
 
-    @Override
-    public void circleFormed(World world, BlockPos pos, BlockState state) {
-
+        this.setRotation(type.findRotationAt(this.center, world).orElse(MultiblockRotation.ZERO));
     }
 
     public void getTiles() {
+
     }
 
     public void getBox() {
+
+    }
+
+    @Override
+    public void circleFormed(World world, BlockPos pos, BlockState state, CircleMultiblock circleMultiblock) {
 
     }
 
