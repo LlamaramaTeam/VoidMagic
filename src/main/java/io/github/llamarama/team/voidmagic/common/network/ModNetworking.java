@@ -4,14 +4,13 @@ import io.github.llamarama.team.voidmagic.common.network.packet.*;
 import io.github.llamarama.team.voidmagic.common.util.IdBuilder;
 import io.github.llamarama.team.voidmagic.common.util.constants.ModConstants;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Function;
 
 public class ModNetworking {
 
@@ -21,7 +20,6 @@ public class ModNetworking {
     private SimpleChannel CHANNEL;
 
     private ModNetworking() {
-
     }
 
     public static ModNetworking get() {
@@ -44,10 +42,20 @@ public class ModNetworking {
         CHANNEL.sendToServer(packet);
     }
 
-    private <PCT extends IPacket> void registerPacket(Class<PCT> packetClass, Function<PacketBuffer, PCT> decoder) {
+    private <PCT extends IPacket> void registerPacket(Class<PCT> packetClass) {
         CHANNEL.messageBuilder(packetClass, id++)
                 .encoder(IPacket::encode)
-                .decoder(decoder)
+                .decoder((buffer) -> {
+                    try {
+                        return packetClass.getConstructor(buffer.getClass()).newInstance(buffer);
+                    } catch (InvocationTargetException |
+                            InstantiationException |
+                            IllegalAccessException |
+                            NoSuchMethodException e) {
+                        e.printStackTrace();
+                        throw new IllegalStateException("Could not find class with name: " + packetClass.getName());
+                    }
+                })
                 .consumer((pct, contextSupplier) -> {
                     return pct.handle(contextSupplier, new AtomicBoolean(true));
                 })
@@ -63,12 +71,12 @@ public class ModNetworking {
     }
 
     private void registerPackets() {
-        this.registerPacket(SendChatMessagePacket.class, SendChatMessagePacket::new);
-        this.registerPacket(ReduceChaosPacket.class, ReduceChaosPacket::new);
-        this.registerPacket(ChunkChaosUpdatePacket.class, ChunkChaosUpdatePacket::new);
-        this.registerPacket(OpenBookScreenPacket.class, OpenBookScreenPacket::new);
-        this.registerPacket(MassChunkUpdatePacket.class, MassChunkUpdatePacket::new);
-        this.registerPacket(IncreaseChaosPacket.class, IncreaseChaosPacket::new);
+        this.registerPacket(SendChatMessagePacket.class);
+        this.registerPacket(ReduceChaosPacket.class);
+        this.registerPacket(ChunkChaosUpdatePacket.class);
+        this.registerPacket(OpenBookScreenPacket.class);
+        this.registerPacket(MassChunkUpdatePacket.class);
+        this.registerPacket(IncreaseChaosPacket.class);
     }
 
 }
