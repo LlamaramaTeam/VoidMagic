@@ -4,7 +4,6 @@ import io.github.llamarama.team.voidmagic.VoidMagic;
 import io.github.llamarama.team.voidmagic.api.block.properties.ModBlockProperties;
 import io.github.llamarama.team.voidmagic.api.spellbinding.ICircleCaster;
 import io.github.llamarama.team.voidmagic.api.spellbinding.ISpellbindingCircle;
-import io.github.llamarama.team.voidmagic.common.lib.multiblock.impl.CircleMultiblock;
 import io.github.llamarama.team.voidmagic.common.lib.spellbinding.CircleRegistry;
 import io.github.llamarama.team.voidmagic.common.register.ModTileEntityTypes;
 import net.minecraft.block.BlockState;
@@ -25,6 +24,7 @@ import java.util.stream.Collectors;
 public class ScrollTileEntity extends TileEntity implements ITickableTileEntity, ICircleCaster {
 
     private int craftingTick;
+    @Nullable
     private ISpellbindingCircle currentCircle;
 
     public ScrollTileEntity() {
@@ -57,20 +57,31 @@ public class ScrollTileEntity extends TileEntity implements ITickableTileEntity,
             this.validateCurrentCircle();
         } else if (this.craftingTick == 0) {
             this.finishCrafting();
-        } else if (this.currentCircle.multiblock().existsAt(this.pos, this.world)) {
-            this.progressCrafting();
+        } else if (this.currentCircle != null && this.isCrafting()) {
+            // The call to this#multiblockType refers to ((ICircleCaster)this)#multiblockType
+            if (this.multiblockType().existsAt(this.pos, this.world)) {
+                this.progressCrafting();
+            } else {
+                this.cancelCrafting();
+            }
         }
+    }
+
+    public void cancelCrafting() {
+        this.currentCircle = null;
+        this.craftingTick = 0;
     }
 
     private void validateCurrentCircle() {
         Set<ISpellbindingCircle> possibleCircles = CircleRegistry.getRegistry().keySet().stream()
-                .filter(iSpellbindingCircle -> iSpellbindingCircle.multiblock().existsAt(this.pos, this.world))
+                .filter(iSpellbindingCircle -> iSpellbindingCircle.getMultiblockType()
+                        .existsAt(this.pos, this.world))
                 .collect(Collectors.toSet());
 
         Optional<ISpellbindingCircle> finalType = possibleCircles.stream()
                 .reduce((circle1, circle2) -> {
-                    Vector3i size1 = circle1.multiblock().getSize();
-                    Vector3i size2 = circle2.multiblock().getSize();
+                    Vector3i size1 = circle1.getMultiblockType().getSize();
+                    Vector3i size2 = circle2.getMultiblockType().getSize();
 
                     boolean isXLarger = size1.getX() > size2.getX();
                     boolean isYLarger = size1.getY() > size2.getY();
@@ -85,24 +96,26 @@ public class ScrollTileEntity extends TileEntity implements ITickableTileEntity,
         VoidMagic.getLogger().debug("I found smth...");
     }
 
-    private void initiateCircle(ISpellbindingCircle circle) {
+    public void initiateCircle(ISpellbindingCircle circle) {
         this.craftingTick = circle.getCraftingTime();
         this.setCircle(circle);
     }
 
-    private void finishCrafting() {
-        this.currentCircle.getResult()
-                .circleFormed(this.world, this.pos, this.getBlockState(),
-                        new CircleMultiblock(this.currentCircle.multiblock(), this.pos, this.world));
-        this.currentCircle = null;
+    public void finishCrafting() {
+        if (this.currentCircle != null) {
+            this.currentCircle.getResult()
+                    .circleFormed(this.world, this.pos, this.getBlockState(),
+                            this.currentCircle.multiblock(this.pos, this.world).get());
+            this.currentCircle = null;
+        }
     }
 
-    private void progressCrafting() {
+    public void progressCrafting() {
         this.craftingTick--;
         VoidMagic.getLogger().debug("Tick");
     }
 
-    private boolean isCrafting() {
+    public boolean isCrafting() {
         return this.craftingTick > 0;
     }
 
@@ -147,6 +160,7 @@ public class ScrollTileEntity extends TileEntity implements ITickableTileEntity,
         return new AxisAlignedBB(this.getPos().add(-1, 0, -1), this.getPos().add(1, 1, 1));
     }
 
+    @Nullable
     @Override
     public ISpellbindingCircle getCircle() {
         return this.currentCircle;

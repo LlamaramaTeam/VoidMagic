@@ -48,6 +48,13 @@ public final class ModBlocks {
                 .zeroHardnessAndResistance()
                 .sound(SoundType.STONE);
     };
+    private static final PropertiesSupplier SCROLL_PROPS = () -> {
+        // Smooth
+        return AbstractBlock.Properties.create(ModMaterials.SCROLL)
+                .notSolid()
+                .sound(SoundType.CLOTH)
+                .hardnessAndResistance(0.2f);
+    };
     private static final Function<AbstractBlock, AbstractBlock.Properties> COPY = AbstractBlock.Properties::from;
 
     // Actual Block Registry
@@ -98,7 +105,7 @@ public final class ModBlocks {
     public static final RegistryObject<Block> DECORATIVE_PACKED_BLOCK = register("decorative_packed_block",
             () -> new Block(COPY.apply(Blocks.WHITE_WOOL)));
     public static final RegistryObject<ScrollBlock> SCROLL = register("scroll",
-            () -> new ScrollBlock(COPY.apply(Blocks.WHITE_WOOL).hardnessAndResistance(0.2f)));
+            () -> new ScrollBlock(SCROLL_PROPS.get()));
 
     private ModBlocks() {
     }

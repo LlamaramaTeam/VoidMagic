@@ -1,9 +1,6 @@
 package io.github.llamarama.team.voidmagic.common.block;
 
 import io.github.llamarama.team.voidmagic.api.block.properties.ModBlockProperties;
-import io.github.llamarama.team.voidmagic.api.spellbinding.ISpellbindable;
-import io.github.llamarama.team.voidmagic.common.lib.multiblock.impl.CircleMultiblock;
-import io.github.llamarama.team.voidmagic.common.register.ModBlocks;
 import io.github.llamarama.team.voidmagic.common.tile.ScrollTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -31,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
 
 import static io.github.llamarama.team.voidmagic.api.block.properties.ModBlockProperties.OPEN;
 
-public class ScrollBlock extends HorizontalBlock implements ISpellbindable {
+public class ScrollBlock extends HorizontalBlock {
 
     public static final VoxelShape SCROLL_WEST = VoxelShapes.combineAndSimplify(
             Block.makeCuboidShape(4, 0, 0, 9, 5, 16),
@@ -155,14 +152,6 @@ public class ScrollBlock extends HorizontalBlock implements ISpellbindable {
         return !stateIn.isValidPosition(worldIn, currentPos)
                 ? Blocks.AIR.getDefaultState()
                 : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
-    }
-
-    @Override
-    public void circleFormed(World world, BlockPos pos, BlockState state, CircleMultiblock circleMultiblock) {
-        if (world.isRemote)
-            return;
-
-        world.setBlockState(pos, ModBlocks.CHALK.get().getDefaultState());
     }
 
 }

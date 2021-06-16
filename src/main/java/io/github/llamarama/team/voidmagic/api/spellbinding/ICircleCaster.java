@@ -9,7 +9,7 @@ public interface ICircleCaster {
     void setCircle(ISpellbindingCircle circle);
 
     default IMultiblockType multiblockType() {
-        return this.getCircle().multiblock();
+        return this.getCircle().getMultiblockType();
     }
 
 }

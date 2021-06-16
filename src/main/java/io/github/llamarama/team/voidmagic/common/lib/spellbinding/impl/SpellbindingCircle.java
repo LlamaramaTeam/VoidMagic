@@ -3,6 +3,11 @@ package io.github.llamarama.team.voidmagic.common.lib.spellbinding.impl;
 import io.github.llamarama.team.voidmagic.api.multiblock.IMultiblockType;
 import io.github.llamarama.team.voidmagic.api.spellbinding.ISpellbindable;
 import io.github.llamarama.team.voidmagic.api.spellbinding.ISpellbindingCircle;
+import io.github.llamarama.team.voidmagic.common.lib.multiblock.impl.CircleMultiblock;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+
+import java.util.function.Supplier;
 
 public class SpellbindingCircle implements ISpellbindingCircle {
 
@@ -12,6 +17,7 @@ public class SpellbindingCircle implements ISpellbindingCircle {
 
     public SpellbindingCircle(IMultiblockType type, ISpellbindable result) {
         this(type, result, 200);
+
     }
 
     public SpellbindingCircle(IMultiblockType type, ISpellbindable result, int craftingTime) {
@@ -21,8 +27,8 @@ public class SpellbindingCircle implements ISpellbindingCircle {
     }
 
     @Override
-    public IMultiblockType multiblock() {
-        return this.type;
+    public Supplier<? extends CircleMultiblock> multiblock(BlockPos center, World world) {
+        return () -> new CircleMultiblock(this.type, center, world);
     }
 
     @Override
@@ -33,6 +39,11 @@ public class SpellbindingCircle implements ISpellbindingCircle {
     @Override
     public int getCraftingTime() {
         return this.craftingTime;
+    }
+
+    @Override
+    public IMultiblockType getMultiblockType() {
+        return this.type;
     }
 
 }
