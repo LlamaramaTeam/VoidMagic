@@ -102,7 +102,6 @@ repositories {
 }
 
 dependencies {
-
     implementation 'org.jetbrains:annotations:20.1.0'
     minecraft "net.minecraftforge:forge:1.16.5-${project.forge_version}"
 

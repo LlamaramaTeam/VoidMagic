@@ -15,8 +15,7 @@ import net.minecraftforge.client.model.data.EmptyModelData;
 
 public interface IMultiblockRenderer<T extends IMultiblockProvider> {
 
-    default void renderStructure(IMultiblockType type, MatrixStack stack, IRenderTypeBuffer buffer, BlockPos center,
-                                 int overlay) {
+    default void renderStructure(IMultiblockType type, MatrixStack stack, IRenderTypeBuffer buffer, BlockPos center) {
         IVertexBuilder vertexBuilder = buffer.getBuffer(CustomRenderType.GHOST_RENDER);
         type.getDefaultKeys().forEach((pos, predicate) -> {
             if (predicate instanceof BlockStatePredicate) {

@@ -1,5 +1,6 @@
 package io.github.llamarama.team.voidmagic.client.event;
 
+import io.github.llamarama.team.voidmagic.client.misc.CircleTextureManager;
 import io.github.llamarama.team.voidmagic.client.render.renderer.tile.OfferingPlateTileRenderer;
 import io.github.llamarama.team.voidmagic.client.render.renderer.tile.ScrollTileEntityRenderer;
 import io.github.llamarama.team.voidmagic.common.event.IEventHandler;
@@ -37,6 +38,8 @@ public final class ClientLifecycleEventHandler implements IEventHandler {
 
         // Initialize custom render types.
         this.setupRenderTypes();
+
+        CircleTextureManager.init();
     }
 
     /**
