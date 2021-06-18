@@ -1,20 +1,20 @@
 package io.github.llamarama.team.voidmagic.common.lib.multiblock.impl;
 
+import io.github.llamarama.team.voidmagic.api.multiblock.BlockPredicate;
 import io.github.llamarama.team.voidmagic.api.multiblock.IMultiblockType;
 import io.github.llamarama.team.voidmagic.api.multiblock.MultiblockRotation;
-import io.github.llamarama.team.voidmagic.api.spellbinding.ISpellbindable;
 import io.github.llamarama.team.voidmagic.common.lib.multiblock.predicates.TileEntityPredicate;
-import net.minecraft.block.BlockState;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
-public class CircleMultiblock extends Multiblock implements ISpellbindable {
+public class CircleMultiblock extends Multiblock {
 
     public CircleMultiblock(IMultiblockType type, BlockPos center, World world) {
         super(type, center, MultiblockRotation.ZERO);
@@ -22,18 +22,14 @@ public class CircleMultiblock extends Multiblock implements ISpellbindable {
         this.setRotation(type.findRotationAt(this.center, world).orElse(MultiblockRotation.ZERO));
     }
 
-    public List<BlockPos> tilePositions() {
-        List<BlockPos> out = new ArrayList<>(this.type.getDefaultKeys().size());
-
-        this.type.getKeysFor(this.getRotation()).forEach((pos, predicate) -> {
-            if (predicate instanceof TileEntityPredicate)
-                out.add(pos);
-        });
-
-        return out.stream()
+    public Collection<BlockPos> tilePositions() {
+        Map<BlockPos, BlockPredicate> keys = this.type.getKeysFor(this.getRotation());
+        return keys.entrySet().stream()
+                .filter((entry) -> entry.getValue() instanceof TileEntityPredicate)
+                .map(Map.Entry::getKey)
                 .map(this.getPos()::add)
                 .map(worldOffsetPos -> worldOffsetPos.add(this.type.getOffset()))
-                .collect(Collectors.toList());
+                .collect(ArrayList::new, List::add, List::addAll);
     }
 
     public AxisAlignedBB getBox() {
@@ -41,11 +37,6 @@ public class CircleMultiblock extends Multiblock implements ISpellbindable {
         return AxisAlignedBB.withSizeAtOrigin(size.getX(), size.getY(), size.getZ())
                 .offset(this.getPos())
                 .offset(new BlockPos(this.type.getOffset()));
-    }
-
-    @Override
-    public void circleFormed(World world, BlockPos pos, BlockState state, CircleMultiblock circleMultiblock) {
-
     }
 
 }

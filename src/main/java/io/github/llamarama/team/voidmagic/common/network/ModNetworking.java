@@ -38,6 +38,7 @@ public class ModNetworking {
         world.getPlayers().forEach((serverPlayerEntity) -> this.sendToClient(packet, serverPlayerEntity));
     }
 
+    @SuppressWarnings("unused")
     public void sendToServer(IPacket packet) {
         CHANNEL.sendToServer(packet);
     }
