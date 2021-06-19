@@ -116,7 +116,7 @@ public class ScrollTileEntity extends TileEntity implements ITickableTileEntity,
     }
 
     public boolean isCrafting() {
-        return this.craftingTick > 0;
+        return this.craftingTick > 0 && this.currentCircle != null;
     }
 
     @Override

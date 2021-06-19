@@ -1,6 +1,5 @@
 package io.github.llamarama.team.voidmagic.common.lib.multiblock.impl;
 
-import io.github.llamarama.team.voidmagic.api.multiblock.BlockPredicate;
 import io.github.llamarama.team.voidmagic.api.multiblock.IMultiblockType;
 import io.github.llamarama.team.voidmagic.api.multiblock.MultiblockRotation;
 import io.github.llamarama.team.voidmagic.common.lib.multiblock.predicates.TileEntityPredicate;
@@ -8,6 +7,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Lazy;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,6 +16,14 @@ import java.util.Map;
 
 public class CircleMultiblock extends Multiblock {
 
+    private final Lazy<Collection<BlockPos>> tilePositions = Lazy.of(() ->
+            this.getType().getKeysFor(this.getRotation()).entrySet().stream()
+                    .filter((entry) -> entry.getValue() instanceof TileEntityPredicate)
+                    .map(Map.Entry::getKey)
+                    .map(this.getPos()::add)
+                    .map(worldOffsetPos -> worldOffsetPos.add(this.type.getOffset()))
+                    .collect(ArrayList::new, List::add, List::addAll));
+
     public CircleMultiblock(IMultiblockType type, BlockPos center, World world) {
         super(type, center, MultiblockRotation.ZERO);
 
@@ -23,13 +31,7 @@ public class CircleMultiblock extends Multiblock {
     }
 
     public Collection<BlockPos> tilePositions() {
-        Map<BlockPos, BlockPredicate> keys = this.type.getKeysFor(this.getRotation());
-        return keys.entrySet().stream()
-                .filter((entry) -> entry.getValue() instanceof TileEntityPredicate)
-                .map(Map.Entry::getKey)
-                .map(this.getPos()::add)
-                .map(worldOffsetPos -> worldOffsetPos.add(this.type.getOffset()))
-                .collect(ArrayList::new, List::add, List::addAll);
+        return this.tilePositions.get();
     }
 
     public AxisAlignedBB getBox() {

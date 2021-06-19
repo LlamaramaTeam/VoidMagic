@@ -8,10 +8,12 @@ import io.github.llamarama.team.voidmagic.common.register.ModBlocks;
 import io.github.llamarama.team.voidmagic.common.register.ModTileEntityTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -40,6 +42,13 @@ public final class ClientLifecycleEventHandler implements IEventHandler {
         this.setupRenderTypes();
 
         CircleTextureManager.init();
+    }
+
+    @SubscribeEvent
+    public void onPreStitch(final TextureStitchEvent.Pre event) {
+        if (event.getMap().getTextureLocation().equals(AtlasTexture.LOCATION_BLOCKS_TEXTURE)) {
+            event.addSprite(ScrollTileEntityRenderer.SCROLL_PAGE);
+        }
     }
 
     /**

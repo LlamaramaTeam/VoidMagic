@@ -6,12 +6,10 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public interface IMultiblock {
 
@@ -32,15 +30,7 @@ public interface IMultiblock {
     }
 
     @NotNull
-    default Collection<BlockPos> positions() {
-        // Joe fixed this lol.
-        return this.getType().getKeys().get(this.getRotation())
-                .stream()
-                .map(Pair::getKey)
-                .map(this.getPos()::add)
-                .map((worldOffsetPos) -> worldOffsetPos.add(this.getType().getOffset()))
-                .collect(Collectors.toSet());
-    }
+    Collection<BlockPos> positions();
 
     default void serialize(CompoundNBT tag) {
         CompoundNBT multiblockTag = new CompoundNBT();
