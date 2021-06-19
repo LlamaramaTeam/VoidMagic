@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 public class CircleMultiblock extends Multiblock {
 
     private final Lazy<Collection<BlockPos>> tilePositions = Lazy.of(() ->
@@ -23,6 +24,7 @@ public class CircleMultiblock extends Multiblock {
                     .map(this.getPos()::add)
                     .map(worldOffsetPos -> worldOffsetPos.add(this.type.getOffset()))
                     .collect(ArrayList::new, List::add, List::addAll));
+
 
     public CircleMultiblock(IMultiblockType type, BlockPos center, World world) {
         super(type, center, MultiblockRotation.ZERO);

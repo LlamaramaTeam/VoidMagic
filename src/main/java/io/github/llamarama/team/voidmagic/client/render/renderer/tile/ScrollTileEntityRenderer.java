@@ -29,12 +29,19 @@ public class ScrollTileEntityRenderer extends TileEntityRenderer<ScrollTileEntit
     public void render(ScrollTileEntity tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
         if (tileEntityIn.getBlockState().get(ModBlockProperties.OPEN)) {
             Direction direction = tileEntityIn.getBlockState().get(HorizontalBlock.HORIZONTAL_FACING);
-            this.renderScrollOpen(matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn, direction);
+            this.renderScrollOpen(matrixStackIn, bufferIn, direction);
         }
+
+        if (tileEntityIn.isCrafting())
+            this.renderCraftingProcess(tileEntityIn, matrixStackIn, bufferIn);
     }
 
-    protected void renderScrollOpen(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn,
-                                    int combinedOverlayIn, Direction direction) {
+    private void renderCraftingProcess(ScrollTileEntity tileEntity, MatrixStack matrices, IRenderTypeBuffer buffer) {
+
+    }
+
+    @SuppressWarnings({"deprecation"})
+    protected void renderScrollOpen(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, Direction direction) {
         IVertexBuilder vertexBuilder = bufferIn.getBuffer(RenderType.getCutout());
 
         TextureAtlasSprite sprite =
@@ -61,6 +68,7 @@ public class ScrollTileEntityRenderer extends TileEntityRenderer<ScrollTileEntit
         matrixStackIn.pop();
     }
 
+    @SuppressWarnings("SameParameterValue")
     protected void addPCTLNVertex(MatrixStack matrices, float x, float y, float z, float u, float v,
                                   IVertexBuilder builder) {
         // add(POSITION_3F).add(COLOR_4UB).add(TEX_2F).add(TEX_2SB).add(NORMAL_3B)
