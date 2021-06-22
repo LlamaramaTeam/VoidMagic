@@ -14,14 +14,14 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 public final class ClientLifecycleEventHandler implements IEventHandler {
 
-    private static ClientLifecycleEventHandler instance;
+    private static ClientLifecycleEventHandler INSTANCE;
 
     public static ClientLifecycleEventHandler getInstance() {
-        if (instance == null) {
-            instance = new ClientLifecycleEventHandler();
+        if (INSTANCE == null) {
+            INSTANCE = new ClientLifecycleEventHandler();
         }
 
-        return instance;
+        return INSTANCE;
     }
 
     @SubscribeEvent
@@ -34,7 +34,7 @@ public final class ClientLifecycleEventHandler implements IEventHandler {
         CircleTextureManager.init();
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings("deprecation")
     @SubscribeEvent
     public void onPreStitch(final TextureStitchEvent.Pre event) {
         if (event.getMap().getTextureLocation().equals(AtlasTexture.LOCATION_BLOCKS_TEXTURE)) {

@@ -19,7 +19,8 @@ import net.minecraft.util.math.vector.Vector3f;
 
 public class ScrollTileEntityRenderer extends TileEntityRenderer<ScrollTileEntity> {
 
-    public static final ResourceLocation SCROLL_PAGE = IdBuilder.mod("scroll_page");
+    public static final ResourceLocation SCROLL_PAGE = IdBuilder.mod("block/scroll/scroll_page");
+    private static final float NINETY_DEG = (float) (Math.PI / 2);
 
     public ScrollTileEntityRenderer(TileEntityRendererDispatcher rendererDispatcherIn) {
         super(rendererDispatcherIn);
@@ -51,19 +52,21 @@ public class ScrollTileEntityRenderer extends TileEntityRenderer<ScrollTileEntit
         // add(POSITION_3F).add(COLOR_4UB).add(TEX_2F).add(TEX_2SB).add(NORMAL_3B)
         matrixStackIn.push();
         matrixStackIn.translate(0.5d, 0, 0.5d);
-        if (direction.getAxis() == Direction.Axis.X)
-            matrixStackIn.rotate(Vector3f.YP.rotation(((float) Math.PI) / 2));
+        if (direction.getAxis() == Direction.Axis.X) {
+            matrixStackIn.rotate(Vector3f.YP.rotation(NINETY_DEG));
+        }
 
         // UP
-        this.addPCTLNVertex(matrixStackIn, 0.5f, 0.001f, -1.5f, sprite.getMinU(), sprite.getMinV(), vertexBuilder);
-        this.addPCTLNVertex(matrixStackIn, 0.5f, 0.001f, 1.5f, sprite.getMinU(), sprite.getMaxV(), vertexBuilder);
-        this.addPCTLNVertex(matrixStackIn, -0.5f, 0.001f, 1.5f, sprite.getMaxU(), sprite.getMaxV(), vertexBuilder);
-        this.addPCTLNVertex(matrixStackIn, -0.5f, 0.001f, -1.5f, sprite.getMaxU(), sprite.getMinV(), vertexBuilder);
+        this.addPCTLNVertex(matrixStackIn, 0.5f, 0.001f, -1.5f, sprite.getMinU(), sprite.getMaxV(), vertexBuilder);
+        this.addPCTLNVertex(matrixStackIn, 0.5f, 0.001f, 1.5f, sprite.getMaxU(), sprite.getMaxV(), vertexBuilder);
+        this.addPCTLNVertex(matrixStackIn, -0.5f, 0.001f, 1.5f, sprite.getMaxU(), sprite.getMinV(), vertexBuilder);
+        this.addPCTLNVertex(matrixStackIn, -0.5f, 0.001f, -1.5f, sprite.getMinU(), sprite.getMinV(), vertexBuilder);
 
-        this.addPCTLNVertex(matrixStackIn, -0.5f, 0.001f, -1.5f, sprite.getMaxU(), sprite.getMinV(), vertexBuilder);
-        this.addPCTLNVertex(matrixStackIn, -0.5f, 0.001f, 1.5f, sprite.getMaxU(), sprite.getMaxV(), vertexBuilder);
-        this.addPCTLNVertex(matrixStackIn, 0.5f, 0.001f, 1.5f, sprite.getMinU(), sprite.getMaxV(), vertexBuilder);
-        this.addPCTLNVertex(matrixStackIn, 0.5f, 0.001f, -1.5f, sprite.getMinU(), sprite.getMinV(), vertexBuilder);
+        // DOWN
+        this.addPCTLNVertex(matrixStackIn, -0.5f, 0.001f, -1.5f, sprite.getMinU(), sprite.getMinV(), vertexBuilder);
+        this.addPCTLNVertex(matrixStackIn, -0.5f, 0.001f, 1.5f, sprite.getMaxU(), sprite.getMinV(), vertexBuilder);
+        this.addPCTLNVertex(matrixStackIn, 0.5f, 0.001f, 1.5f, sprite.getMaxU(), sprite.getMaxV(), vertexBuilder);
+        this.addPCTLNVertex(matrixStackIn, 0.5f, 0.001f, -1.5f, sprite.getMinU(), sprite.getMaxV(), vertexBuilder);
 
         matrixStackIn.pop();
     }
