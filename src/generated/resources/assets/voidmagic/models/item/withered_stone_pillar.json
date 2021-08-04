@@ -1,7 +1,0 @@
-{
-    "parent": "voidmagic:item/template/pillar_item_template",
-    "textures": {
-        "0": "voidmagic:block/withered_stone_pillar_base",
-        "1": "voidmagic:block/pillar/withered_stone_pillar_cap"
-    }
-}

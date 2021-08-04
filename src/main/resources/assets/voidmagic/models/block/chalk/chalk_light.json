@@ -1,7 +1,0 @@
-{
-    "parent": "voidmagic:block/template/chalk_template",
-    "textures": {
-        "0": "voidmagic:block/chalk/chalk_light",
-        "particle": "voidmagic:block/chalk/chalk_light"
-    }
-}

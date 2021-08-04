@@ -1,8 +1,0 @@
-{
-    "parent": "minecraft:block/slab",
-    "textures": {
-        "side": "voidmagic:block/tofal_tiles",
-        "bottom": "voidmagic:block/tofal_tiles",
-        "top": "voidmagic:block/tofal_tiles"
-    }
-}

@@ -1,8 +1,0 @@
-{
-    "type": "minecraft:stonecutting",
-    "ingredient": {
-        "tag": "voidmagic:tofal_blocks"
-    },
-    "result": "voidmagic:tofal_brick_stairs",
-    "count": 1
-}

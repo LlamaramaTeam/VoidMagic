@@ -1,8 +1,0 @@
-{
-    "parent": "minecraft:block/stairs",
-    "textures": {
-        "side": "voidmagic:block/tofal_bricks",
-        "bottom": "voidmagic:block/tofal_bricks",
-        "top": "voidmagic:block/tofal_bricks"
-    }
-}

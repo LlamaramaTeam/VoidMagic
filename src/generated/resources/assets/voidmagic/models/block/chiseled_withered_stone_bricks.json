@@ -1,6 +1,0 @@
-{
-    "parent": "minecraft:block/cube_all",
-    "textures": {
-        "all": "voidmagic:block/chiseled_withered_stone_bricks"
-    }
-}
