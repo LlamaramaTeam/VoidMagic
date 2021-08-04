@@ -1,0 +1,31 @@
+{
+    "variants": {
+        "chalk_type=none": {
+            "model": "voidmagic:block/chalk/chalk_none"
+        },
+        "chalk_type=light": {
+            "model": "voidmagic:block/chalk/chalk_light"
+        },
+        "chalk_type=dark": {
+            "model": "voidmagic:block/chalk/chalk_dark"
+        },
+        "chalk_type=balanced": {
+            "model": "voidmagic:block/chalk/chalk_balanced"
+        },
+        "chalk_type=unstable": {
+            "model": "voidmagic:block/chalk/chalk_unstable"
+        },
+        "chalk_type=water": {
+            "model": "voidmagic:block/chalk/chalk_water"
+        },
+        "chalk_type=fire": {
+            "model": "voidmagic:block/chalk/chalk_fire"
+        },
+        "chalk_type=earth": {
+            "model": "voidmagic:block/chalk/chalk_earth"
+        },
+        "chalk_type=air": {
+            "model": "voidmagic:block/chalk/chalk_air"
+        }
+    }
+}
