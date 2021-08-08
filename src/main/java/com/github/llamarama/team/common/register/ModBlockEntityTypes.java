@@ -1,5 +1,6 @@
 package com.github.llamarama.team.common.register;
 
+import com.github.llamarama.team.common.tile.OfferingPlateBlockEntity;
 import com.github.llamarama.team.common.util.IdBuilder;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
@@ -14,6 +15,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class ModBlockEntityTypes {
 
     private static final Map<String, BlockEntityType<? extends BlockEntity>> REGISTRY = new ConcurrentHashMap<>();
+
+    public static final BlockEntityType<OfferingPlateBlockEntity> OFFERING_PLATE = register("offering_plate",
+            OfferingPlateBlockEntity::new, ModBlocks.OFFERING_PLATE);
 
     private ModBlockEntityTypes() {
     }

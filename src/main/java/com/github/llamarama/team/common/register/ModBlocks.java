@@ -1,10 +1,8 @@
 package com.github.llamarama.team.common.register;
 
 import com.github.llamarama.team.api.block.properties.ModBlockProperties;
-import com.github.llamarama.team.common.block.AccessibleStairsBlock;
-import com.github.llamarama.team.common.block.ChalkBlock;
 import com.github.llamarama.team.common.block.PillarBlock;
-import com.github.llamarama.team.common.block.PlateBlock;
+import com.github.llamarama.team.common.block.*;
 import com.github.llamarama.team.common.util.IdBuilder;
 import com.github.llamarama.team.common.util.ModItemGroup;
 import com.github.llamarama.team.common.util.misc.SettingsSupplier;
@@ -43,6 +41,7 @@ public final class ModBlocks {
                     .requiresTool()
                     .strength(3.0f)
                     .breakByTool(FabricToolTags.PICKAXES, 3);
+
     public static final Block WITHERED_STONE = register("withered_stone",
             new Block(WITHERED_STONE_PROPS.get()));
     public static final Block POLISHED_WITHERED_STONE = register("polished_withered_stone",
@@ -63,6 +62,8 @@ public final class ModBlocks {
             new SlabBlock(WITHERED_STONE_PROPS.get()));
     public static final Block WITHERED_STONE_BRICK_SLAB = register("withered_stone_brick_slab",
             new SlabBlock(WITHERED_STONE_PROPS.get()));
+    public static final Block OFFERING_PLATE = register("offering_plate",
+            new OfferingPlateBlock(COPY.apply(WITHERED_STONE)));
 
 
     private ModBlocks() {
