@@ -1,9 +1,9 @@
 package com.github.llamarama.team.common.util.misc;
 
-import net.minecraft.block.AbstractBlock;
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 
 import java.util.function.Supplier;
 
-public interface SettingsSupplier extends Supplier<AbstractBlock.Settings> {
+public interface SettingsSupplier extends Supplier<FabricBlockSettings> {
 
 }
