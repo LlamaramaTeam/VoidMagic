@@ -1,5 +1,6 @@
 package com.github.llamarama.team;
 
+import com.github.llamarama.team.common.network.ModNetworking;
 import com.github.llamarama.team.common.register.ModRegistries;
 import net.fabricmc.api.ModInitializer;
 import org.apache.logging.log4j.LogManager;
@@ -41,6 +42,7 @@ public class VoidMagic implements ModInitializer {
          */
 
         ModRegistries.init();
+        ModNetworking.get().init();
     }
 
     public static void log(String msg) {

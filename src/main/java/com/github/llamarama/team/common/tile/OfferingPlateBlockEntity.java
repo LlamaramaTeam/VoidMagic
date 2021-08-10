@@ -1,6 +1,5 @@
 package com.github.llamarama.team.common.tile;
 
-import com.github.llamarama.team.VoidMagic;
 import com.github.llamarama.team.api.tile.OfferingPlateInventory;
 import com.github.llamarama.team.common.register.ModBlockEntityTypes;
 import com.github.llamarama.team.common.util.InventoryUtils;
@@ -43,9 +42,6 @@ public class OfferingPlateBlockEntity extends BlockEntity implements OfferingPla
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
         InventoryUtils.readInventory(nbt, this.stacks);
-
-        VoidMagic.getLogger().info(nbt);
-        VoidMagic.getLogger().info(this.getStacks());
     }
 
     public void interact(@NotNull ServerPlayerEntity player) {
@@ -63,8 +59,6 @@ public class OfferingPlateBlockEntity extends BlockEntity implements OfferingPla
                 player.getServerWorld().spawnEntity(new ItemEntity(player.world, pos.x, pos.y, pos.z, stackInSlot));
             }
         }
-
-        VoidMagic.getLogger().info("Syncing Block Entity");
 
         this.sync();
     }

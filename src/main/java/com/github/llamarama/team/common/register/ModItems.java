@@ -1,5 +1,6 @@
 package com.github.llamarama.team.common.register;
 
+import com.github.llamarama.team.common.item.GuideBookItem;
 import com.github.llamarama.team.common.util.IdBuilder;
 import com.github.llamarama.team.common.util.ModItemGroup;
 import net.minecraft.item.Item;
@@ -17,6 +18,9 @@ public final class ModItems {
     public static final Supplier<Item.Settings> QUARTER_STACKABLE = () -> DEFAULT.get().maxCount(16);
 
     private static final Map<String, Item> REGISTRY = new ConcurrentHashMap<>();
+
+    public static final Item GUIDE_BOOK = register("guide_book",
+            new GuideBookItem(UNSTACKABLE.get()));
 
     private ModItems() {
     }
