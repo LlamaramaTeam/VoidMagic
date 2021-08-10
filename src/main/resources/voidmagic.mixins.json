@@ -1,7 +1,7 @@
 {
     "required": true,
     "minVersion": "0.8",
-    "package": "com.github.llamarama.team.mixin",
+    "package": "io.github.llamarama.team.mixin",
     "compatibilityLevel": "JAVA_16",
     "mixins": [
     ],
