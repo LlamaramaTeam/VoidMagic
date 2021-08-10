@@ -3,6 +3,7 @@ package io.github.llamarama.team.common.block;
 import io.github.llamarama.team.api.block.properties.ChalkType;
 import io.github.llamarama.team.api.block.properties.ModBlockProperties;
 import io.github.llamarama.team.common.register.ModBlocks;
+import io.github.llamarama.team.common.register.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -41,9 +42,7 @@ public class ChalkBlock extends Block {
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         ItemStack heldItem = player.getStackInHand(hand);
-        // TODO Fix after adding the guide book.
-//        boolean holdsItem = heldItem.getItem() == ModItems.GUIDE_BOOK.get();
-        boolean holdsItem = true;
+        boolean holdsItem = heldItem.getItem() == ModItems.GUIDE_BOOK;
         if (world.isClient) {
             return holdsItem
                     ? ActionResult.SUCCESS
