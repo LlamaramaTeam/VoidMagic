@@ -2,7 +2,6 @@ package com.github.llamarama.team.common.block;
 
 import com.github.llamarama.team.common.register.ModBlockEntityTypes;
 import com.github.llamarama.team.common.tile.OfferingPlateBlockEntity;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -44,7 +43,6 @@ public class OfferingPlateBlock extends PlateBlock {
 
         if (!world.isClient) {
             ((OfferingPlateBlockEntity) blockEntity).interact((ServerPlayerEntity) player);
-            world.updateListeners(pos, state, state, Block.NOTIFY_ALL);
         }
 
         return ActionResult.SUCCESS;
