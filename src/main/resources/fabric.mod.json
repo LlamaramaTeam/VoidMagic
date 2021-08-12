@@ -22,10 +22,10 @@
     "environment": "*",
     "entrypoints": {
         "main": [
-            "io.github.llamarama.team.VoidMagic"
+            "io.github.llamarama.team.voidmagic.VoidMagic"
         ],
         "client": [
-            "io.github.llamarama.team.client.VoidMagicClient"
+            "io.github.llamarama.team.voidmagic.client.VoidMagicClient"
         ]
     },
     "mixins": [

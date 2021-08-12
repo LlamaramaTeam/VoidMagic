@@ -1,11 +1,14 @@
 {
     "required": true,
     "minVersion": "0.8",
-    "package": "io.github.llamarama.team.mixin",
+    "package": "io.github.llamarama.team.voidmagic.mixin",
     "compatibilityLevel": "JAVA_16",
     "mixins": [
+        "MixinChunkSerializer",
+        "MixinWorldChunk"
     ],
     "client": [
+        "client.MixinInGameHud"
     ],
     "injectors": {
         "defaultRequire": 1
