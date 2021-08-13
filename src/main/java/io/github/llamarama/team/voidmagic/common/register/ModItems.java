@@ -1,5 +1,6 @@
 package io.github.llamarama.team.voidmagic.common.register;
 
+import com.google.common.collect.ImmutableMap;
 import io.github.llamarama.team.voidmagic.common.item.GuideBookItem;
 import io.github.llamarama.team.voidmagic.common.item.PackedBlockItem;
 import io.github.llamarama.team.voidmagic.common.item.SpellbindingClothItem;
@@ -36,6 +37,10 @@ public final class ModItems {
     private static Item register(String id, Item item) {
         REGISTRY.putIfAbsent(id, item);
         return item;
+    }
+
+    public static ImmutableMap<String, Item> getModItems() {
+        return ImmutableMap.copyOf(REGISTRY);
     }
 
     static void init() {

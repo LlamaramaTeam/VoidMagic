@@ -1,5 +1,6 @@
 package io.github.llamarama.team.voidmagic.common.register;
 
+import com.google.common.collect.ImmutableMap;
 import io.github.llamarama.team.voidmagic.common.tile.OfferingPlateBlockEntity;
 import io.github.llamarama.team.voidmagic.common.util.IdBuilder;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
@@ -29,6 +30,10 @@ public final class ModBlockEntityTypes {
         BlockEntityType<BE> type = FabricBlockEntityTypeBuilder.create(factory, targetBlocks).build();
         REGISTRY.putIfAbsent(id, type);
         return type;
+    }
+
+    public static ImmutableMap<String, BlockEntityType<? extends BlockEntity>> getModBlockEntities() {
+        return ImmutableMap.copyOf(REGISTRY);
     }
 
     static void init() {

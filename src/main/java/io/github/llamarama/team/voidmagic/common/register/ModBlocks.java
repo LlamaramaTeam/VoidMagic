@@ -1,5 +1,6 @@
 package io.github.llamarama.team.voidmagic.common.register;
 
+import com.google.common.collect.ImmutableMap;
 import io.github.llamarama.team.voidmagic.api.block.properties.ModBlockProperties;
 import io.github.llamarama.team.voidmagic.common.block.PillarBlock;
 import io.github.llamarama.team.voidmagic.common.block.*;
@@ -26,6 +27,8 @@ public final class ModBlocks {
 
     // Some settings to be accessed quickly.
     private static final Function<Block, AbstractBlock.Settings> COPY = AbstractBlock.Settings::copy;
+    public static final Block DECORATIVE_PACKED_BLOCK = register("decorative_packed_block",
+            new Block(COPY.apply(Blocks.WHITE_WOOL)));
     private static final SettingsSupplier CHALK_PROPS = () ->
             FabricBlockSettings.of(Material.STONE, MapColor.LIGHT_GRAY)
                     .noCollision()
@@ -41,7 +44,6 @@ public final class ModBlocks {
                     .requiresTool()
                     .strength(3.0f)
                     .breakByTool(FabricToolTags.PICKAXES, 3);
-
     public static final Block WITHERED_STONE = register("withered_stone",
             new Block(WITHERED_STONE_PROPS.get()));
     public static final Block POLISHED_WITHERED_STONE = register("polished_withered_stone",
@@ -54,6 +56,8 @@ public final class ModBlocks {
             new PillarBlock(COPY.apply(WITHERED_STONE)));
     public static final Block WITHERED_STONE_PLATE = register("withered_stone_plate",
             new PlateBlock(COPY.apply(WITHERED_STONE)));
+    public static final Block OFFERING_PLATE = register("offering_plate",
+            new OfferingPlateBlock(COPY.apply(WITHERED_STONE)));
     public static final Block WITHERED_STONE_BRICKS = register("withered_stone_bricks",
             new Block(WITHERED_STONE_PROPS.get()));
     public static final Block WITHERED_STONE_BRICK_STAIRS = register("withered_stone_brick_stairs",
@@ -62,10 +66,6 @@ public final class ModBlocks {
             new SlabBlock(WITHERED_STONE_PROPS.get()));
     public static final Block WITHERED_STONE_BRICK_SLAB = register("withered_stone_brick_slab",
             new SlabBlock(WITHERED_STONE_PROPS.get()));
-    public static final Block OFFERING_PLATE = register("offering_plate",
-            new OfferingPlateBlock(COPY.apply(WITHERED_STONE)));
-    public static final Block DECORATIVE_PACKED_BLOCK = register("decorative_packed_block",
-            new Block(COPY.apply(Blocks.WHITE_WOOL)));
 
 
     private ModBlocks() {
@@ -82,6 +82,10 @@ public final class ModBlocks {
     private static Block registerNoItem(String id, @NotNull Block block) {
         REGISTRY.putIfAbsent(id, block);
         return block;
+    }
+
+    public static ImmutableMap<String, Block> getModBlocks() {
+        return ImmutableMap.copyOf(REGISTRY);
     }
 
     static void init() {

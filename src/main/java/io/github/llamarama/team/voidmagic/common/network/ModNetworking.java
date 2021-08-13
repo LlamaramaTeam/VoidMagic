@@ -52,8 +52,9 @@ public class ModNetworking {
     public void init() {
         this.registerClientBound(OpenGuideBookPacket.OPEN_BOOK_PACKET_ID, OpenGuideBookPacket::new);
         this.registerServerBound(ReduceChaosPacket.REDUCE_CHAOS_PACKET_ID, ReduceChaosPacket::new);
-        this.registerClientBound(ChunkChaosUpdatePacket.CHUNK_CHAOS_UPDATE_PACKET_ID, ChunkChaosUpdatePacket::new);
         this.registerServerBound(IncreaseChaosPacket.INCREASE_CHAOS_PACKET_ID, IncreaseChaosPacket::new);
+        this.registerClientBound(ChunkChaosUpdatePacket.CHUNK_CHAOS_UPDATE_PACKET_ID, ChunkChaosUpdatePacket::new);
+        this.registerClientBound(MassChunkUpdatePacket.MASS_CHUNK_UPDATE_PACKET_ID, MassChunkUpdatePacket::new);
 
         VoidMagic.getLogger().info("Succssfully registered packets for VoidMagic");
     }

@@ -1,5 +1,6 @@
 package io.github.llamarama.team.voidmagic;
 
+import io.github.llamarama.team.voidmagic.common.event.EventHandler;
 import io.github.llamarama.team.voidmagic.common.network.ModNetworking;
 import io.github.llamarama.team.voidmagic.common.register.ModRegistries;
 import net.fabricmc.api.ModInitializer;
@@ -43,6 +44,7 @@ public class VoidMagic implements ModInitializer {
 
         ModRegistries.init();
         ModNetworking.get().init();
+        EventHandler.register();
     }
 
     public static void log(String msg) {

@@ -1,8 +1,7 @@
 package io.github.llamarama.team.voidmagic.common.network.packet;
 
-import io.github.llamarama.team.voidmagic.VoidMagic;
-import io.github.llamarama.team.voidmagic.common.lib.chaos.ChaosProvider;
 import io.github.llamarama.team.voidmagic.common.network.ModNetworking;
+import io.github.llamarama.team.voidmagic.common.util.ChaosUtils;
 import io.github.llamarama.team.voidmagic.common.util.IdBuilder;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
@@ -34,13 +33,10 @@ public class ReduceChaosPacket extends DefaultC2SPacket {
         ServerWorld world = player.getServerWorld();
         WorldChunk chunk = world.getChunk(chunkPos.x, chunkPos.z);
 
-        server.execute(() -> {
-            if (chunk instanceof ChaosProvider) {
-                ((ChaosProvider) chunk).consume(amount);
-                ModNetworking.get().sendToAllClose(new ChunkChaosUpdatePacket(chunk), world, chunk.getPos().getStartPos());
-                VoidMagic.getLogger().info(((ChaosProvider) chunk).getChaosValue());
-            }
-        });
+        server.execute(() -> ChaosUtils.executeForChaos(chunk, chaosProvider -> {
+            chaosProvider.consume(amount);
+            ModNetworking.get().sendToAllClose(new ChunkChaosUpdatePacket(chunk), world, chunk.getPos().getStartPos());
+        }));
     }
 
 }

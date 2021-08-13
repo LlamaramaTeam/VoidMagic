@@ -5,6 +5,8 @@
     "compatibilityLevel": "JAVA_16",
     "mixins": [
         "MixinChunkSerializer",
+        "MixinServerWorld",
+        "MixinThreadedAnvilChunkStorage",
         "MixinWorldChunk"
     ],
     "client": [

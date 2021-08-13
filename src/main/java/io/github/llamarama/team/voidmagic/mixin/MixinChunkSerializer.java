@@ -1,7 +1,6 @@
 package io.github.llamarama.team.voidmagic.mixin;
 
-import io.github.llamarama.team.voidmagic.VoidMagic;
-import io.github.llamarama.team.voidmagic.common.lib.chaos.ChaosProvider;
+import io.github.llamarama.team.voidmagic.common.util.ChaosUtils;
 import io.github.llamarama.team.voidmagic.common.util.constants.NBTConstants;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
@@ -22,10 +21,9 @@ public abstract class MixinChunkSerializer {
         NbtCompound voidMagicExtraData = new NbtCompound();
 
         voidMagicExtraData.putString(NBTConstants.VOIDMAGIC_VERSION_KEY, NBTConstants.VOIDMAGIC_VERSION);
-
-        if (chunk instanceof ChaosProvider) {
-            voidMagicExtraData.putInt(NBTConstants.CHAOS, ((ChaosProvider) chunk).getChaosValue());
-        }
+        ChaosUtils.executeForChaos(chunk,
+                chaosProvider -> voidMagicExtraData.putInt(NBTConstants.CHAOS, chaosProvider.getChaosValue())
+        );
 
         NbtCompound returnValue = cir.getReturnValue();
         returnValue.getCompound("Level").put(NBTConstants.VOIDMAGIC_DATA, voidMagicExtraData);
@@ -35,14 +33,12 @@ public abstract class MixinChunkSerializer {
 
     @Inject(method = "loadEntities", at = @At("RETURN"))
     private static void loadChaos(ServerWorld world, NbtCompound nbt, WorldChunk chunk, CallbackInfo ci) {
-        if (chunk instanceof ChaosProvider) {
+        ChaosUtils.executeForChaos(chunk, chaosProvider -> {
             NbtCompound voidMagicData = nbt.getCompound(NBTConstants.VOIDMAGIC_DATA);
-
             int chaosValue = voidMagicData.getInt(NBTConstants.CHAOS);
-            VoidMagic.getLogger().info(chaosValue);
 
-            ((ChaosProvider) chunk).setChaosValue(chaosValue);
-        }
+            chaosProvider.setChaosValue(chaosValue);
+        });
     }
 
 }
