@@ -4,13 +4,15 @@ import io.github.llamarama.team.voidmagic.common.util.ChaosUtils;
 import io.github.llamarama.team.voidmagic.common.util.constants.NBTConstants;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.structure.StructureManager;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.ChunkSerializer;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.WorldChunk;
+import net.minecraft.world.poi.PointOfInterestStorage;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ChunkSerializer.class)
@@ -26,19 +28,20 @@ public abstract class MixinChunkSerializer {
         );
 
         NbtCompound returnValue = cir.getReturnValue();
-        returnValue.getCompound("Level").put(NBTConstants.VOIDMAGIC_DATA, voidMagicExtraData);
+        returnValue.put(NBTConstants.VOIDMAGIC_DATA, voidMagicExtraData);
 
         cir.setReturnValue(returnValue);
     }
 
-    @Inject(method = "loadEntities", at = @At("RETURN"))
-    private static void loadChaos(ServerWorld world, NbtCompound nbt, WorldChunk chunk, CallbackInfo ci) {
-        ChaosUtils.executeForChaos(chunk, chaosProvider -> {
-            NbtCompound voidMagicData = nbt.getCompound(NBTConstants.VOIDMAGIC_DATA);
-            int chaosValue = voidMagicData.getInt(NBTConstants.CHAOS);
+    @ModifyVariable(method = "deserialize", at = @At(value = "STORE"))
+    private static Chunk onChunk2Stored(Chunk chunk2, ServerWorld world, StructureManager structureManager,
+                                        PointOfInterestStorage poiStorage, ChunkPos pos, NbtCompound nbt) {
+        NbtCompound voidMagicData = nbt.getCompound(NBTConstants.VOIDMAGIC_DATA);
 
-            chaosProvider.setChaosValue(chaosValue);
-        });
+        ChaosUtils.executeForChaos(chunk2,
+                (chaosProvider) -> chaosProvider.setChaosValue(voidMagicData.getInt(NBTConstants.CHAOS)));
+
+        return chunk2;
     }
 
 }
