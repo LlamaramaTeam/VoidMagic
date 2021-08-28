@@ -14,4 +14,9 @@ public interface NBTConstants {
     String CHAOS = "Chaos";
     String VOIDMAGIC_DATA = "VoidMagicData";
 
+    String MULTIBLOCK_ROTATION = "MultiblockRotation";
+    String MULTIBLOCK_TYPE_ID = "MultiblockType";
+    String BLOCK_POS = "BlockPos";
+    String MULTIBLOCK = "Multiblock";
+
 }
