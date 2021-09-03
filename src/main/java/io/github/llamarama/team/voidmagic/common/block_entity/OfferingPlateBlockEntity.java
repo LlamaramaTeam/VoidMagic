@@ -1,4 +1,4 @@
-package io.github.llamarama.team.voidmagic.common.tile;
+package io.github.llamarama.team.voidmagic.common.block_entity;
 
 import io.github.llamarama.team.voidmagic.api.tile.OfferingPlateInventory;
 import io.github.llamarama.team.voidmagic.common.register.ModBlockEntityTypes;

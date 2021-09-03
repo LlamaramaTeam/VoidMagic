@@ -2,7 +2,7 @@ package io.github.llamarama.team.voidmagic.client.render.blockentity;
 
 import io.github.llamarama.team.voidmagic.api.client.DefaultBERenderer;
 import io.github.llamarama.team.voidmagic.client.VoidMagicClient;
-import io.github.llamarama.team.voidmagic.common.tile.OfferingPlateBlockEntity;
+import io.github.llamarama.team.voidmagic.common.block_entity.OfferingPlateBlockEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Blocks;

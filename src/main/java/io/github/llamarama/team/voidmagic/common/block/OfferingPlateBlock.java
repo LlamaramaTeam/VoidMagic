@@ -1,7 +1,7 @@
 package io.github.llamarama.team.voidmagic.common.block;
 
+import io.github.llamarama.team.voidmagic.common.block_entity.OfferingPlateBlockEntity;
 import io.github.llamarama.team.voidmagic.common.register.ModBlockEntityTypes;
-import io.github.llamarama.team.voidmagic.common.tile.OfferingPlateBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;

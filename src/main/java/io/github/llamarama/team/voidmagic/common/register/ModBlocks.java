@@ -83,6 +83,8 @@ public final class ModBlocks {
             new Block(WITHERED_STONE_PROPS.get()));
     public static final Block WITHERED_STONE_BRICK_STAIRS = register("withered_stone_brick_stairs",
             new AccessibleStairsBlock(WITHERED_STONE_BRICKS.getDefaultState(), copy(WITHERED_STONE)));
+    public static final Block SCROLL = register("scroll",
+            new ScrollBlock(copy(Blocks.WHITE_WOOL)));
 
 
     private ModBlocks() {

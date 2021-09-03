@@ -1,7 +1,8 @@
 package io.github.llamarama.team.voidmagic.common.register;
 
 import com.google.common.collect.ImmutableMap;
-import io.github.llamarama.team.voidmagic.common.tile.OfferingPlateBlockEntity;
+import io.github.llamarama.team.voidmagic.common.block_entity.OfferingPlateBlockEntity;
+import io.github.llamarama.team.voidmagic.common.block_entity.ScrollBlockEntity;
 import io.github.llamarama.team.voidmagic.common.util.IdBuilder;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
@@ -19,6 +20,8 @@ public final class ModBlockEntityTypes {
 
     public static final BlockEntityType<OfferingPlateBlockEntity> OFFERING_PLATE = register("offering_plate",
             OfferingPlateBlockEntity::new, ModBlocks.OFFERING_PLATE);
+    public static final BlockEntityType<ScrollBlockEntity> SCROLL = register("scroll",
+            ScrollBlockEntity::new, ModBlocks.SCROLL);
 
     private ModBlockEntityTypes() {
     }
