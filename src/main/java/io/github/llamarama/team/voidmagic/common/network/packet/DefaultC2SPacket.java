@@ -7,6 +7,7 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
+@SuppressWarnings("unused")
 public class DefaultC2SPacket extends GenericPacket {
 
 

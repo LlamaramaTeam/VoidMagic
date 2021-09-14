@@ -5,6 +5,7 @@ import io.github.llamarama.team.voidmagic.client.VoidMagicClient;
 import io.github.llamarama.team.voidmagic.common.network.ModNetworking;
 import io.github.llamarama.team.voidmagic.common.network.packet.IncreaseChaosPacket;
 import io.github.llamarama.team.voidmagic.common.network.packet.ReduceChaosPacket;
+import io.github.llamarama.team.voidmagic.common.register.ModItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screen.Screen;
@@ -26,11 +27,7 @@ import java.util.List;
 public class InitialGuideBookScreen extends Screen {
 
     public static final String GUIDE_BOOK_SCREEN_KEY = "voidmagic.guide.screen";
-    private static final List<Item> entries = Registry.ITEM.stream()
-            .map(Registry.ITEM::getId)
-            .filter((identifier) -> identifier.getNamespace().equals(VoidMagic.MOD_ID))
-            .map(Registry.ITEM::get)
-            .collect(ArrayList::new, List::add, List::addAll);
+    private static final List<Item> ENTRIES = ModItems.getModItems().values().asList();
     private final ItemStack bookStack;
     private ButtonWidget increaseButton;
     private ButtonWidget decreaseButton;
@@ -39,7 +36,6 @@ public class InitialGuideBookScreen extends Screen {
     public InitialGuideBookScreen(ItemStack bookStack) {
         super(new TranslatableText(GUIDE_BOOK_SCREEN_KEY));
         this.bookStack = bookStack;
-
     }
 
     @Override
@@ -76,8 +72,8 @@ public class InitialGuideBookScreen extends Screen {
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         super.render(matrices, mouseX, mouseY, delta);
-        for (int i = 0; i < entries.size(); i++) {
-            Item current = entries.get(i);
+        for (int i = 0; i < ENTRIES.size(); i++) {
+            Item current = ENTRIES.get(i);
             VoidMagicClient.getGame().getItemRenderer().renderInGui(current.getDefaultStack(), 16 * i, 16);
         }
         int x = VoidMagicClient.getGame().getWindow().getWidth() / 2;

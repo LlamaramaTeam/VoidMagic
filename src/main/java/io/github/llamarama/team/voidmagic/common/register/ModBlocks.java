@@ -85,6 +85,8 @@ public final class ModBlocks {
             new AccessibleStairsBlock(WITHERED_STONE_BRICKS.getDefaultState(), copy(WITHERED_STONE)));
     public static final Block SCROLL = register("scroll",
             new ScrollBlock(copy(Blocks.WHITE_WOOL)));
+    public static final Block MULTIBLOCK_TEST_BLOCK = register("multiblock_test",
+            new TestBlock(copy(Blocks.WHITE_WOOL)));
 
 
     private ModBlocks() {

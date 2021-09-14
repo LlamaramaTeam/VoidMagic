@@ -6,6 +6,7 @@ import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 
+@SuppressWarnings("unused")
 public class DefaultS2CPacket extends GenericPacket {
 
     public DefaultS2CPacket(Identifier id, PacketByteBuf buffer) {

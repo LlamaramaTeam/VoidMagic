@@ -47,8 +47,4 @@ public class VoidMagic implements ModInitializer {
         EventHandler.register();
     }
 
-    public static void log(String msg) {
-        LOGGER.debug(msg);
-    }
-
 }

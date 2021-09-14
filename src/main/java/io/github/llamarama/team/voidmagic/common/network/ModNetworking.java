@@ -33,6 +33,11 @@ public class ModNetworking {
         ServerPlayNetworking.send(playerEntity, packet.getId(), packet.getBuffer());
     }
 
+    public void sendToAllClose(Packet packet, ServerWorld world, BlockPos targetPos) {
+        Collection<ServerPlayerEntity> targetPlayers = PlayerLookup.tracking(world, targetPos);
+        targetPlayers.forEach(packet::sendToClient);
+    }
+
     public void sendToAll(Packet packet, ServerWorld world) {
         world.getPlayers().forEach(player -> ServerPlayNetworking.send(player, packet.getId(), packet.getBuffer()));
     }
@@ -57,11 +62,6 @@ public class ModNetworking {
         this.registerClientBound(MassChunkUpdatePacket.MASS_CHUNK_UPDATE_PACKET_ID, MassChunkUpdatePacket::new);
 
         VoidMagic.getLogger().info("Succssfully registered packets for VoidMagic");
-    }
-
-    public void sendToAllClose(Packet packet, ServerWorld world, BlockPos targetPos) {
-        Collection<ServerPlayerEntity> targetPlayers = PlayerLookup.tracking(world, targetPos);
-        targetPlayers.forEach(packet::sendToClient);
     }
 
 }

@@ -2,6 +2,7 @@ package io.github.llamarama.team.voidmagic.common.lib.multiblock.impl;
 
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
+import io.github.llamarama.team.voidmagic.VoidMagic;
 import io.github.llamarama.team.voidmagic.api.multiblock.MultiblockRotation;
 import io.github.llamarama.team.voidmagic.api.multiblock.MultiblockType;
 import io.github.llamarama.team.voidmagic.api.multiblock.PositionPredicate;
@@ -42,7 +43,7 @@ public class DefaultMultiblockType implements MultiblockType {
     }
 
     /**
-     * Deserializes a {@link NbtCompound} tag to an {@link MultiblockType}.
+     * Deserializes a {@link NbtCompound} tag to a {@link MultiblockType}.
      *
      * @param tag The tag that contains the {@link Identifier} that points to this type.
      * @return It is an {@link Optional}. Make sure you throw an {@link RuntimeException} if !{@link Optional#isPresent}.
@@ -84,7 +85,7 @@ public class DefaultMultiblockType implements MultiblockType {
         boolean exists;
 
         for (MultiblockRotation rot : MultiblockRotation.values()) {
-            exists = validateRotationAt(center, world, rot);
+            exists = this.validateRotationAt(center, world, rot);
 
             if (exists) {
                 break;
@@ -137,6 +138,7 @@ public class DefaultMultiblockType implements MultiblockType {
             PositionPredicate predicate = pair.getRight();
 
             if (!predicate.checkPos(world, testPos)) {
+                VoidMagic.getLogger().info("Could not find expected block at pos " + testPos);
                 isValid = false;
                 break;
             }
@@ -280,13 +282,13 @@ public class DefaultMultiblockType implements MultiblockType {
                     // Get the current string to iterate with it.
                     String currentString = pattern[i][j];
 
+                    // Make sure the X size is correct.
+                    if (currentString.length() != this.size.getX()) {
+                        throw new RuntimeException("Cannot parse multiblock");
+                    }
+
                     // Iterating.
                     for (int k = 0; k < currentString.length(); k++) {
-
-                        // Make sure the X size is correct.
-                        if (currentString.length() != this.size.getX()) {
-                            throw new RuntimeException("Cannot parse multiblock");
-                        }
 
                         // Get the character at i position.
                         char charAt = currentString.charAt(k);
