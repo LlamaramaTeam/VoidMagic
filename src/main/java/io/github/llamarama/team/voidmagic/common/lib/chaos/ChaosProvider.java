@@ -3,6 +3,8 @@ package io.github.llamarama.team.voidmagic.common.lib.chaos;
 /**
  * Used to mark an NBT serializable as a provider of chaos.
  *
+ * TODO: Config Stuff
+ *
  * @author 0xJoeMama
  */
 public interface ChaosProvider {

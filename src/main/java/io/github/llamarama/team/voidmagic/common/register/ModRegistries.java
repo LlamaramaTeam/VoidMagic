@@ -10,6 +10,7 @@ public final class ModRegistries {
         ModBlocks.init();
         ModItems.init();
         ModBlockEntityTypes.init();
+        ModMultiblocks.init();
     }
 
 }

@@ -12,6 +12,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.explosion.Explosion;
 
 public class TestBlock extends Block {
 
@@ -22,10 +23,15 @@ public class TestBlock extends Block {
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (!world.isClient && ModMultiblocks.RANDOM_TYPE.existsAt(pos.down(2), world)) {
-            EntityType.BLAZE.spawn(((ServerWorld) world), null, null, null, pos.up(), SpawnReason.EVENT, true, false);
+            world.createExplosion(null,
+                    pos.getX() + 0.5d,
+                    pos.getY() + 0.5d,
+                    pos.getZ() + 0.5d,
+                    3f,
+                    Explosion.DestructionType.NONE);
         }
 
-        return super.onUse(state, world, pos, player, hand, hit);
+        return ActionResult.SUCCESS;
     }
 
 }

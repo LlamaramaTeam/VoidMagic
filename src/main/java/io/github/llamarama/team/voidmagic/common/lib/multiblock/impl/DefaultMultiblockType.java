@@ -2,7 +2,6 @@ package io.github.llamarama.team.voidmagic.common.lib.multiblock.impl;
 
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
-import io.github.llamarama.team.voidmagic.VoidMagic;
 import io.github.llamarama.team.voidmagic.api.multiblock.MultiblockRotation;
 import io.github.llamarama.team.voidmagic.api.multiblock.MultiblockType;
 import io.github.llamarama.team.voidmagic.api.multiblock.PositionPredicate;
@@ -12,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtString;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
@@ -72,7 +72,7 @@ public class DefaultMultiblockType implements MultiblockType {
     private static MultiblockType register(Identifier id, MultiblockType out) {
         REGISTRY.computeIfPresent(out, (type, identifier) -> {
             throw new RuntimeException("Attempted to register multiblock type: " + type + " more than once!\n" +
-                    "Ids : " + out + ", " + REGISTRY.get(out));
+                    "Ids : " + id + ", " + REGISTRY.get(out));
         });
 
         REGISTRY.put(out, id);
@@ -82,7 +82,7 @@ public class DefaultMultiblockType implements MultiblockType {
 
     @Override
     public boolean existsAt(BlockPos center, World world) {
-        boolean exists;
+        boolean exists = false;
 
         for (MultiblockRotation rot : MultiblockRotation.values()) {
             exists = this.validateRotationAt(center, world, rot);
@@ -91,12 +91,13 @@ public class DefaultMultiblockType implements MultiblockType {
                 break;
             }
         }
-        return false;
+
+        return exists;
     }
 
     @Override
     public SetMultimap<MultiblockRotation, Pair<BlockPos, PositionPredicate>> getKeys() {
-        return null;
+        return this.keys;
     }
 
     @Override
@@ -130,7 +131,6 @@ public class DefaultMultiblockType implements MultiblockType {
     }
 
     private boolean validateRotationAt(BlockPos center, World world, MultiblockRotation rot) {
-        boolean isValid = true;
         BlockPos actualPos = center.add(rot.transform(new BlockPos(this.offset)));
 
         for (Pair<BlockPos, PositionPredicate> pair : this.keys.get(rot)) {
@@ -138,14 +138,13 @@ public class DefaultMultiblockType implements MultiblockType {
             PositionPredicate predicate = pair.getRight();
 
             if (!predicate.checkPos(world, testPos)) {
-                VoidMagic.getLogger().info("Could not find expected block at pos " + testPos);
-                isValid = false;
-                break;
+                world.getPlayers().forEach(playerEntity -> playerEntity.sendMessage(new LiteralText("Block at " + testPos + " could not be found! Rotation : " + rot), false));
+                return false;
             }
         }
 
 
-        return isValid;
+        return true;
     }
 
     private void initializeWithRotations(Map<BlockPos, PositionPredicate> decoded) {

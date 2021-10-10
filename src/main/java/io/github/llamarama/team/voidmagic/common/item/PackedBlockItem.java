@@ -30,7 +30,7 @@ public class PackedBlockItem extends BlockItem {
     public static final String KEY = "block.voidmagic.packed_block";
 
     public PackedBlockItem(Settings settings) {
-        super(Blocks.WHITE_WOOL, settings);
+        super(Blocks.AIR, settings);
     }
 
     @Override
