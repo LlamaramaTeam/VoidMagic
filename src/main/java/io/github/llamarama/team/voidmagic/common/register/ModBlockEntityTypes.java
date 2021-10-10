@@ -18,13 +18,9 @@ public final class ModBlockEntityTypes {
 
     private static final Map<String, BlockEntityType<? extends BlockEntity>> REGISTRY = new ConcurrentHashMap<>();
 
-    public static final BlockEntityType<OfferingPlateBlockEntity> OFFERING_PLATE = register("offering_plate",
-            OfferingPlateBlockEntity::new, ModBlocks.OFFERING_PLATE);
-    public static final BlockEntityType<ScrollBlockEntity> SCROLL = register("scroll",
-            ScrollBlockEntity::new, ModBlocks.SCROLL);
-
     private ModBlockEntityTypes() {
-    }
+    }    public static final BlockEntityType<OfferingPlateBlockEntity> OFFERING_PLATE = register("offering_plate",
+            OfferingPlateBlockEntity::new, ModBlocks.OFFERING_PLATE);
 
     @NotNull
     private static <BE extends BlockEntity> BlockEntityType<BE> register(String id,
@@ -33,7 +29,8 @@ public final class ModBlockEntityTypes {
         BlockEntityType<BE> type = FabricBlockEntityTypeBuilder.create(factory, targetBlocks).build();
         REGISTRY.putIfAbsent(id, type);
         return type;
-    }
+    }    public static final BlockEntityType<ScrollBlockEntity> SCROLL = register("scroll",
+            ScrollBlockEntity::new, ModBlocks.SCROLL);
 
     public static ImmutableMap<String, BlockEntityType<? extends BlockEntity>> getModBlockEntities() {
         return ImmutableMap.copyOf(REGISTRY);
@@ -42,5 +39,9 @@ public final class ModBlockEntityTypes {
     static void init() {
         REGISTRY.forEach((id, type) -> Registry.register(Registry.BLOCK_ENTITY_TYPE, IdBuilder.of(id), type));
     }
+
+
+
+
 
 }

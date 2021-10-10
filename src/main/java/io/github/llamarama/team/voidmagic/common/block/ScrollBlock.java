@@ -107,12 +107,6 @@ public class ScrollBlock extends HorizontalFacingBlock implements BlockEntityPro
         return this.getDefaultState().with(HORIZONTAL_FACING, ctx.getPlayerLookDirection().rotateYCounterclockwise());
     }
 
-    @Override
-    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        super.appendProperties(builder);
-        builder.add(OPEN, HORIZONTAL_FACING);
-    }
-
     @SuppressWarnings("deprecation")
     @Override
     public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
@@ -166,6 +160,12 @@ public class ScrollBlock extends HorizontalFacingBlock implements BlockEntityPro
         return !state.canPlaceAt(world, pos) ?
                 Blocks.AIR.getDefaultState() :
                 super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
+    }
+
+    @Override
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        super.appendProperties(builder);
+        builder.add(OPEN, HORIZONTAL_FACING);
     }
 
 }

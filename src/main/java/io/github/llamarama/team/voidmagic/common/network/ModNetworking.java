@@ -46,14 +46,6 @@ public class ModNetworking {
         ClientPlayNetworking.send(packet.getId(), packet.getBuffer());
     }
 
-    private void registerClientBound(Identifier id, ClientPlayNetworking.PlayChannelHandler handler) {
-        ClientPlayNetworking.registerGlobalReceiver(id, handler);
-    }
-
-    private void registerServerBound(Identifier id, ServerPlayNetworking.PlayChannelHandler handler) {
-        ServerPlayNetworking.registerGlobalReceiver(id, handler);
-    }
-
     public void init() {
         this.registerClientBound(OpenGuideBookPacket.OPEN_BOOK_PACKET_ID, OpenGuideBookPacket::new);
         this.registerServerBound(ReduceChaosPacket.REDUCE_CHAOS_PACKET_ID, ReduceChaosPacket::new);
@@ -62,6 +54,14 @@ public class ModNetworking {
         this.registerClientBound(MassChunkUpdatePacket.MASS_CHUNK_UPDATE_PACKET_ID, MassChunkUpdatePacket::new);
 
         VoidMagic.getLogger().info("Succssfully registered packets for VoidMagic");
+    }
+
+    private void registerClientBound(Identifier id, ClientPlayNetworking.PlayChannelHandler handler) {
+        ClientPlayNetworking.registerGlobalReceiver(id, handler);
+    }
+
+    private void registerServerBound(Identifier id, ServerPlayNetworking.PlayChannelHandler handler) {
+        ServerPlayNetworking.registerGlobalReceiver(id, handler);
     }
 
 }

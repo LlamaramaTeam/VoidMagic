@@ -30,13 +30,6 @@ public class VoidMagic implements ModInitializer {
         // Initialize all Deferred Registries of the mod.
         ModRegistries.initRegistries(modBus);
 
-        // TODO These will be replaced by mixins.
-        // Register all of the mods event handlers.
-        LifecycleEventHandler.getInstance().registerHandlers(modBus);
-        GameplayEventHandler.getInstance().registerHandlers(forgeBus);
-        WorldgenEventHandler.getInstance().registerHandlers(forgeBus);
-
-
         // Not needed since fabric initializes client and common separetaly.
         // Initialize the client side of the mod.
         DistExecutor.safeCallWhenOn(Dist.CLIENT, () -> VoidMagicClient::new);

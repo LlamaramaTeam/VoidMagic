@@ -18,9 +18,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.registry.Registry;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
@@ -36,6 +34,29 @@ public class InitialGuideBookScreen extends Screen {
     public InitialGuideBookScreen(ItemStack bookStack) {
         super(new TranslatableText(GUIDE_BOOK_SCREEN_KEY));
         this.bookStack = bookStack;
+    }
+
+    @Override
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        super.render(matrices, mouseX, mouseY, delta);
+        for (int i = 0; i < ENTRIES.size(); i++) {
+            Item current = ENTRIES.get(i);
+            VoidMagicClient.getGame().getItemRenderer().renderInGui(current.getDefaultStack(), 16 * i, 16);
+        }
+        int x = VoidMagicClient.getGame().getWindow().getWidth() / 2;
+        int y = VoidMagicClient.getGame().getWindow().getHeight() / 2;
+
+        VoidMagicClient.getGame().getItemRenderer().renderInGui(this.bookStack, x, y);
+
+        BufferBuilder buffer = Tessellator.getInstance().getBuffer();
+        buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+        buffer.vertex(32, 32, 0).color(0, 0, 0, 0).next();
+        buffer.vertex(32, 64, 0).color(0, 0, 0, 0).next();
+        buffer.vertex(64, 64, 0).color(0, 0, 0, 0).next();
+        buffer.vertex(64, 32, 0).color(0, 0, 0, 0).next();
+        buffer.end();
+
+        BufferRenderer.draw(buffer);
     }
 
     @Override
@@ -67,29 +88,6 @@ public class InitialGuideBookScreen extends Screen {
             ModNetworking.get().sendToServer(
                     new IncreaseChaosPacket(world.getChunk(player.getBlockPos()).getPos(), 10));
         }));
-    }
-
-    @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        super.render(matrices, mouseX, mouseY, delta);
-        for (int i = 0; i < ENTRIES.size(); i++) {
-            Item current = ENTRIES.get(i);
-            VoidMagicClient.getGame().getItemRenderer().renderInGui(current.getDefaultStack(), 16 * i, 16);
-        }
-        int x = VoidMagicClient.getGame().getWindow().getWidth() / 2;
-        int y = VoidMagicClient.getGame().getWindow().getHeight() / 2;
-
-        VoidMagicClient.getGame().getItemRenderer().renderInGui(this.bookStack, x, y);
-
-        BufferBuilder buffer = Tessellator.getInstance().getBuffer();
-        buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-        buffer.vertex(32, 32, 0).color(0, 0, 0, 0).next();
-        buffer.vertex(32, 64, 0).color(0, 0, 0, 0).next();
-        buffer.vertex(64, 64, 0).color(0, 0, 0, 0).next();
-        buffer.vertex(64, 32, 0).color(0, 0, 0, 0).next();
-        buffer.end();
-
-        BufferRenderer.draw(buffer);
     }
 
 }

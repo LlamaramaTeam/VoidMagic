@@ -33,10 +33,8 @@ public enum MultiblockRotation {
 
     public BlockPos transform(BlockPos pos) {
         return switch (this) {
-            case ZERO, ONE_EIGHTY ->
-                    VectorHelper.multiplyPos(pos, this.xMult, 1, this.zMult);
-            case NINETY , TWO_SEVENTY ->
-                    VectorHelper.multiplyPos(VectorHelper.invertHorizontalAxis(pos), this.xMult, 1, this.zMult);
+            case ZERO, ONE_EIGHTY -> VectorHelper.multiplyPos(pos, this.xMult, 1, this.zMult);
+            case NINETY, TWO_SEVENTY -> VectorHelper.multiplyPos(VectorHelper.invertHorizontalAxis(pos), this.xMult, 1, this.zMult);
         };
     }
 

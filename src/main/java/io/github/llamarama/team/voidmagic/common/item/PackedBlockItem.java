@@ -39,6 +39,21 @@ public class PackedBlockItem extends BlockItem {
     }
 
     @Override
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        super.appendTooltip(stack, world, tooltip, context);
+        NbtCompound stackTag = stack.getOrCreateNbt();
+        Block fromTag = this.getBlockFromTag(stackTag);
+
+        // Get the name of the block in this stack amd put it in the tooltip.
+        tooltip.add(new TranslatableText(CONTENT_KEY, fromTag.getName()));
+    }
+
+    @Override
+    public UseAction getUseAction(ItemStack stack) {
+        return UseAction.BLOCK;
+    }
+
+    @Override
     protected boolean place(ItemPlacementContext context, BlockState state) {
         PlayerEntity player = context.getPlayer();
         Hand hand = context.getHand();
@@ -100,21 +115,6 @@ public class PackedBlockItem extends BlockItem {
         String blockIdString = stackTag.getString(NBTConstants.BLOCK_ID);
 
         return Registry.BLOCK.get(new Identifier(blockIdString));
-    }
-
-    @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
-        NbtCompound stackTag = stack.getOrCreateNbt();
-        Block fromTag = this.getBlockFromTag(stackTag);
-
-        // Get the name of the block in this stack amd put it in the tooltip.
-        tooltip.add(new TranslatableText(CONTENT_KEY, fromTag.getName()));
-    }
-
-    @Override
-    public UseAction getUseAction(ItemStack stack) {
-        return UseAction.BLOCK;
     }
 
 }

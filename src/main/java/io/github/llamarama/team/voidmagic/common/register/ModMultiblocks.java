@@ -14,12 +14,12 @@ public final class ModMultiblocks {
                     .define('P', DefaultPredicates.match(Blocks.WHITE_WOOL))
                     .pattern(new String[][]{
                             {
-                                "PPPPP",
-                                "PPPPP",
-                                "PPPPP",
-                                "PPPPP",
-                                "PPPPP",
-                                "PPPPP"
+                                    "PPPPP",
+                                    "PPPPP",
+                                    "PPPPP",
+                                    "PPPPP",
+                                    "PPPPP",
+                                    "PPPPP"
                             }
                     }).build();
 

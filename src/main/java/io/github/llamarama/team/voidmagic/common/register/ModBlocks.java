@@ -23,7 +23,12 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class ModBlocks {
 
     private static final Map<String, Block> REGISTRY = new ConcurrentHashMap<>();
-
+    public static final Block DECORATIVE_PACKED_BLOCK = register("decorative_packed_block",
+            new Block(copy(Blocks.WHITE_WOOL)));
+    public static final Block SCROLL = register("scroll",
+            new ScrollBlock(copy(Blocks.WHITE_WOOL)));
+    public static final Block MULTIBLOCK_TEST_BLOCK = register("multiblock_test",
+            new TestBlock(copy(Blocks.WHITE_WOOL)));
     private static final SettingsSupplier CHALK_PROPS = () ->
             FabricBlockSettings.of(Material.STONE, MapColor.LIGHT_GRAY)
                     .noCollision()
@@ -31,6 +36,8 @@ public final class ModBlocks {
                     .breakInstantly()
                     .sounds(BlockSoundGroup.STONE)
                     .luminance((state) -> state.get(ModBlockProperties.CHALK_TYPE).getLightLevel());
+    public static final Block CHALK = register("chalk",
+            new ChalkBlock(CHALK_PROPS.get()));
     private static final SettingsSupplier TOFAL_PROPS = () ->
             // Some settings to be accessed quickly.
             FabricBlockSettings.of(Material.STONE, MapColor.ORANGE)
@@ -38,12 +45,6 @@ public final class ModBlocks {
                     .breakByTool(FabricToolTags.PICKAXES, 2)
                     .requiresTool()
                     .strength(2.7f);
-    private static final SettingsSupplier WITHERED_STONE_PROPS = () ->
-            FabricBlockSettings.of(Material.STONE, MapColor.GRAY)
-                    .requiresTool()
-                    .strength(3.0f)
-                    .breakByTool(FabricToolTags.PICKAXES, 3);
-
     // Register Blocks
     public static final Block TOFAL = register("tofal",
             new Block(TOFAL_PROPS.get()));
@@ -57,10 +58,11 @@ public final class ModBlocks {
             new SlabBlock(copy(TOFAL)));
     public static final Block TOFAL_PLATE = register("tofal_plate",
             new PlateBlock(copy(TOFAL)));
-    public static final Block DECORATIVE_PACKED_BLOCK = register("decorative_packed_block",
-            new Block(copy(Blocks.WHITE_WOOL)));
-    public static final Block CHALK = register("chalk",
-            new ChalkBlock(CHALK_PROPS.get()));
+    private static final SettingsSupplier WITHERED_STONE_PROPS = () ->
+            FabricBlockSettings.of(Material.STONE, MapColor.GRAY)
+                    .requiresTool()
+                    .strength(3.0f)
+                    .breakByTool(FabricToolTags.PICKAXES, 3);
     public static final Block WITHERED_STONE = register("withered_stone",
             new Block(WITHERED_STONE_PROPS.get()));
     public static final Block POLISHED_WITHERED_STONE = register("polished_withered_stone",
@@ -73,20 +75,16 @@ public final class ModBlocks {
             new PillarBlock(copy(WITHERED_STONE)));
     public static final Block WITHERED_STONE_PLATE = register("withered_stone_plate",
             new PlateBlock(copy(WITHERED_STONE)));
+    public static final Block OFFERING_PLATE = register("offering_plate",
+            new OfferingPlateBlock(copy(WITHERED_STONE)));
     public static final Block WITHERED_STONE_SLAB = register("withered_stone_slab",
             new SlabBlock(WITHERED_STONE_PROPS.get()));
     public static final Block WITHERED_STONE_BRICK_SLAB = register("withered_stone_brick_slab",
             new SlabBlock(WITHERED_STONE_PROPS.get()));
-    public static final Block OFFERING_PLATE = register("offering_plate",
-            new OfferingPlateBlock(copy(WITHERED_STONE)));
     public static final Block WITHERED_STONE_BRICKS = register("withered_stone_bricks",
             new Block(WITHERED_STONE_PROPS.get()));
     public static final Block WITHERED_STONE_BRICK_STAIRS = register("withered_stone_brick_stairs",
             new AccessibleStairsBlock(WITHERED_STONE_BRICKS.getDefaultState(), copy(WITHERED_STONE)));
-    public static final Block SCROLL = register("scroll",
-            new ScrollBlock(copy(Blocks.WHITE_WOOL)));
-    public static final Block MULTIBLOCK_TEST_BLOCK = register("multiblock_test",
-            new TestBlock(copy(Blocks.WHITE_WOOL)));
 
 
     private ModBlocks() {

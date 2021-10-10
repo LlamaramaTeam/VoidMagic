@@ -77,13 +77,6 @@ public class SpellbindingClothItem extends Item {
         return ActionResult.PASS;
     }
 
-    private void breakWithNoItemDrops(BlockPos pos, World world) {
-        Optional.ofNullable(world.getBlockEntity(pos)).ifPresent((blockEntity) -> {
-            world.removeBlockEntity(pos);
-            world.removeBlock(pos, false);
-        });
-    }
-
     /**
      * Used to make an {@link ItemStack} with the correct NBT tag for an item usage.
      *
@@ -116,6 +109,13 @@ public class SpellbindingClothItem extends Item {
         TranslatableText shinyText = new TranslatableText(SHINY_KEY);
         shinyText.styled((style) -> style.withItalic(true).withFormatting(Formatting.AQUA));
         tooltip.add(shinyText);
+    }
+
+    private void breakWithNoItemDrops(BlockPos pos, World world) {
+        Optional.ofNullable(world.getBlockEntity(pos)).ifPresent((blockEntity) -> {
+            world.removeBlockEntity(pos);
+            world.removeBlock(pos, false);
+        });
     }
 
 }
