@@ -44,7 +44,7 @@ public class ScrollBlockEntity extends BlockEntity implements CircleCaster, Bloc
 
     @Override
     public void fromClientTag(NbtCompound tag) {
-
+        
     }
 
     @Override

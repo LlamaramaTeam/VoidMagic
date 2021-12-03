@@ -6,6 +6,7 @@ import io.github.llamarama.team.voidmagic.common.lib.multiblock.impl.DefaultMult
 import io.github.llamarama.team.voidmagic.common.util.IdBuilder;
 import net.minecraft.block.Blocks;
 
+@SuppressWarnings("unused")
 public final class ModMultiblocks {
 
     public static final MultiblockType RANDOM_TYPE =
